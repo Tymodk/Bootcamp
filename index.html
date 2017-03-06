@@ -18,6 +18,7 @@
 				var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
 
 				game.state.add('preload', MyGame.preloadState);
+				game.state.add('titlescreen', MyGame.titlescreenState);
 				game.state.add('playGame',  MyGame.playGameState);
 
 				game.state.start('preload');
