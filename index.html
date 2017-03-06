@@ -8,23 +8,22 @@
 	<script type="text/javascript" src="titlescreen.js"></script>
 	<script type="text/javascript" src="playGame.js" ></script>
 	<style>
-		body{
-			margin: 0;
-		}
+		body { margin: 0; }
+        
 		@font-face {
     		font-family: "Pixel";
     		src: url("fonts/Pixel Emulator.otf") format("opentype");
-}
+        }
 	</style>
 </head>
 <body>
 	<script type="text/javascript">
-				var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
+        var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
 
-				game.state.add('preload', MyGame.preloadState);
-				game.state.add('titlescreen', MyGame.titlescreenState);
-				game.state.add('playGame',  MyGame.playGameState);
-				game.state.start('preload');
+		game.state.add('preload', MyGame.preloadState);
+		game.state.add('titlescreen', MyGame.titlescreenState);
+		game.state.add('playGame',  MyGame.playGameState);
+		game.state.start('preload');
     </script>
 </body>
 </html>
