@@ -15,7 +15,7 @@
 <body>
 	<script type="text/javascript">
 
-				var game = new Phaser.Game(480, 800);
+				var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
 
 				game.state.add('preload', MyGame.preloadState);
 				game.state.add('playGame',  MyGame.playGameState);
