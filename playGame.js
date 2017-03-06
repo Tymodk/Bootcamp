@@ -3,7 +3,6 @@ MyGame.playGameState = function (game) {};
 
 MyGame.playGameState.prototype = {
 
-
   create: function() {
 
 
@@ -18,7 +17,7 @@ MyGame.playGameState.prototype = {
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
-
+=
       //Fireball
       this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
       this.fireball.animations.add('spin', [0,1,2,3]);
@@ -26,6 +25,7 @@ MyGame.playGameState.prototype = {
       this.fireballbig.animations.add('woosh', [0,1]);
       this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
       this.fireballbigger.animations.add('woosh2', [0,1]);
+
 
 
   },
