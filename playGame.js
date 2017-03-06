@@ -3,8 +3,8 @@ var score = 0;
 var scoreText;
 
 var fireballs;
-var timecheck;
-var fireRate = 200;
+var lastFireballFired;
+var fireDelay = 400;
 var fireballSpeed = 250;
 var yoshiSpeed = 200;
 
@@ -65,7 +65,7 @@ MyGame.playGameState.prototype = {
         game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
       }
       
-      if(game.time.now > (this.timecheck + fireRate))
+      if(game.time.now > (this.lastFireballFired + fireDelay))
         {
             this.generateFireball();
     }
@@ -82,7 +82,7 @@ generateFireball: function() {
       game.physics.enable(fireball, Phaser.Physics.ARCADE);
       
       fireball.body.velocity.y = - fireballSpeed;
-    this.timecheck = game.time.now;
+    this.lastFireballFired = game.time.now;
 
     }
        
