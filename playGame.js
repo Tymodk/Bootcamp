@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 var fireballs;
 
+=======
+>>>>>>> 7f67385de9609ff6e0ca31f3dc53004f298f2ace
 MyGame.playGameState = function (game) {};
 
 MyGame.playGameState.prototype = {

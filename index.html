@@ -5,6 +5,7 @@
 	<title>Phaser.io</title>
 	<script type="text/javascript" src="lib/phaser.min.js" ></script>
 	<script type="text/javascript" src="preload.js" ></script>
+	<script type="text/javascript" src="titlescreen.js"></script>
 	<script type="text/javascript" src="playGame.js" ></script>
 	<style>
 		body{
@@ -14,15 +15,12 @@
 </head>
 <body>
 	<script type="text/javascript">
-
 				var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
 
 				game.state.add('preload', MyGame.preloadState);
 				game.state.add('titlescreen', MyGame.titlescreenState);
 				game.state.add('playGame',  MyGame.playGameState);
-
 				game.state.start('preload');
-
     </script>
 </body>
 </html>
