@@ -1,4 +1,6 @@
 var fireballs;
+var timecheck;
+var fireRate = 200;
 
 MyGame.playGameState = function (game) {};
 
@@ -22,7 +24,7 @@ MyGame.playGameState.prototype = {
       fireballs = game.add.group();
       fireballs.enableBody = true;
       
-      
+      this.generateFireball();
 
   },
 
@@ -36,19 +38,32 @@ MyGame.playGameState.prototype = {
             this.yoshi.body.velocity.setTo(0, 0);
         }
       else{
-        game.physics.arcade.moveToPointer(this.yoshi, 100);
+        game.physics.arcade.moveToPointer(this.yoshi, 300);
       }
       
-      this.generateFireball();
+      if(game.time.now > (this.timecheck + fireRate))
+        {
+            this.generateFireball();
+    }
   },
     
 generateFireball: function() {
+<<<<<<< HEAD
     
     var fireball = fireballs.create(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
+=======
+    var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
+>>>>>>> 21ac5b1819c6f6d16e25cdc4bcb0b3206b36842e
       fireball.animations.add('spin', [0,1,2,3]);
       fireball.animations.play('spin', 8, true, false);
       game.physics.enable(fireball, Phaser.Physics.ARCADE);
       
       fireball.body.velocity.y = -200;
+<<<<<<< HEAD
     }
+=======
+       
+    this.timecheck = game.time.now;
+}
+>>>>>>> 21ac5b1819c6f6d16e25cdc4bcb0b3206b36842e
 }
