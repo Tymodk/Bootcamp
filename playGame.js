@@ -3,7 +3,7 @@ MyGame.playGameState = function (game) {};
 
 MyGame.playGameState.prototype = {
 
-
+var fireballs;
   create: function() {
 
 
@@ -20,7 +20,10 @@ MyGame.playGameState.prototype = {
 
 
       //Fireball
+      fireballs = game.add.group();
+      fireballs.enableBody = true;
       this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.x, 'fireball');
+      this.fireball.animations.add('f-ani', [0,1,2,3]);
 
 
   },
@@ -28,6 +31,7 @@ MyGame.playGameState.prototype = {
   update: function() {
       this.background.tilePosition.y += 2;
       this.yoshi.animations.play('ani', 6, true, false);
+      this.fireball.animations.play('f-ani', 14, true, false);
 
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
         {
