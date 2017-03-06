@@ -3,7 +3,7 @@ var MyGame = {};
 MyGame.preloadState = function(game) {};
 
 MyGame.preloadState.prototype = {
-<<<<<<< HEAD
+
   preload: function() {
     this.load.image('sky', 'assets/background-tile.jpg');
     this.load.spritesheet('yoshi', 'assets/yoshi.png', 27, 50, 4);
@@ -25,8 +25,7 @@ MyGame.preloadState.prototype = {
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.state.start('titlescreen');
   }
-=======
->>>>>>> cdacc88431bc890732ffbd809db32ded8bfd327d
+
 
     preload: function() {
         this.load.image('sky', 'assets/background-tile.jpg');
