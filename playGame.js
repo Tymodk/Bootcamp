@@ -18,10 +18,19 @@ MyGame.playGameState.prototype = {
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
+<<<<<<< HEAD
       // Set Event Move Player
       
       game.physics.arcade.moveToPointer(this.yoshi, 100); 
       
+=======
+      //Set Event Move Player
+      game.input.onDown.add(function movePlayer() {
+
+        game.physics.arcade.moveToPointer(this.yoshi, 100);
+
+      }, this);
+>>>>>>> dd4660205c396d6d0f7a7949aac49a196dcb4393
 
   },
 
@@ -42,9 +51,12 @@ MyGame.playGameState.prototype = {
 
 
 }
+<<<<<<< HEAD
 
 //function movePlayer() {
 //
 //  game.physics.arcade.moveToPointer(this.yoshi, 100);
 //
 //}
+=======
+>>>>>>> dd4660205c396d6d0f7a7949aac49a196dcb4393
