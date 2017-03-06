@@ -1,6 +1,11 @@
+
+var score = 0;
+var scoreText;
+
 var fireballs;
 var timecheck;
 var fireRate = 200;
+
 
 MyGame.playGameState = function (game) {};
 
@@ -19,6 +24,23 @@ MyGame.playGameState.prototype = {
       this.yoshi.animations.add('ani', [0,1,2,3]);
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
+
+
+
+
+      //Fireball
+      this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
+      this.fireball.animations.add('spin', [0,1,2,3]);
+      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
+      this.fireballbig.animations.add('woosh', [0,1]);
+      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
+      this.fireballbigger.animations.add('woosh2', [0,1]);
+
+      //Score
+      scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+
+
+      
       
       fireballs = game.add.group();
       fireballs.enableBody = true;
@@ -26,9 +48,10 @@ MyGame.playGameState.prototype = {
       this.generateFireball();
 
   },
-
   update: function() {
       this.background.tilePosition.y += 2;
+      score += 1;
+      scoreText.text = 'score: ' + score;
       this.yoshi.animations.play('ani', 6, true, false);
       
 
