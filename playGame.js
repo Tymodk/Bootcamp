@@ -80,11 +80,15 @@ generateFireball: function() {
       fireball.animations.add('spin', [0,1,2,3]);
       fireball.animations.play('spin', 8, true, false);
       game.physics.enable(fireball, Phaser.Physics.ARCADE);
-      
+      fireball.events.onOutOfBounds.add(function(){
+    fireball.kill();   console.log('killed');
+      });
+    fireball.checkWorldBounds = true;
       fireball.body.velocity.y = - fireballSpeed;
     this.lastFireballFired = game.time.now;
 
     }
+
        
     
 }
