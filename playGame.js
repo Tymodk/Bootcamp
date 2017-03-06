@@ -29,20 +29,21 @@ MyGame.playGameState.prototype = {
 
 
 
+
       //Fireball
-      this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
-      this.fireball.animations.add('spin', [0,1,2,3]);
-      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
-      this.fireballbig.animations.add('woosh', [0,1]);
-      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
-      this.fireballbigger.animations.add('woosh2', [0,1]);
+//      this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
+//      this.fireball.animations.add('spin', [0,1,2,3]);
+//      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
+//      this.fireballbig.animations.add('woosh', [0,1]);
+//      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
+//      this.fireballbigger.animations.add('woosh2', [0,1]);
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
 
 
-      this.troopa = this.add.sprite(game.world.centerX, game.world.centerY -200, 'paratroopa');
-      this.troopa.animations.add('fly',[5,6,7,8,9,15,16,17,18,19]);
+      
+      
       fireballs = game.add.group();
       fireballs.enableBody = true;
       
@@ -54,7 +55,7 @@ MyGame.playGameState.prototype = {
       score += 1;
       scoreText.text = 'score: ' + score;
       this.yoshi.animations.play('ani', 6, true, false);
-      this.troopa.animations.play('fly', 5, true, false);
+      
 
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
         {
