@@ -1,3 +1,6 @@
+var score = 0;
+var scoreText;
+
 MyGame.playGameState = function (game) {};
 
 MyGame.playGameState.prototype = {
@@ -25,12 +28,15 @@ MyGame.playGameState.prototype = {
       this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
       this.fireballbigger.animations.add('woosh2', [0,1]);
 
+      //Score
+      scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
 
 
   },
-
   update: function() {
       this.background.tilePosition.y += 2;
+      score += 1;
+      scoreText.text = 'score: ' + score;
       this.yoshi.animations.play('ani', 6, true, false);
       this.fireball.animations.play('spin', 8, true, false);
       this.fireballbig.animations.play('woosh', 4, true, false);
