@@ -18,23 +18,33 @@ MyGame.playGameState.prototype = {
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
-      //Set Event Move Player
-      game.input.onDown.add(movePlayer(), this);
+      // Set Event Move Player
+      
+      game.physics.arcade.moveToPointer(this.yoshi, 100); 
+      
 
   },
 
   update: function() {
       this.background.tilePosition.y += 2;
       this.yoshi.animations.play('ani', 6, true, false);
-
+      if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
+        {
+            this.yoshi.body.velocity.setTo(0, 0);
+        }
+      else{
+          
+      game.physics.arcade.moveToPointer(this.yoshi, 100); 
+      }
+      
 
   }
 
 
 }
 
-function movePlayer() {
-
-  game.physics.arcade.moveToPointer(this.yoshi, 100);
-
-}
+//function movePlayer() {
+//
+//  game.physics.arcade.moveToPointer(this.yoshi, 100);
+//
+//}
