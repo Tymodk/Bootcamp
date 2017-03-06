@@ -19,7 +19,11 @@ MyGame.playGameState.prototype = {
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
       //Set Event Move Player
-      game.input.onDown.add(movePlayer(), this);
+      game.input.onDown.add(function movePlayer() {
+
+        game.physics.arcade.moveToPointer(this.yoshi, 100);
+
+      }, this);
 
   },
 
@@ -30,11 +34,5 @@ MyGame.playGameState.prototype = {
 
   }
 
-
-}
-
-function movePlayer() {
-
-  game.physics.arcade.moveToPointer(this.yoshi, 100);
 
 }
