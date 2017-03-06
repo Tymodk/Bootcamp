@@ -12,7 +12,7 @@ MyGame.preloadState.prototype = {
     this.load.spritesheet('fireball-mini', 'assets/fireballs.png', 19, 20, 4);
     this.load.spritesheet('fireball-big', 'assets/bigfireballs.png', 16, 16, 2);
     this.load.spritesheet('fireball-bigger', 'assets/biggerfireballs.png', 21, 21, 2);
-    this.load.spritesheet('paratroopa', 'assets/koopas.png',39,42, 20);
+    
   },
   create: function() {
   	game.scale.pageAlignHorizontally = true;

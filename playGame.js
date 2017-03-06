@@ -19,8 +19,7 @@ MyGame.playGameState.prototype = {
       this.yoshi.animations.add('ani', [0,1,2,3]);
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
-      this.troopa = this.add.sprite(game.world.centerX, game.world.centerY -200, 'paratroopa');
-      this.troopa.animations.add('fly',[5,6,7,8,9,15,16,17,18,19]);
+      
       fireballs = game.add.group();
       fireballs.enableBody = true;
       
@@ -31,7 +30,7 @@ MyGame.playGameState.prototype = {
   update: function() {
       this.background.tilePosition.y += 2;
       this.yoshi.animations.play('ani', 6, true, false);
-      this.troopa.animations.play('fly', 5, true, false);
+      
 
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
         {
