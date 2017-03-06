@@ -1,11 +1,11 @@
-<<<<<<< HEAD
+
 var score = 0;
 var scoreText;
-=======
+
 var fireballs;
 var timecheck;
 var fireRate = 200;
->>>>>>> d91cabefda137f2d4a2d7a810567880468e9ba53
+
 
 MyGame.playGameState = function (game) {};
 
