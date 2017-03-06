@@ -16,6 +16,9 @@ MyGame.preloadState.prototype = {
 
   },
   create: function() {
+  	game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.state.start('playGame');
   }
 
