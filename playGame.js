@@ -19,6 +19,8 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       this.background = game.add.tileSprite(0, 0, 600, 800, "sky");
+      music = game.add.audio('water');
+      music.play();
 
       //Add Player
       this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY +100, 'yoshi');
