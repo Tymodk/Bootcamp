@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 var score = 0;
 var scoreText;
+=======
+var fireballs;
+var timecheck;
+var fireRate = 200;
+>>>>>>> d91cabefda137f2d4a2d7a810567880468e9ba53
 
 MyGame.playGameState = function (game) {};
 
@@ -20,6 +26,7 @@ MyGame.playGameState.prototype = {
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
 
+
       //Fireball
       this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
       this.fireball.animations.add('spin', [0,1,2,3]);
@@ -32,22 +39,51 @@ MyGame.playGameState.prototype = {
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
 
 
+      this.troopa = this.add.sprite(game.world.centerX, game.world.centerY -200, 'paratroopa');
+      this.troopa.animations.add('fly',[5,6,7,8,9,15,16,17,18,19]);
+      fireballs = game.add.group();
+      fireballs.enableBody = true;
+      
+      this.generateFireball();
+
   },
   update: function() {
       this.background.tilePosition.y += 2;
       score += 1;
       scoreText.text = 'score: ' + score;
       this.yoshi.animations.play('ani', 6, true, false);
-      this.fireball.animations.play('spin', 8, true, false);
-      this.fireballbig.animations.play('woosh', 4, true, false);
-      this.fireballbigger.animations.play('woosh2', 4, true, false);
+      this.troopa.animations.play('fly', 5, true, false);
 
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
         {
             this.yoshi.body.velocity.setTo(0, 0);
         }
       else{
-        game.physics.arcade.moveToPointer(this.yoshi, 100);
+        game.physics.arcade.moveToPointer(this.yoshi, 300);
       }
-  }
+      
+      if(game.time.now > (this.timecheck + fireRate))
+        {
+            this.generateFireball();
+    }
+  },
+    
+generateFireball: function() {
+    
+    
+
+    var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
+
+      fireball.animations.add('spin', [0,1,2,3]);
+      fireball.animations.play('spin', 8, true, false);
+      game.physics.enable(fireball, Phaser.Physics.ARCADE);
+      
+      fireball.body.velocity.y = -200;
+    this.timecheck = game.time.now;
+
+    }
+       
+    
 }
+
+
