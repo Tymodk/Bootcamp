@@ -17,7 +17,7 @@ MyGame.playGameState.prototype = {
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
-=
+
       //Fireball
       this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
       this.fireball.animations.add('spin', [0,1,2,3]);
