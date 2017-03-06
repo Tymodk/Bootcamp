@@ -23,7 +23,6 @@ MyGame.playGameState.prototype = {
       this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.x, 'fireball');
 
 
-
   },
 
   update: function() {
