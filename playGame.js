@@ -9,7 +9,7 @@ MyGame.playGameState.prototype = {
       //Sky background
       this.background = game.add.tileSprite(0, 0, 800, 600, "sky");
       //Init Player
-      this.player = game.add.sprite(32, 32, 'yoshi');
+      this.player = game.add.sprite(16, 16, 'yoshi');
 
 
       //Variable keyboard keys
