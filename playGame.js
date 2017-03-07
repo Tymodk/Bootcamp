@@ -81,8 +81,10 @@ MyGame.playGameState.prototype = {
       enemies.enableBody = true;
 
       //PickUps
-      pickUps = game.add.group();
-      pickUps.enableBody = true;
+      blocks = game.add.group();
+      blocks.enableBody = true;
+      coins = game.add.group();
+      coins.enableBody = true;
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -116,7 +118,10 @@ MyGame.playGameState.prototype = {
     this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
-    game.physics.arcade.overlap(this.yoshi, pickUps, this.getPickUp, null, this);
+    game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
+    game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
+
+      
 
 
 
@@ -191,17 +196,23 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     //PICKUP FUNCTION RANDOMIZE
     generatePickUp: function(x,y){
         var random =  game.rnd.integerInRange(0,100);
-        if(random < 30){
-        var pickUp = pickUps.create(x,y,'questionblock');
-        pickUp.animations.add('block-spin', [0,1,2,3]);
-        pickUp.animations.play('block-spin', 5, true, false);}
+        if(random < 5){
+            var block = blocks.create(x,y,'questionblock');
+            block.animations.add('block-spin', [0,1,2,3]);
+            block.animations.play('block-spin', 5, true, false);
+            game.physics.enable(block, Phaser.Physics.ARCADE);
+            block.body.velocity.y = 100;
+        }
         else{
-        var pickUp = pickUps.create(x,y,'coin');
-        pickUp.animations.add('coin-spin', [0,1,2,3]);
-        pickUp.animations.play('coin-spin', 5, true, false);}
-        game.physics.enable(pickUp, Phaser.Physics.ARCADE);
+            var coin = coins.create(x,y,'coin');
+            coin.animations.add('coin-spin', [0,1,2,3]);
+            coin.animations.play('coin-spin', 5, true, false);
+            game.physics.enable(coin, Phaser.Physics.ARCADE);
+            coin.body.velocity.y = 100;
+        }
+        
 
-        pickUp.body.velocity.y = 100;
+        
 
 
     },
@@ -213,9 +224,28 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
     },
-    getPickUp: function(yoshi, pickUp) {
-      pickUp.kill();
+    getCoin: function(yoshi, coin) {
+      coin.kill();
       currentGold += 10;
+    },
+    getBlock: function(yoshi, block) {
+      block.kill();
+      var random =  game.rnd.integerInRange(0,2);
+        if(random==0){
+            fireDelay -= 50;
+            console.log('less fire delay');
+            
+        }
+        if(random==1){
+            fireballSpeed += 25;
+            console.log('faster BALLS');
+
+        }
+        if(random==2){
+            yoshiSpeed += 50;
+            console.log('more speed');
+
+        }
     },
 
 
