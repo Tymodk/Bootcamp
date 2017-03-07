@@ -132,7 +132,6 @@ generateKoopa: function(x, y) {
     koopa.body.velocity.y =  150;
     koopa.body.velocity.x =  30;
 
-    // koopa.events.onOutOfBounds.add(enemyOut, this);
 
 
   },
@@ -149,11 +148,6 @@ generateKoopa: function(x, y) {
   // spawnWave1: function(){
   //
   // },
-
-  destroyEnemy: function(fireball, koopa) {
-      koopa.kill();
-      fireball.kill();
-    },
 
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
