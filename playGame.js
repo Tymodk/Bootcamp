@@ -65,7 +65,7 @@ MyGame.playGameState.prototype = {
       koopas = game.add.group();
       koopas.enableBody = true;
 
-      this.spawnWave(5, 50); //Amount , Spacing
+      this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
 
   },
   update: function() {
@@ -140,10 +140,10 @@ generateKoopa: function(x, y) {
       object2.kill();
     },
 
-  spawnWave: function(amount, spacing){
+  spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
       console.log("spawnWave");
-      this.generateKoopa(50 + i, 50);
+      this.generateKoopa(startX + i, 50);
     }
   },
 
