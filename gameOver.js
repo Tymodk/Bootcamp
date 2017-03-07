@@ -12,18 +12,18 @@ MyGame.gameOverState.prototype = {
     var gameOverTitle = game.add.image(game.world.centerX, 20, 'gameOverTitle');
     gameOverTitle.scale.setTo(0.7);
     gameOverTitle.anchor.set(0.5, 0);
-    scoreText = game.add.text( game.world.centerX, game.world.centerY - 50, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    scoreText = game.add.text( game.world.centerX, game.world.centerY - 100, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     scoreText.anchor.set(0.5);
-    highscoreText = game.add.text( game.world.centerX, game.world.centerY, 'highscore: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    highscoreText = game.add.text( game.world.centerX, game.world.centerY - 50, 'highscore: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     highscoreText.anchor.set(0.5);
-    currentGoldText = game.add.text( game.world.centerX, game.world.centerY + 50, 'earned gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    currentGoldText = game.add.text( game.world.centerX, game.world.centerY, 'earned gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     currentGoldText.anchor.set(0.5);
-    totalGoldText = game.add.text( game.world.centerX, game.world.centerY + 100, 'total gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    totalGoldText = game.add.text( game.world.centerX, game.world.centerY + 50, 'total gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     totalGoldText.anchor.set(0.5);
-    var retryButton = game.add.button(game.width / 2, game.height - 300, 'retry', this.startGame);
+    var retryButton = game.add.button(game.width / 2, game.height - 250, 'retry', this.startGame);
      retryButton.scale.setTo(1.5);
      retryButton.anchor.set(0.5);
-    var exitButton = game.add.button(game.width / 2, game.height - 200, 'exit', this.exitGame);
+    var exitButton = game.add.button(game.width / 2, game.height - 150, 'exit', this.exitGame);
      exitButton.scale.setTo(0.7);
      exitButton.anchor.set(0.5);
 
@@ -31,7 +31,7 @@ MyGame.gameOverState.prototype = {
      totalGold += currentGold;
   },
   update: function(){
-    this.background.tilePosition += 2;
+    this.background.tilePosition.y += 2;
     if(highscore < currentScore){
       highscore = currentScore;
     }
