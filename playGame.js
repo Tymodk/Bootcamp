@@ -49,6 +49,8 @@ MyGame.playGameState.prototype = {
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
       this.block = this.add.sprite(50,50,'questionblock');
       this.block.animations.add('block-spin', [0,1,2,]);
+      this.goomba = this.add.sprite(100, 50, 'goomba');
+      this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
       //Player
       this.generatePlayer(game.world.centerX, game.world.centerY +100);
@@ -89,9 +91,9 @@ MyGame.playGameState.prototype = {
     currentScore += 1;
     scoreText.text = 'score: ' + currentScore;
 
-
+    
     this.block.animations.play('block-spin', 5, true, false);
-
+    this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
