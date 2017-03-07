@@ -66,8 +66,7 @@ MyGame.playGameState.prototype = {
       koopas = game.add.group();
       koopas.enableBody = true;
 
-      this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
-
+      this.waveManager();
   },
   update: function() {
       this.background.tilePosition.y += 2;
@@ -140,14 +139,21 @@ generateKoopa: function(x, y) {
   destroyObjects: function(object1, object2) {
       object1.kill();
       object2.kill();
+      //ADD EXPLOSION ON POSITION
     },
-    
+
+  waveManager: function(){
+    this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+  },
+
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
       console.log("spawnWave");
       this.generateKoopa(startX + i, 50);
     }
   },
+
+  //PICKUP FUNCTION RANDOMIZE
 
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
