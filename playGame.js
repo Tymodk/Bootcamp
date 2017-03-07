@@ -76,7 +76,7 @@ MyGame.playGameState.prototype = {
       this.hidden.tilePosition.y += 2;
       currentScore += 1;
       scoreText.text = 'score: ' + currentScore;
-      this.block.animations.play('block-spin', 5, true, false); 
+      this.block.animations.play('block-spin', 5, true, false);
       this.yoshi.animations.play('ani', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyObjects, null, this);
@@ -145,7 +145,6 @@ generateKoopa: function(x, y) {
   destroyObjects: function(object1, object2) { //fireballs, koopa
       object1.kill();
       object2.kill();
-      //ADD EXPLOSION ON POSITION
       this.generateExplosion(object2.x, object2.y);
     },
 
