@@ -1,5 +1,6 @@
 //Variables
 var currentScore = 0;
+var scoreTick = 1;
 var scoreText;
 
 var fireballs;
@@ -11,8 +12,14 @@ var yoshiSpeed = 250;
 var enemies;
 var lastWaveSpawned = 0;
 var spawnDelay = 3000;
-var wave1, wave2, wave3, wave4 = 0;
-var wave1Max, wave2Max, wave3Max, wave4Max = 5;
+var wave1 = 0;
+var wave2 = 0;
+var wave3 = 0;
+var wave4 = 0;
+var wave1Max = 5;
+var wave2Max = 5;
+var wave3Max = 5;
+var wave4Max = 5;
 
 
 MyGame.playGameState = function (game) {};
@@ -24,7 +31,15 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
-      lastWaveSpawned = 0;
+
+      //Backgrounds
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.skyboss.alpha = 0;
+      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      //Music
+
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
@@ -53,8 +68,6 @@ MyGame.playGameState.prototype = {
       enemies = game.add.group();
       enemies.enableBody = true;
 
-      //Waves
-      this.waveManager();
 
       //PickUps
       pickUps = game.add.group();
@@ -65,9 +78,13 @@ MyGame.playGameState.prototype = {
       //      this.fireballbig.animations.add('woosh', [0,1]);
       //      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
       //      this.fireballbigger.animations.add('woosh2', [0,1]);
+
+      // scoreTimer
+      game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
   },
-
-
+  addScore: function () {
+    currentScore += scoreTick;
+  },
   update: function()
   {
     //Move Background
@@ -76,7 +93,6 @@ MyGame.playGameState.prototype = {
     this.hidden.tilePosition.y += 2;
 
     //Score
-    currentScore += 1;
     scoreText.text = 'score: ' + currentScore;
 
 
@@ -107,10 +123,8 @@ MyGame.playGameState.prototype = {
          this.background.alpha = 0;
      }
 
-
-     //Spawn Enemies
+     //Waves
      this.waveManager();
-
   },
 
   generatePlayer: function(x, y) {
@@ -154,23 +168,23 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.anchor.setTo(0.5, 0.5);
 
     },
-  //PICKUP FUNCTION RANDOMIZE
-  generatePickUp: function(x,y){
-      var random =  game.rnd.integerInRange(0,100);
-      if(random < 30){
-      var pickUp = pickUps.create(x,y,'questionblock');
-      pickUp.animations.add('block-spin', [0,1,2,3]);
-      pickUp.animations.play('block-spin', 5, true, false);}
-      else{
-      var pickUp = pickUps.create(x,y,'coin');
-      pickUp.animations.add('coin-spin', [0,1,2,3]);
-      pickUp.animations.play('coin-spin', 5, true, false);}
-      game.physics.enable(pickUp, Phaser.Physics.ARCADE);
+    //PICKUP FUNCTION RANDOMIZE
+    generatePickUp: function(x,y){
+        var random =  game.rnd.integerInRange(0,100);
+        if(random < 30){
+        var pickUp = pickUps.create(x,y,'questionblock');
+        pickUp.animations.add('block-spin', [0,1,2,3]);
+        pickUp.animations.play('block-spin', 5, true, false);}
+        else{
+        var pickUp = pickUps.create(x,y,'coin');
+        pickUp.animations.add('coin-spin', [0,1,2,3]);
+        pickUp.animations.play('coin-spin', 5, true, false);}
+        game.physics.enable(pickUp, Phaser.Physics.ARCADE);
 
-      pickUp.body.velocity.y = 100;
+        pickUp.body.velocity.y = 100;
 
 
-  },
+    },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
@@ -187,7 +201,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-
+  console.log(wave1);
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
@@ -195,6 +209,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
         amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
+        // console.log("WaveSpawner");
 
         wave1++;
       }
