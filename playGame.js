@@ -1,4 +1,4 @@
-
+//Variables
 var currentScore = 0;
 var scoreText;
 
@@ -41,6 +41,15 @@ MyGame.playGameState.prototype = {
       music = game.add.audio('water');
       music.play();
 
+      //Backgrounds
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.skyboss.alpha = 0;
+      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      this.block = this.add.sprite(50,50,'questionblock');
+      this.block.animations.add('block-spin', [0,1,2,]);
+
       //Player
       //Add Player
       this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY + 100, 'yoshi');
@@ -66,14 +75,6 @@ MyGame.playGameState.prototype = {
       //Waves
       this.waveManager();
 
-      //Backgrounds
-      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
-      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-      this.skyboss.alpha = 0;
-      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-      this.block = this.add.sprite(50,50,'questionblock');
-      this.block.animations.add('block-spin', [0,1,2,]);
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
