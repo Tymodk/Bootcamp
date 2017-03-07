@@ -69,7 +69,10 @@ MyGame.playGameState.prototype = {
 
       //Waves
       this.waveManager();
-
+      
+      //PickUps
+      pickUps = game.add.group();
+      pickUps.enableBody = true;
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -95,6 +98,9 @@ MyGame.playGameState.prototype = {
     this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
+    game.physics.arcade.overlap(this.yoshi, pickUps, this.getPickUp, null, this);
+
+      
 
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -162,16 +168,16 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     generatePickUp: function(x,y){    
         var random =  game.rnd.integerInRange(0,100);
         if(random < 30){
-        this.pickUp = this.add.sprite(x,y,'questionblock');
-        this.pickUp.animations.add('block-spin', [0,1,2,3]);
-        this.pickUp.animations.play('block-spin', 5, true, false);}
+        var pickUp = pickUps.create(x,y,'questionblock');
+        pickUp.animations.add('block-spin', [0,1,2,3]);
+        pickUp.animations.play('block-spin', 5, true, false);}
         else{
-        this.pickUp = this.add.sprite(x,y,'coin');
-        this.pickUp.animations.add('coin-spin', [0,1,2,3]);
-        this.pickUp.animations.play('coin-spin', 5, true, false);}
-        game.physics.enable(this.pickUp, Phaser.Physics.ARCADE);
+        var pickUp = pickUps.create(x,y,'coin');
+        pickUp.animations.add('coin-spin', [0,1,2,3]);
+        pickUp.animations.play('coin-spin', 5, true, false);}
+        game.physics.enable(pickUp, Phaser.Physics.ARCADE);
 
-        this.pickUp.body.velocity.y = 100;
+        pickUp.body.velocity.y = 100;
         
         
     },
@@ -181,6 +187,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       enemy.kill();
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
+    },
+    getPickUp: function(yoshi, pickUp) { 
+      pickUp.kill();      
     },
 
   waveManager: function(){
