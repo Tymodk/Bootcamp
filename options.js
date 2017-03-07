@@ -1,7 +1,6 @@
 var soundText;
 var creditsText;
-var soundEnabled = true;
-
+var yesNoButton;
 
 MyGame.optionsState = function (game) {};
 
@@ -22,9 +21,13 @@ MyGame.optionsState.prototype = {
      optionsButton.scale.setTo(0.7);
      optionsButton.anchor.set(0.5);
      */
-     soundText = game.add.text(game.world.centerX, game.height - 450, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
+     soundText = game.add.text(game.world.centerX - 50, game.height - 450, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
      soundText.scale.setTo(0.7);
      soundText.anchor.set(0.5);
+     yesNoButton = game.add.button(game.world.centerX + 50, game.height - 450, 'buttonYes', this.toggleSound);
+     yesNoButton.scale.setTo(0.7);
+     yesNoButton.anchor.set(0.5);
+     yesNoButton.onInputDown.add(down, this);
      var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.exitGame);
      exitButton.scale.setTo(0.7);
      exitButton.anchor.set(0.5);
@@ -34,7 +37,11 @@ MyGame.optionsState.prototype = {
 
 
   },
-  toggleSound: function(item){
+  down: function(item){
+    item.key = 'buttonNo';
+  }
+  /*
+  toggleSound: function(){
     if(!soundEnabled){
         soundText.addColor('#ffff00', 15);
         soundText.addColor('#fff', 18);
@@ -44,13 +51,12 @@ MyGame.optionsState.prototype = {
         soundText.addColor('#ffff00', 21);
         soundEnabled = false;
     }
-  },
+  },*/
+  
   update: function(){
     this.background.tilePosition.y += 2;
     creditsText.text = 'Jens Van Assche - Jordy Pereira \nLennert Peeters - Tymo de Kock';
-    soundText.text = 'enable sound - yes / no';
-    soundText.events.onInputDown.add(toggleSound, this);
-
+    soundText.text = 'enable sound - ';
   },
   
   startGame: function(){
