@@ -15,10 +15,16 @@ MyGame.playGameState.prototype = {
 
   create: function() {
 
-
+      
       game.physics.startSystem(Phaser.Physics.ARCADE);
-
-      this.background = game.add.tileSprite(0, 0, 600, 800, "sky");
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, "sky-boss");   
+      
+      this.background = game.add.tileSprite(0, 0, 600, 800, "sky");      
+      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.skyboss.alpha = 0;
+      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      
+      
       music = game.add.audio('water');
       music.play();
 
@@ -50,10 +56,15 @@ MyGame.playGameState.prototype = {
       fireballs.enableBody = true;
       
       this.generateFireball();
+      
+
+        
 
   },
   update: function() {
       this.background.tilePosition.y += 2;
+      this.skyboss.tilePosition.y += 2;
+      this.hidden.tilePosition.y += 2;
       score += 1;
       scoreText.text = 'score: ' + score;
       this.yoshi.animations.play('ani', 6, true, false);
@@ -71,6 +82,11 @@ MyGame.playGameState.prototype = {
         {
             this.generateFireball();
     }
+       if(game.time.now > 21000)
+       {
+           this.background.alpha = 0;
+       }
+      
   },
     
 generateFireball: function() {
