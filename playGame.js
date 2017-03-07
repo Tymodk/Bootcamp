@@ -22,10 +22,12 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
 
+      //Backgrounds
       this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+
 
 
       music = game.add.audio('water');
@@ -65,11 +67,7 @@ MyGame.playGameState.prototype = {
       koopas = game.add.group();
       koopas.enableBody = true;
 
-      this.generateKoopa(50, 50);
-      this.generateKoopa(50, 100);
-      this.generateKoopa(50, 150);
-      this.generateKoopa(50, 200);
-
+      this.waveManager();
   },
   update: function() {
       this.background.tilePosition.y += 2;
@@ -125,23 +123,42 @@ generateKoopa: function(x, y) {
     koopa.animations.play('koopa-ani', 10, true, false);
     game.physics.enable(koopa, Phaser.Physics.ARCADE);
     koopa.body.collideWorldBounds = true;
-    // koopa.events.onOutOfBounds.x.add(enemyKill(), this);
+    // koopa.events.onOutOfBounds.x.add(enemyKill(), this); KILL ENEMY WHEN REACH X BOUNDARY
     koopa.body.bounce.setTo(1, 1);
     koopa.body.velocity.y =  150;
     koopa.body.velocity.x =  30;
-
-
-
   },
+
+  generateExplosion: function(x, y) {
+    this.explosion = this.add.sprite(x, y, 'explosion');
+    this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
+    this.explosion.animations.play('explosion-boom', 9, false, true);
+
+    },
 
    enemyKill: function(enemy) {
      enemy.kill();
    },
 
-  destroyObjects: function(object1, object2) {
+  destroyObjects: function(object1, object2) { //fireballs, koopa
       object1.kill();
       object2.kill();
+      //ADD EXPLOSION ON POSITION
+      this.generateExplosion(object2.x, object2.y);
     },
+
+  waveManager: function(){
+    this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+  },
+
+  spawnWave: function(amount, spacing, startX){
+    for (var i = 0; i < (amount * spacing) ; i += spacing) {
+      console.log("spawnWave");
+      this.generateKoopa(startX + i, 50);
+    }
+  },
+
+  //PICKUP FUNCTION RANDOMIZE
 
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
