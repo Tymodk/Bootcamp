@@ -23,30 +23,7 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
-<<<<<<< HEAD
-      currentScore = 0;
       lastWaveSpawned = 0;
-
-
-=======
->>>>>>> 9d9926d48af23834d90d1508dcd62f5b0c857a55
-      game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-
-      //Backgrounds
-      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
-      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-      this.skyboss.alpha = 0;
-      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> 9d9926d48af23834d90d1508dcd62f5b0c857a55
-      //Music
-
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
