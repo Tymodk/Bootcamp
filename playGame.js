@@ -9,6 +9,7 @@ var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
 var enemies;
+var lastWaveSpawned;
 
 
 MyGame.playGameState = function (game) {};
@@ -130,7 +131,7 @@ generateFireball: function() {
     fireball.animations.add('spin', [0,1,2,3]);
     fireball.animations.play('spin', 8, true, false);
     game.physics.enable(fireball, Phaser.Physics.ARCADE);
-    fireball.events.onOutOfBounds.add(function(){fireball.kill();});
+    fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
     fireball.checkWorldBounds = true;
     fireball.body.velocity.y = - fireballSpeed;
     this.lastFireballFired = game.time.now;
@@ -145,7 +146,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     enemy.animations.play(enemyName + '-ani', 10, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
-    enemy.events.onOutOfBounds.add(function(){enemy.kill();});
+    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     enemy.body.velocity.y = velY;
     enemy.body.velocity.x =  velX;
   },
@@ -183,13 +184,21 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
 
   waveManager: function(){
-    this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    this.spawnWave(5, 50, 50, 30, 30, 150, 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+    this.spawnWave(2, 50, 300, 30, -50, 200, 'koopa');
+    //if gametime is right, spawn again
+    // if(game.time.now > (this.lastWaveSpawned + spawnDelay))
+    //   {
+    //     this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    //
+    //   }
   },
 
-  spawnWave: function(amount, spacing, startX){
+  spawnWave: function(amount, spacing, startX, startY, velX, velY, enemyName){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateEnemy(startX + i, 50, 30, 150, 'koopa'); //posX, posY, velX, velY, enemyName
+      this.generateEnemy(startX + i, startY, velX, velY, enemyName); //posX, posY, velX, velY, enemyName
     }
+    this.lastWaveSpawned = game.time.now;
   },
 
   
