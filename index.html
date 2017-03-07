@@ -6,6 +6,7 @@
 	<script type="text/javascript" src="lib/phaser.min.js" ></script>
 	<script type="text/javascript" src="preload.js" ></script>
 	<script type="text/javascript" src="titlescreen.js"></script>
+	<script type="text/javascript" src="options.js"></script>
 	<script type="text/javascript" src="playGame.js" ></script>
 	<script type="text/javascript" src="gameOver.js" ></script>
 	<style>
@@ -24,6 +25,7 @@
 
 				game.state.add('preload', MyGame.preloadState);
 				game.state.add('titlescreen', MyGame.titlescreenState);
+				game.state.add('options', MyGame.optionsState);
 				game.state.add('playGame',  MyGame.playGameState);
 				game.state.add('gameOver', MyGame.gameOverState);
 				game.state.start('preload');
