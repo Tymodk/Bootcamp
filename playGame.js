@@ -79,7 +79,7 @@ MyGame.playGameState.prototype = {
       scoreText.text = 'score: ' + currentScore;
       this.yoshi.animations.play('ani', 6, true, false);
 
-      game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
+      game.physics.arcade.overlap(fireballs, koopas, this.destroyObjects, null, this);
       game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
 
 
