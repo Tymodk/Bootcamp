@@ -9,6 +9,7 @@ var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
 var enemies;
+var lastWaveSpawned;
 
 
 MyGame.playGameState = function (game) {};
@@ -165,13 +166,21 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
 
   waveManager: function(){
-    this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    this.spawnWave(5, 50, 30, 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, enemyName
+
+    //if gametime is right, spawn again
+    // if(game.time.now > (this.lastWaveSpawned + spawnDelay))
+    //   {
+    //     this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    //
+    //   }
   },
 
-  spawnWave: function(amount, spacing, startX){
+  spawnWave: function(amount, spacing, startX, enemyName){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateEnemy(startX + i, 50, 30, 150, 'koopa'); //posX, posY, velX, velY, enemyName
+      this.generateEnemy(startX + i, 50, 30, 150, enemyName); //posX, posY, velX, velY, enemyName
     }
+    this.lastWaveSpawned = game.time.now;
   },
 
   //PICKUP FUNCTION RANDOMIZE
