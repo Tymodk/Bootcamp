@@ -36,6 +36,7 @@ MyGame.preloadState.prototype = {
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        music = game.add.audio('water');
 
         this.state.start('titlescreen');
     }

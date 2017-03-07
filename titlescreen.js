@@ -1,3 +1,5 @@
+
+
 MyGame.titlescreenState = function (game) {};
 
 MyGame.titlescreenState.prototype = {
@@ -18,6 +20,16 @@ MyGame.titlescreenState.prototype = {
      var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.startGame);
      exitButton.scale.setTo(0.7);
      exitButton.anchor.set(0.5);
+
+     //music
+     
+     music.play();
+     if(soundEnabled){
+          music.mute = false;
+      }
+      else{
+          music.mute = true;
+      }
   },
   update: function(){
     this.background.tilePosition.y += 2;
