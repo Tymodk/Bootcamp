@@ -6,7 +6,7 @@ MyGame.preloadState.prototype = {
 
     preload: function() {
         this.load.image('sky', 'assets/background-tile.jpg');
-
+        this.load.image('sky-boss', 'assets/background-tile-boss.png');
         this.load.spritesheet('yoshi', 'assets/yoshi.png', 27, 50, 4);
         this.load.spritesheet('fireball', 'assets/mario_fireball.png', 27, 50, 4);
         this.load.spritesheet('fireball-mini', 'assets/fireballs.png', 19, 20, 4);

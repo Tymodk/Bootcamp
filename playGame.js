@@ -19,8 +19,14 @@ MyGame.playGameState.prototype = {
 
 
       game.physics.startSystem(Phaser.Physics.ARCADE);
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, "sky-boss");
 
       this.background = game.add.tileSprite(0, 0, 600, 800, "sky");
+      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.skyboss.alpha = 0;
+      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+
+
       music = game.add.audio('water');
       music.play();
 
@@ -51,6 +57,9 @@ MyGame.playGameState.prototype = {
 
       this.generateFireball();
 
+
+
+
       //Enemies
       koopas = game.add.group();
       koopas.enableBody = true;
@@ -60,11 +69,13 @@ MyGame.playGameState.prototype = {
   },
   update: function() {
       this.background.tilePosition.y += 2;
+      this.skyboss.tilePosition.y += 2;
+      this.hidden.tilePosition.y += 2;
       score += 1;
       scoreText.text = 'score: ' + score;
       this.yoshi.animations.play('ani', 6, true, false);
 
-      game.physics.arcade.overlap(fireballs, koopas, destroyEnemy, null, this);
+      game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
 
 
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -79,6 +90,11 @@ MyGame.playGameState.prototype = {
         {
             this.generateFireball();
         }
+
+       if(game.time.now > 21000)
+       {
+           this.background.alpha = 0;
+       }
 
   },
 
