@@ -31,6 +31,7 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
+      currentScore = 0;
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
@@ -201,7 +202,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  console.log(wave1);
+  
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
