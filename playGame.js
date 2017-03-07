@@ -28,8 +28,9 @@ MyGame.playGameState.prototype = {
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
       this.block = this.add.sprite(50,50,'questionblock');
-      this.block.animations.add('block-spin', [0,1,2,]);
-
+      this.block.animations.add('block-spin', [0,1,2,3]);
+      this.coin = this.add.sprite(100,50,'coin');
+      this.coin.animations.add('coin-spin', [0,1,2,3]);
 
       music = game.add.audio('water');
       music.play();
@@ -77,6 +78,8 @@ MyGame.playGameState.prototype = {
       currentScore += 1;
       scoreText.text = 'score: ' + currentScore;
       this.block.animations.play('block-spin', 5, true, false);
+      this.coin.animations.play('coin-spin', 5, true, false);
+
       this.yoshi.animations.play('ani', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
