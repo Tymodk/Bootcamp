@@ -16,6 +16,7 @@ var enemies;
 
 var spawnDelay = 3000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
+var velMultiplier = 0;
 
 var wave1 = 0;
 var wave2 = 0;
@@ -262,13 +263,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     {
       var amount = Math.floor(Math.random() * 5 + 1);
       var startX = Math.floor(Math.random() * 250 + 0);
-      var velY = Math.floor(Math.random() * 200 + 100);
+      var velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
 
       this.spawnWave(amount, 50, startX, 30, 30, velY, 'koopa');
 
       amount = Math.floor(Math.random() * 5 + 1);
       startX = Math.floor(Math.random() * 150 + 150);
-      velY = Math.floor(Math.random() * 200 + 150);
+      velY = Math.floor(Math.random() * 200 + 150 + velMultiplier);
 
       this.spawnWave(amount, 50, startX, 30, -50, velY, 'koopa');
 
@@ -276,7 +277,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     }
     if (wave1 == wave1Max && wave2 == wave2Max) {
       wave1 = 0;
-      wave2 = 0
+      wave2 = 0;
+      velMultiplier += 50;
     }
   },
 
