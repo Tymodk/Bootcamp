@@ -48,11 +48,9 @@ MyGame.optionsState.prototype = {
     soundText.text = 'enable sound - ';
     if(soundEnabled){
           music.mute = false;
-          console.log('unmuted');
       }
       else{
           music.mute = true;
-          console.log('muted');
       }
   },
   startGame: function(){
