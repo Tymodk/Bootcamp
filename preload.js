@@ -4,6 +4,7 @@ MyGame.preloadState = function(game) {};
 
 MyGame.preloadState.prototype = {
 
+<<<<<<< HEAD
   preload: function() {
     this.load.image('sky', 'assets/background-tile.jpg');
     this.load.spritesheet('yoshi', 'assets/yoshi.png', 27, 50, 4);
@@ -28,3 +29,35 @@ MyGame.preloadState.prototype = {
     this.state.start('titlescreen');
   }
 }
+=======
+    preload: function() {
+        this.load.image('sky', 'assets/background-tile.jpg');
+        this.load.image('sky-boss', 'assets/background-tile-boss.png');
+        this.load.spritesheet('yoshi', 'assets/yoshi.png', 27, 50, 4);
+        this.load.spritesheet('fireball', 'assets/mario_fireball.png', 27, 50, 4);
+        this.load.spritesheet('fireball-mini', 'assets/fireballs.png', 19, 20, 4);
+        this.load.spritesheet('fireball-big', 'assets/bigfireballs.png', 16, 16, 2);
+        this.load.spritesheet('fireball-bigger', 'assets/biggerfireballs.png', 21, 21, 2);
+
+        this.load.spritesheet('koopa', 'assets/koopas.png', 39, 46, 10);
+
+
+        this.load.image('title', 'assets/titlescreen_title.jpg');
+        this.load.image('startGame', 'assets/button_startGame.png');
+        this.load.image('store', 'assets/button_store.png');
+        this.load.image('options', 'assets/button_options.png');
+        this.load.image('exit', 'assets/button_exit.png');
+
+        this.load.audio('water', 'assets/underwater.mp3');
+    },
+
+
+    create: function() {
+        game.scale.pageAlignHorizontally = true;
+        game.scale.pageAlignVertically = true;
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+        this.state.start('titlescreen');
+    }
+}
+>>>>>>> 1804c14a585a61d61cab10a0546b26c1a47e2eee
