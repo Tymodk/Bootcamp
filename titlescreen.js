@@ -12,7 +12,7 @@ MyGame.titlescreenState.prototype = {
      var storeButton = game.add.button(game.width / 2, game.height - 300, 'store', this.startGame);
      storeButton.scale.setTo(0.7);
      storeButton.anchor.set(0.5);
-     var optionsButton = game.add.button(game.width / 2, game.height - 200, 'options', this.startGame);
+     var optionsButton = game.add.button(game.width / 2, game.height - 200, 'options', this.goToOptions);
      optionsButton.scale.setTo(0.7);
      optionsButton.anchor.set(0.5);
      var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.startGame);
@@ -24,6 +24,9 @@ MyGame.titlescreenState.prototype = {
   },
   startGame: function(){
     game.state.start('playGame');
+  },
+  goToOptions: function(){
+    game.state.start('options');
   }
 
 }
