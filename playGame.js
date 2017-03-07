@@ -194,6 +194,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
     getPickUp: function(yoshi, pickUp) {
       pickUp.kill();
+      currentScore += 200;    
     },
 
 
