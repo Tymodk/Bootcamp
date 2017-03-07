@@ -24,15 +24,18 @@ MyGame.titlescreenState.prototype = {
      //music
      
      music.play();
-     if(soundEnabled){
-          music.mute = false;
-      }
-      else{
-          music.mute = true;
-      }
+     
   },
   update: function(){
     this.background.tilePosition.y += 2;
+    if(soundEnabled){
+          music.mute = false;
+          console.log('unmuted');
+      }
+      else{
+          music.mute = true;
+          console.log('muted');
+      }
   },
   startGame: function(){
     game.state.start('playGame');
