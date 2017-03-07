@@ -1,5 +1,5 @@
 
-var score = 0;
+var currentScore = 0;
 var scoreText;
 
 var fireballs;
@@ -71,8 +71,8 @@ MyGame.playGameState.prototype = {
       this.background.tilePosition.y += 2;
       this.skyboss.tilePosition.y += 2;
       this.hidden.tilePosition.y += 2;
-      score += 1;
-      scoreText.text = 'score: ' + score;
+      currentScore += 1;
+      scoreText.text = 'score: ' + currentScore;
       this.yoshi.animations.play('ani', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
@@ -94,6 +94,9 @@ MyGame.playGameState.prototype = {
        if(game.time.now > 21000)
        {
            this.background.alpha = 0;
+       }
+       if (game.time.now > 25000){
+          this.gameOverScreen();
        }
 
   },
@@ -127,7 +130,10 @@ generateKoopa: function() {
   destroyEnemy: function(fireball, koopa) {
       koopa.kill();
       fireball.kill();
-    }
+    },
+  gameOverScreen: function(){
+    this.state.start('gameOver', true, false, currentScore);
+  }
 
 
 }

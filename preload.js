@@ -17,10 +17,12 @@ MyGame.preloadState.prototype = {
 
 
         this.load.image('title', 'assets/titlescreen_title.jpg');
+        this.load.image('gameOverTitle', 'assets/gameOver.png');
         this.load.image('startGame', 'assets/button_startGame.png');
         this.load.image('store', 'assets/button_store.png');
         this.load.image('options', 'assets/button_options.png');
         this.load.image('exit', 'assets/button_exit.png');
+        this.load.image('retry', 'assets/button_retry.png');
 
         this.load.audio('water', 'assets/underwater.mp3');
     },
