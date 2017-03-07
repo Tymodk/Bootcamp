@@ -15,6 +15,7 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('explosion', 'assets/explosion.png', 31 ,48,9);
         this.load.spritesheet('koopa', 'assets/koopas.png', 40, 46, 10);
         this.load.spritesheet('questionblock', 'assets/questionblock.png', 18, 18, 4);
+        this.load.spritesheet('coin', 'assets/coin.png', 16 , 16 , 4 );
 
 
         this.load.image('title', 'assets/titlescreen_title.jpg');
