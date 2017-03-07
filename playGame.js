@@ -141,11 +141,11 @@ generateEnemy: function(x, y, enemyName)
 {
     var enemy = enemies.create(x, y, enemyName);
 
-    enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]);
+    enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]); //Animation frames still hardcoded
     enemy.animations.play(enemyName + '-ani', 10, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
-    enemy.events.onOutOfBounds.add(function(){enemy.kill();}); //KILL ENEMY WHEN REACH BOUNDARY
+    enemy.events.onOutOfBounds.add(function(){enemy.kill();});
     enemy.body.velocity.y =  150;
     enemy.body.velocity.x =  30;
   },
@@ -170,7 +170,7 @@ generateEnemy: function(x, y, enemyName)
 
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateEnemy(startX + i, 50, 'koopa');
+      this.generateEnemy(startX + i, 50, 150, 30 'koopa');
     }
   },
 
