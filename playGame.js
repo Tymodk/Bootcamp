@@ -166,8 +166,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
 
   waveManager: function(){
-    this.spawnWave(5, 50, 50, 30, 30, 150 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-
+    this.spawnWave(5, 50, 50, 30, 30, 150, 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+    this.spawnWave(2, 50, 300, 30, -50, 200, 'koopa');
     //if gametime is right, spawn again
     // if(game.time.now > (this.lastWaveSpawned + spawnDelay))
     //   {
@@ -176,7 +176,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     //   }
   },
 
-  spawnWave: function(amount, spacing, startX, startY, velX, velY enemyName){
+  spawnWave: function(amount, spacing, startX, startY, velX, velY, enemyName){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
       this.generateEnemy(startX + i, startY, velX, velY, enemyName); //posX, posY, velX, velY, enemyName
     }
