@@ -8,7 +8,8 @@ var fireDelay = 400;
 var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
-var koopas;
+var enemies;
+var lastWaveSpawned;
 
 
 MyGame.playGameState = function (game) {};
@@ -51,7 +52,6 @@ MyGame.playGameState.prototype = {
       this.block.animations.add('block-spin', [0,1,2,]);
 
       //Player
-
       this.generatePlayer(game.world.centerX, game.world.centerY +100);
 
       //Score
@@ -64,8 +64,8 @@ MyGame.playGameState.prototype = {
       this.generateFireball();
 
       //Enemies
-      koopas = game.add.group();
-      koopas.enableBody = true;
+      enemies = game.add.group();
+      enemies.enableBody = true;
 
       //Waves
       this.waveManager();
@@ -93,8 +93,8 @@ MyGame.playGameState.prototype = {
 
     this.block.animations.play('block-spin', 5, true, false);
 
-    game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
-    game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
+    game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+    game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -131,23 +131,24 @@ generateFireball: function() {
     fireball.animations.add('spin', [0,1,2,3]);
     fireball.animations.play('spin', 8, true, false);
     game.physics.enable(fireball, Phaser.Physics.ARCADE);
-    fireball.events.onOutOfBounds.add(function(){fireball.kill();});
+    fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
     fireball.checkWorldBounds = true;
     fireball.body.velocity.y = - fireballSpeed;
     this.lastFireballFired = game.time.now;
 
   },
 
-generateKoopa: function(x, y) {
-    var koopa = koopas.create(x, y, 'koopa');
+generateEnemy: function(posX, posY, velX, velY, enemyName)
+{
+    var enemy = enemies.create(posX, posY, enemyName); //position, sprite
 
-    koopa.animations.add('koopa-ani', [0,1,2,3,4,5,6,7,8,9]);
-    koopa.animations.play('koopa-ani', 10, true, false);
-    game.physics.enable(koopa, Phaser.Physics.ARCADE);
-    koopa.anchor.setTo(0.5, 0.5);
-    koopa.events.onOutOfBounds.add(function(){koopa.kill();}); //KILL ENEMY WHEN REACH X BOUNDARY
-    koopa.body.velocity.y =  150;
-    koopa.body.velocity.x =  30;
+    enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]); //Animation frames still hardcoded
+    enemy.animations.play(enemyName + '-ani', 10, true, false);
+    game.physics.enable(enemy, Phaser.Physics.ARCADE);
+    enemy.anchor.setTo(0.5, 0.5);
+    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+    enemy.body.velocity.y = velY;
+    enemy.body.velocity.x =  velX;
   },
 
   generateExplosion: function(x, y) {
@@ -165,13 +166,21 @@ generateKoopa: function(x, y) {
     },
 
   waveManager: function(){
-    this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    this.spawnWave(5, 50, 50, 30, 30, 150 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+
+    //if gametime is right, spawn again
+    // if(game.time.now > (this.lastWaveSpawned + spawnDelay))
+    //   {
+    //     this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    //
+    //   }
   },
 
-  spawnWave: function(amount, spacing, startX){
+  spawnWave: function(amount, spacing, startX, startY, velX, velY enemyName){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateKoopa(startX + i, 50);
+      this.generateEnemy(startX + i, startY, velX, velY, enemyName); //posX, posY, velX, velY, enemyName
     }
+    this.lastWaveSpawned = game.time.now;
   },
 
   //PICKUP FUNCTION RANDOMIZE
