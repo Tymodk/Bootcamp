@@ -39,7 +39,10 @@ MyGame.playGameState.prototype = {
       game.time.now = 0;
       currentScore = 0;
       currentGold = 0;
-
+      fireDelay = 400;
+      fireballSpeed = 250;
+      yoshiSpeed = 250;
+      
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
@@ -128,7 +131,6 @@ MyGame.playGameState.prototype = {
 //         this.background.alpha = 0;
 //     }
 
-
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
           this.yoshi.body.velocity.setTo(0, 0);
@@ -136,10 +138,6 @@ MyGame.playGameState.prototype = {
     else{
       game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
-
-
-
-
 
      //Waves
      this.waveManager();
