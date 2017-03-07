@@ -21,9 +21,6 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
-      currentScore = 0;
-
-
       game.physics.startSystem(Phaser.Physics.ARCADE);
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
 
@@ -32,13 +29,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-      
-      
-
-
       //Music
-      music = game.add.audio('water');
-      music.play();
+      
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
