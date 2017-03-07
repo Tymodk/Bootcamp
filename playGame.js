@@ -122,7 +122,10 @@ MyGame.playGameState.prototype = {
 
 
 
-
+// if(game.time.now > 21000)
+//     {
+//         this.background.alpha = 0;
+//     }
 
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -135,10 +138,7 @@ MyGame.playGameState.prototype = {
 
 
 
-     if(game.time.now > 21000)
-     {
-         this.background.alpha = 0;
-     }
+
 
      //Waves
      this.waveManager();
