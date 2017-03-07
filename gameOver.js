@@ -1,6 +1,8 @@
 var highscore = 0;
 var scoreText;
 var highscoreText;
+var currentGoldText;
+var totalGoldText;
 
 MyGame.gameOverState = function (game) {};
 
@@ -14,12 +16,19 @@ MyGame.gameOverState.prototype = {
     scoreText.anchor.set(0.5);
     highscoreText = game.add.text( game.world.centerX, game.world.centerY, 'highscore: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     highscoreText.anchor.set(0.5);
+    currentGoldText = game.add.text( game.world.centerX, game.world.centerY + 50, 'earned gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    currentGoldText.anchor.set(0.5);
+    totalGoldText = game.add.text( game.world.centerX, game.world.centerY + 100, 'total gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    totalGoldText.anchor.set(0.5);
     var retryButton = game.add.button(game.width / 2, game.height - 300, 'retry', this.startGame);
      retryButton.scale.setTo(1.5);
      retryButton.anchor.set(0.5);
     var exitButton = game.add.button(game.width / 2, game.height - 200, 'exit', this.exitGame);
      exitButton.scale.setTo(0.7);
      exitButton.anchor.set(0.5);
+
+     //add current gold to total gold
+     totalGold += currentGold;
   },
   update: function(){
     this.background.tilePosition += 2;
@@ -28,6 +37,8 @@ MyGame.gameOverState.prototype = {
     }
     scoreText.text = 'score: ' + currentScore;
     highscoreText.text = 'highscore: ' + highscore;
+    currentGoldText.text = 'earned gold: ' + currentGold;
+    totalGoldText.text = 'total gold: ' + totalGold;
     
   },
   exitGame: function(){

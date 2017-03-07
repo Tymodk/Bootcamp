@@ -3,6 +3,7 @@ var currentScore = 0;
 var scoreTick = 1;
 var scoreText;
 var goldText;
+var currentGold = 0;
 
 var fireballs;
 var lastFireballFired;
@@ -33,6 +34,7 @@ MyGame.playGameState.prototype = {
       //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
+      currentGold = 0;
 
       wave1 = 0;
       wave2 = 0;
@@ -61,7 +63,7 @@ MyGame.playGameState.prototype = {
       this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
       //Player
-      this.generatePlayer(game.world.centerX, game.world.centerY +100);
+      this.generatePlayer(game.world.centerX, game.world.centerY + 100);
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
@@ -255,7 +257,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
 
 
   gameOverScreen: function(){
-    this.state.start('gameOver', true, false, currentScore);
+    this.state.start('gameOver', true, false, currentScore, currentGold);
   }
 
 
