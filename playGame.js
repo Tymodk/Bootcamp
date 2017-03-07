@@ -279,6 +279,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       wave1 = 0;
       wave2 = 0;
       velMultiplier += 50;
+      spawnDelay -= 20;
     }
   },
 
