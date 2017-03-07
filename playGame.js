@@ -31,6 +31,10 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
+      wave1 = 0;
+      wave2 = 0;
+      wave3 = 0;
+      wave4 = 0;
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
@@ -194,7 +198,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
     getPickUp: function(yoshi, pickUp) {
       pickUp.kill();
-      currentScore += 200;    
+      currentScore += 200;
     },
 
 
@@ -202,7 +206,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  console.log(wave1);
+  // console.log(wave2);
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
@@ -210,22 +214,25 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
         amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
-        // console.log("WaveSpawner");
 
         wave1++;
       }
   //Wave 2
-  if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
+  if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave2 < wave2Max)
     {
       var amount = Math.floor(Math.random() * 5 + 1);
-      var startX = Math.floor(Math.random() * 150 + 150);
-      this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
+      var startX = Math.floor(Math.random() * 250 + 0);
+      var velY = Math.floor(Math.random() * 200 + 100);
+
+      this.spawnWave(amount, 50, startX, 30, 30, velY, 'koopa');
 
       amount = Math.floor(Math.random() * 5 + 1);
+      startX = Math.floor(Math.random() * 150 + 150);
+      velY = Math.floor(Math.random() * 200 + 150);
 
-      this.spawnWave(amount, 50, startX, 30, -50, 200, 'koopa');
+      this.spawnWave(amount, 50, startX, 30, -50, velY, 'koopa');
 
-      wave1++;
+      wave2++;
     }
   },
 
