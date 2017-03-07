@@ -8,7 +8,7 @@ var fireDelay = 400;
 var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
-var koopas;
+var enemies;
 
 
 MyGame.playGameState = function (game) {};
@@ -51,7 +51,6 @@ MyGame.playGameState.prototype = {
       this.block.animations.add('block-spin', [0,1,2,]);
 
       //Player
-
       this.generatePlayer(game.world.centerX, game.world.centerY +100);
 
       //Score
@@ -64,8 +63,8 @@ MyGame.playGameState.prototype = {
       this.generateFireball();
 
       //Enemies
-      koopas = game.add.group();
-      koopas.enableBody = true;
+      enemies = game.add.group();
+      enemies.enableBody = true;
 
       //Waves
       this.waveManager();
@@ -93,8 +92,8 @@ MyGame.playGameState.prototype = {
 
     this.block.animations.play('block-spin', 5, true, false);
 
-    game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
-    game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
+    game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+    game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -138,16 +137,17 @@ generateFireball: function() {
 
   },
 
-generateKoopa: function(x, y) {
-    var koopa = koopas.create(x, y, 'koopa');
+generateEnemy: function(posX, posY, velX, velY, enemyName)
+{
+    var enemy = enemies.create(posX, posY, enemyName); //position, sprite
 
-    koopa.animations.add('koopa-ani', [0,1,2,3,4,5,6,7,8,9]);
-    koopa.animations.play('koopa-ani', 10, true, false);
-    game.physics.enable(koopa, Phaser.Physics.ARCADE);
-    koopa.anchor.setTo(0.5, 0.5);
-    koopa.events.onOutOfBounds.add(function(){koopa.kill();}); //KILL ENEMY WHEN REACH X BOUNDARY
-    koopa.body.velocity.y =  150;
-    koopa.body.velocity.x =  30;
+    enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]); //Animation frames still hardcoded
+    enemy.animations.play(enemyName + '-ani', 10, true, false);
+    game.physics.enable(enemy, Phaser.Physics.ARCADE);
+    enemy.anchor.setTo(0.5, 0.5);
+    enemy.events.onOutOfBounds.add(function(){enemy.kill();});
+    enemy.body.velocity.y = velY;
+    enemy.body.velocity.x =  velX;
   },
 
   generateExplosion: function(x, y) {
@@ -170,7 +170,7 @@ generateKoopa: function(x, y) {
 
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateKoopa(startX + i, 50);
+      this.generateEnemy(startX + i, 50, 150, 30 'koopa');
     }
   },
 
