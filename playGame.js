@@ -32,10 +32,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-      this.block = this.add.sprite(50,50,'questionblock');
-      this.block.animations.add('block-spin', [0,1,2,3]);
-      this.coin = this.add.sprite(100,50,'coin');
-      this.coin.animations.add('coin-spin', [0,1,2,3]);
+      
+      
 
 
       //Music
@@ -48,8 +46,10 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-      this.block = this.add.sprite(50,50,'questionblock');
-      this.block.animations.add('block-spin', [0,1,2,]);
+      
+      
+      this.goomba = this.add.sprite(100, 50, 'goomba');
+      this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
       //Player
       this.generatePlayer(game.world.centerX, game.world.centerY +100);
@@ -90,9 +90,9 @@ MyGame.playGameState.prototype = {
     currentScore += 1;
     scoreText.text = 'score: ' + currentScore;
 
-
-    this.block.animations.play('block-spin', 5, true, false);
-
+    
+    
+    this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
@@ -158,11 +158,29 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.anchor.setTo(0.5, 0.5);
 
     },
+    //PICKUP FUNCTION RANDOMIZE
+    generatePickUp: function(x,y){    
+        var random =  game.rnd.integerInRange(0,100);
+        if(random < 30){
+        this.pickUp = this.add.sprite(x,y,'questionblock');
+        this.pickUp.animations.add('block-spin', [0,1,2,3]);
+        this.pickUp.animations.play('block-spin', 5, true, false);}
+        else{
+        this.pickUp = this.add.sprite(x,y,'coin');
+        this.pickUp.animations.add('coin-spin', [0,1,2,3]);
+        this.pickUp.animations.play('coin-spin', 5, true, false);}
+        game.physics.enable(this.pickUp, Phaser.Physics.ARCADE);
+
+        this.pickUp.body.velocity.y = 100;
+        
+        
+    },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
       enemy.kill();
       this.generateExplosion(enemy.centerX, enemy.centerY);
+      this.generatePickUp(enemy.centerX, enemy.centerY);
     },
 
   waveManager: function(){
@@ -183,7 +201,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.lastWaveSpawned = game.time.now;
   },
 
-  //PICKUP FUNCTION RANDOMIZE
+  
 
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
