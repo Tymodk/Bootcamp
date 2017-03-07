@@ -2,6 +2,7 @@
 var currentScore = 0;
 var scoreTick = 1;
 var scoreText;
+var goldText;
 
 var fireballs;
 var lastFireballFired;
@@ -64,6 +65,7 @@ MyGame.playGameState.prototype = {
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+      goldText = game.add.text( 4, game.height - 64, 'gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
 
       //Fireballs
       fireballs = game.add.group();
@@ -101,6 +103,7 @@ MyGame.playGameState.prototype = {
 
     //Score
     scoreText.text = 'score: ' + currentScore;
+    goldText.text = 'gold: ' + currentGold;
 
 
 
@@ -194,6 +197,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
+      currentScore += 1000;
       fireball.kill();
       enemy.kill();
       this.generateExplosion(enemy.centerX, enemy.centerY);
@@ -201,7 +205,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
     getPickUp: function(yoshi, pickUp) {
       pickUp.kill();
-      currentScore += 200;
+      currentGold += 10;
     },
 
 
