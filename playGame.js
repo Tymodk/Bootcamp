@@ -15,9 +15,13 @@ MyGame.playGameState = function (game) {};
 
 MyGame.playGameState.prototype = {
 
-  create: function() {
+  create: function()
+  {
+      game.physics.startSystem(Phaser.Physics.ARCADE);
+      //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
+
 
       game.physics.startSystem(Phaser.Physics.ARCADE);
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
@@ -32,26 +36,19 @@ MyGame.playGameState.prototype = {
       this.coin = this.add.sprite(100,50,'coin');
       this.coin.animations.add('coin-spin', [0,1,2,3]);
 
+
+      //Music
       music = game.add.audio('water');
       music.play();
 
+      //Player
       //Add Player
-      this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY +100, 'yoshi');
+      this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY + 100, 'yoshi');
       //Add Player Animations
       this.yoshi.animations.add('ani', [0,1,2,3]);
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
-
-
-
-
-      //Fireball
-//      this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
-//      this.fireball.animations.add('spin', [0,1,2,3]);
-//      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
-//      this.fireballbig.animations.add('woosh', [0,1]);
-//      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
-//      this.fireballbigger.animations.add('woosh2', [0,1]);
+      // this.generatePlayer(game.world.centerX, game.world.centerY +100);
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
@@ -62,49 +59,72 @@ MyGame.playGameState.prototype = {
 
       this.generateFireball();
 
-
-
-
       //Enemies
       koopas = game.add.group();
       koopas.enableBody = true;
 
+      //Waves
       this.waveManager();
+
+      //Backgrounds
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.skyboss.alpha = 0;
+      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      this.block = this.add.sprite(50,50,'questionblock');
+      this.block.animations.add('block-spin', [0,1,2,]);
+
+      //Fireball
+      //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
+      //      this.fireballbig.animations.add('woosh', [0,1]);
+      //      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
+      //      this.fireballbigger.animations.add('woosh2', [0,1]);
   },
-  update: function() {
-      this.background.tilePosition.y += 2;
-      this.skyboss.tilePosition.y += 2;
-      this.hidden.tilePosition.y += 2;
-      currentScore += 1;
-      scoreText.text = 'score: ' + currentScore;
-      this.block.animations.play('block-spin', 5, true, false);
-      this.coin.animations.play('coin-spin', 5, true, false);
-
-      this.yoshi.animations.play('ani', 6, true, false);
-
-      game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
-      game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
 
 
-      if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
-        {
-            this.yoshi.body.velocity.setTo(0, 0);
-        }
-      else{
-        game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+  update: function()
+  {
+    //Move Background
+    this.background.tilePosition.y += 2;
+    this.skyboss.tilePosition.y += 2;
+    this.hidden.tilePosition.y += 2;
+
+    //Score
+    currentScore += 1;
+    scoreText.text = 'score: ' + currentScore;
+
+
+    this.block.animations.play('block-spin', 5, true, false);
+    this.yoshi.animations.play('ani', 6, true, false);
+
+    game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
+    game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
+
+
+    if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
+      {
+          this.yoshi.body.velocity.setTo(0, 0);
+      }
+    else{
+      game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+    }
+
+    if(game.time.now > (this.lastFireballFired + fireDelay))
+      {
+          this.generateFireball();
       }
 
-      if(game.time.now > (this.lastFireballFired + fireDelay))
-        {
-            this.generateFireball();
-        }
-
-       if(game.time.now > 21000)
-       {
-           this.background.alpha = 0;
-       }
+     if(game.time.now > 21000)
+     {
+         this.background.alpha = 0;
+     }
 
   },
+
+  // generatePlayer: function(x, y) {
+  //
+  //   },
 
 generateFireball: function() {
     var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
@@ -159,7 +179,6 @@ generateKoopa: function(x, y) {
 
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      console.log("spawnWave");
       this.generateKoopa(startX + i, 50);
     }
   },
