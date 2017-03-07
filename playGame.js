@@ -137,17 +137,17 @@ generateFireball: function() {
 
   },
 
-generateEnemy: function(x, y, enemyName)
+generateEnemy: function(posX, posY, velX, velY, enemyName)
 {
-    var enemy = enemies.create(x, y, enemyName);
+    var enemy = enemies.create(posX, posY, enemyName); //position, sprite
 
     enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]);
     enemy.animations.play(enemyName + '-ani', 10, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
     enemy.events.onOutOfBounds.add(function(){enemy.kill();}); //KILL ENEMY WHEN REACH BOUNDARY
-    enemy.body.velocity.y =  150;
-    enemy.body.velocity.x =  30;
+    enemy.body.velocity.y = velY;
+    enemy.body.velocity.x =  velX;
   },
 
   generateExplosion: function(x, y) {
