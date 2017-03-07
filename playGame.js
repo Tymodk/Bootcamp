@@ -3,6 +3,7 @@ var currentScore = 0;
 var scoreTick = 1;
 var scoreText;
 var gameDelay = 3000;
+var goldText;
 
 var fireballs;
 var fireDelay = 400;
@@ -34,10 +35,13 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
+      currentScore = 0;
+
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
       wave4 = 0;
+
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
@@ -64,6 +68,7 @@ MyGame.playGameState.prototype = {
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+      goldText = game.add.text( 4, game.height - 64, 'gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
 
       //Fireballs
       fireballs = game.add.group();
@@ -100,6 +105,7 @@ MyGame.playGameState.prototype = {
 
     //Score
     scoreText.text = 'score: ' + currentScore;
+    goldText.text = 'gold: ' + currentGold;
 
     //Fire
     this.fireSequence();
@@ -199,6 +205,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
+      currentScore += 1000;
       fireball.kill();
       enemy.kill();
       this.generateExplosion(enemy.centerX, enemy.centerY);
@@ -206,7 +213,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
     getPickUp: function(yoshi, pickUp) {
       pickUp.kill();
-      currentScore += 200;
+      currentGold += 10;
     },
 
 
@@ -214,7 +221,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+
   // console.log(wave2);
+
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
