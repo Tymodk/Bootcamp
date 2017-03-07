@@ -13,14 +13,16 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('fireball-big', 'assets/bigfireballs.png', 16, 16, 2);
         this.load.spritesheet('fireball-bigger', 'assets/biggerfireballs.png', 21, 21, 2);
 
-        this.load.spritesheet('koopa', 'assets/koopas.png', 39, 46, 10);
+        this.load.spritesheet('koopa', 'assets/koopas.png', 40, 46, 10);
 
 
         this.load.image('title', 'assets/titlescreen_title.jpg');
+        this.load.image('gameOverTitle', 'assets/gameOver.png');
         this.load.image('startGame', 'assets/button_startGame.png');
         this.load.image('store', 'assets/button_store.png');
         this.load.image('options', 'assets/button_options.png');
         this.load.image('exit', 'assets/button_exit.png');
+        this.load.image('retry', 'assets/button_retry.png');
 
         this.load.audio('water', 'assets/underwater.mp3');
     },

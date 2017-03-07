@@ -1,5 +1,5 @@
 
-var score = 0;
+var currentScore = 0;
 var scoreText;
 
 var fireballs;
@@ -19,9 +19,9 @@ MyGame.playGameState.prototype = {
 
 
       game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.hidden = this.add.tileSprite(0, 0, 600, 800, "sky-boss");
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
 
-      this.background = game.add.tileSprite(0, 0, 600, 800, "sky");
+      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
@@ -74,8 +74,8 @@ MyGame.playGameState.prototype = {
       this.background.tilePosition.y += 2;
       this.skyboss.tilePosition.y += 2;
       this.hidden.tilePosition.y += 2;
-      score += 1;
-      scoreText.text = 'score: ' + score;
+      currentScore += 1;
+      scoreText.text = 'score: ' + currentScore;
       this.yoshi.animations.play('ani', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyObjects, null, this);
@@ -98,6 +98,9 @@ MyGame.playGameState.prototype = {
        if(game.time.now > 21000)
        {
            this.background.alpha = 0;
+       }
+       if (game.time.now > 25000){
+          this.gameOverScreen();
        }
 
   },
@@ -136,7 +139,7 @@ generateKoopa: function(x, y) {
 
    enemyKill: function(enemy) {
      enemy.kill();
-},
+   },
 
   destroyObjects: function(object1, object2) {
       object1.kill();
@@ -145,8 +148,16 @@ generateKoopa: function(x, y) {
 
   // spawnWave1: function(){
   //
-  // }
+  // },
 
+  destroyEnemy: function(fireball, koopa) {
+      koopa.kill();
+      fireball.kill();
+    },
+
+  gameOverScreen: function(){
+    this.state.start('gameOver', true, false, currentScore);
+  }
 
 
 }
