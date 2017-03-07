@@ -1,5 +1,5 @@
 
-var score = 0;
+var currentScore = 0;
 var scoreText;
 
 var fireballs;
@@ -29,9 +29,6 @@ MyGame.playGameState.prototype = {
       this.yoshi.anchor.setTo(0.5, 0.5);
       game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
 
-
-
-
       //Fireball
 //      this.fireball = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y, 'fireball-mini');
 //      this.fireball.animations.add('spin', [0,1,2,3]);
@@ -42,23 +39,15 @@ MyGame.playGameState.prototype = {
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-
-
-      
-      
       fireballs = game.add.group();
       fireballs.enableBody = true;
-      
       this.generateFireball();
-
   },
   update: function() {
       this.background.tilePosition.y += 2;
-      score += 1;
-      scoreText.text = 'score: ' + score;
+      currentScore += 1;
+      scoreText.text = 'score: ' + currentScore;
       this.yoshi.animations.play('ani', 6, true, false);
-      
-
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
         {
             this.yoshi.body.velocity.setTo(0, 0);
@@ -66,19 +55,16 @@ MyGame.playGameState.prototype = {
       else{
         game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
       }
-      
       if(game.time.now > (this.lastFireballFired + fireDelay))
         {
             this.generateFireball();
     }
+    if(game.time.now = 300000){
+      this.gameOverScreen();
+    }
   },
-    
 generateFireball: function() {
-    
-    
-
     var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
-
       fireball.animations.add('spin', [0,1,2,3]);
       fireball.animations.play('spin', 8, true, false);
       game.physics.enable(fireball, Phaser.Physics.ARCADE);
@@ -88,10 +74,10 @@ generateFireball: function() {
     fireball.checkWorldBounds = true;
       fireball.body.velocity.y = - fireballSpeed;
     this.lastFireballFired = game.time.now;
-
-    }
-
-       
+    },
+gameOverScreen: function(){
+    this.state.start('gameOver', false, false, currentScore);
+    }     
     
 }
 
