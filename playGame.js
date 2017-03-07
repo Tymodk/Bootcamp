@@ -1,6 +1,6 @@
 //Variables
 var currentScore = 0;
-var scoreTick = 10;
+var scoreTick = 1;
 var scoreText;
 
 var fireballs;
@@ -10,9 +10,7 @@ var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
 var enemies;
-var lastWaveSpawned = 0;
-var spawnDelay = 3000;
-var wave1 = 0;
+var lastWaveSpawned;
 
 
 MyGame.playGameState = function (game) {};
@@ -24,7 +22,16 @@ MyGame.playGameState.prototype = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
       //Reset Variables on New Game
       game.time.now = 0;
-      lastWaveSpawned = 0;
+      game.physics.startSystem(Phaser.Physics.ARCADE);
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+
+      //Backgrounds
+      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      this.skyboss.alpha = 0;
+      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      //Music
+      
 
       //Backgrounds
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
@@ -32,8 +39,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-
-
+      
+      
       this.goomba = this.add.sprite(100, 50, 'goomba');
       this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
@@ -55,7 +62,7 @@ MyGame.playGameState.prototype = {
 
       //Waves
       this.waveManager();
-
+      
       //PickUps
       pickUps = game.add.group();
       pickUps.enableBody = true;
@@ -67,11 +74,11 @@ MyGame.playGameState.prototype = {
       //      this.fireballbigger.animations.add('woosh2', [0,1]);
 
       // scoreTimer
-      game.time.events.repeat(Phaser.Timer.SECOND, addScore, this);
+      game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
   },
-addScore: function () {
+  addScore: function () {
     currentScore += scoreTick;
-},
+  },
   update: function()
   {
     //Move Background
@@ -80,17 +87,17 @@ addScore: function () {
     this.hidden.tilePosition.y += 2;
 
     //Score
-    currentScore += 1;
+
     scoreText.text = 'score: ' + currentScore;
 
-
-
+    
+    
     this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
     game.physics.arcade.overlap(this.yoshi, pickUps, this.getPickUp, null, this);
 
-
+      
 
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -110,10 +117,6 @@ addScore: function () {
      {
          this.background.alpha = 0;
      }
-
-
-     //Spawn Enemies
-     this.waveManager();
 
   },
 
@@ -158,23 +161,23 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.anchor.setTo(0.5, 0.5);
 
     },
-  //PICKUP FUNCTION RANDOMIZE
-  generatePickUp: function(x,y){
-      var random =  game.rnd.integerInRange(0,100);
-      if(random < 30){
-      var pickUp = pickUps.create(x,y,'questionblock');
-      pickUp.animations.add('block-spin', [0,1,2,3]);
-      pickUp.animations.play('block-spin', 5, true, false);}
-      else{
-      var pickUp = pickUps.create(x,y,'coin');
-      pickUp.animations.add('coin-spin', [0,1,2,3]);
-      pickUp.animations.play('coin-spin', 5, true, false);}
-      game.physics.enable(pickUp, Phaser.Physics.ARCADE);
+    //PICKUP FUNCTION RANDOMIZE
+    generatePickUp: function(x,y){    
+        var random =  game.rnd.integerInRange(0,100);
+        if(random < 30){
+        var pickUp = pickUps.create(x,y,'questionblock');
+        pickUp.animations.add('block-spin', [0,1,2,3]);
+        pickUp.animations.play('block-spin', 5, true, false);}
+        else{
+        var pickUp = pickUps.create(x,y,'coin');
+        pickUp.animations.add('coin-spin', [0,1,2,3]);
+        pickUp.animations.play('coin-spin', 5, true, false);}
+        game.physics.enable(pickUp, Phaser.Physics.ARCADE);
 
-      pickUp.body.velocity.y = 100;
-
-
-  },
+        pickUp.body.velocity.y = 100;
+        
+        
+    },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
@@ -182,34 +185,29 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
     },
-    getPickUp: function(yoshi, pickUp) {
-      pickUp.kill();
+    getPickUp: function(yoshi, pickUp) { 
+      pickUp.kill();      
     },
 
   waveManager: function(){
-  //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  console.log(spawnDelay);
-    if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < 10)
-      {
-        console.log("spawning waves");
-        var amount = Math.floor(Math.random() * 5 + 1); ;
-        this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
-        amount = Math.floor(Math.random() * 5 + 1); ;
-        this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
-
-        wave1++;
-      }
-
+    this.spawnWave(5, 50, 50, 30, 30, 150, 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+    this.spawnWave(2, 50, 300, 30, -50, 200, 'koopa');
+    //if gametime is right, spawn again
+    // if(game.time.now > (this.lastWaveSpawned + spawnDelay))
+    //   {
+    //     this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
+    //
+    //   }
   },
 
   spawnWave: function(amount, spacing, startX, startY, velX, velY, enemyName){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
       this.generateEnemy(startX + i, startY, velX, velY, enemyName); //posX, posY, velX, velY, enemyName
     }
-    lastWaveSpawned = game.time.now;
+    this.lastWaveSpawned = game.time.now;
   },
 
-
+  
 
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
