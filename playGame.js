@@ -27,7 +27,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-
+      this.block = this.add.sprite(50,50,'questionblock');
+      this.block.animations.add('block-spin', [0,1,2,]);
 
 
       music = game.add.audio('water');
@@ -75,6 +76,7 @@ MyGame.playGameState.prototype = {
       this.hidden.tilePosition.y += 2;
       currentScore += 1;
       scoreText.text = 'score: ' + currentScore;
+      this.block.animations.play('block-spin', 5, true, false);
       this.yoshi.animations.play('ani', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyObjects, null, this);
@@ -143,7 +145,6 @@ generateKoopa: function(x, y) {
   destroyObjects: function(object1, object2) { //fireballs, koopa
       object1.kill();
       object2.kill();
-      //ADD EXPLOSION ON POSITION
       this.generateExplosion(object2.x, object2.y);
     },
 
