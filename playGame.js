@@ -142,12 +142,12 @@ generateFireball: function() {
 
 generateKoopa: function(x, y) {
     var koopa = koopas.create(x, y, 'koopa');
-    
+
     koopa.animations.add('koopa-ani', [0,1,2,3,4,5,6,7,8,9]);
     koopa.animations.play('koopa-ani', 10, true, false);
     game.physics.enable(koopa, Phaser.Physics.ARCADE);
     koopa.anchor.setTo(0.5, 0.5);
-    koopa.events.onOutOfBounds.add(enemyKill(), this); //KILL ENEMY WHEN REACH X BOUNDARY
+    koopa.events.onOutOfBounds.add(function(){koopa.kill();}); //KILL ENEMY WHEN REACH X BOUNDARY
     koopa.body.velocity.y =  150;
     koopa.body.velocity.x =  30;
   },
@@ -159,10 +159,6 @@ generateKoopa: function(x, y) {
     this.explosion.anchor.setTo(0.5, 0.5);
 
     },
-
-   enemyKill: function(enemy) {
-     enemy.kill();
-   },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
