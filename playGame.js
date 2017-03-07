@@ -19,9 +19,9 @@ MyGame.playGameState.prototype = {
 
 
       game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.hidden = this.add.tileSprite(0, 0, 600, 800, "sky-boss");
+      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
 
-      this.background = game.add.tileSprite(0, 0, 600, 800, "sky");
+      this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
