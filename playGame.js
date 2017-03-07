@@ -170,7 +170,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
 
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateEnemy(startX + i, 50, 150, 30 'koopa');
+      this.generateEnemy(startX + i, 50, 150, 30, 'koopa');
     }
   },
 
