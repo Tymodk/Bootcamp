@@ -2,7 +2,7 @@
 var currentScore = 0;
 var scoreTick = 1;
 var scoreText;
-var gameDelay = 3000;
+var gameDelay = 4000;
 var goldText;
 var currentGold = 0;
 
