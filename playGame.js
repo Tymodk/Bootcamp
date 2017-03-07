@@ -2,18 +2,21 @@
 var currentScore = 0;
 var scoreTick = 1;
 var scoreText;
+var gameDelay = 3000;
 var goldText;
 var currentGold = 0;
 
 var fireballs;
-var lastFireballFired;
 var fireDelay = 400;
+var lastFireballFired = gameDelay - fireDelay;
 var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
 var enemies;
-var lastWaveSpawned = 0;
+
 var spawnDelay = 3000;
+var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
+
 var wave1 = 0;
 var wave2 = 0;
 var wave3 = 0;
@@ -73,12 +76,9 @@ MyGame.playGameState.prototype = {
       fireballs = game.add.group();
       fireballs.enableBody = true;
 
-      this.generateFireball();
-
       //Enemies
       enemies = game.add.group();
       enemies.enableBody = true;
-
 
       //PickUps
       pickUps = game.add.group();
@@ -93,9 +93,11 @@ MyGame.playGameState.prototype = {
       // scoreTimer
       game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
   },
+
   addScore: function () {
     currentScore += scoreTick;
   },
+
   update: function()
   {
     //Move Background
@@ -107,6 +109,8 @@ MyGame.playGameState.prototype = {
     scoreText.text = 'score: ' + currentScore;
     goldText.text = 'gold: ' + currentGold;
 
+    //Fire
+    this.fireSequence();
 
 
     this.goomba.animations.play('goomba-fly', 7, true, false);
@@ -125,10 +129,7 @@ MyGame.playGameState.prototype = {
       game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
 
-    if(game.time.now > (this.lastFireballFired + fireDelay))
-      {
-          this.generateFireball();
-      }
+
 
      if(game.time.now > 21000)
      {
@@ -147,6 +148,13 @@ MyGame.playGameState.prototype = {
     this.yoshi.animations.play('ani', 6, true, false);
     },
 
+  fireSequence: function(){
+    if(game.time.now > (lastFireballFired + fireDelay))
+      {
+          this.generateFireball();
+      }
+  },
+
 generateFireball: function() {
     var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
 
@@ -156,7 +164,7 @@ generateFireball: function() {
     fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
     fireball.checkWorldBounds = true;
     fireball.body.velocity.y = - fireballSpeed;
-    this.lastFireballFired = game.time.now;
+    lastFireballFired = game.time.now;
 
   },
 
