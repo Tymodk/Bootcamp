@@ -145,7 +145,7 @@ generateKoopa: function(x, y) {
   destroyObjects: function(object1, object2) { //fireballs, koopa
       object1.kill();
       object2.kill();
-      this.generateExplosion(object2.x, object2.y);
+      this.generateExplosion(object2.centerX, object2.centerY);
     },
 
   waveManager: function(){
