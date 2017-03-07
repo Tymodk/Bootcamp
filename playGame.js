@@ -139,7 +139,7 @@ generateKoopa: function(x, y) {
       object1.kill();
       object2.kill();
     },
-
+    
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
       console.log("spawnWave");
