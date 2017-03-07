@@ -66,7 +66,7 @@ MyGame.playGameState.prototype = {
       this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
       //Player
-      this.generatePlayer(game.world.centerX, game.world.centerY + 100);
+      this.generatePlayer(yoshiPosX, yoshiPosY);
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
@@ -146,7 +146,7 @@ MyGame.playGameState.prototype = {
   },
 
   generatePlayer: function(x, y) {
-    this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY + 100, 'yoshi');
+    this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);

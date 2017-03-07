@@ -31,7 +31,7 @@ MyGame.titlescreenState.prototype = {
     
   },
   startGame: function(){
-    game.state.start('playGame');
+    game.state.start('preGame');
   },
   goToOptions: function(){
     game.state.start('options');
