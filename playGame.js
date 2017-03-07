@@ -26,7 +26,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-
+      this.explosion = this.add.sprite(50,50, 'explosion');
+      this.explosion.animations.add('boom', [0,1,2,3,4,5,6,7,8]);
 
       music = game.add.audio('water');
       music.play();
@@ -75,6 +76,7 @@ MyGame.playGameState.prototype = {
       currentScore += 1;
       scoreText.text = 'score: ' + currentScore;
       this.yoshi.animations.play('ani', 6, true, false);
+       this.explosion.animations.play('boom', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyObjects, null, this);
       game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
