@@ -76,6 +76,7 @@ MyGame.playGameState.prototype = {
       this.yoshi.animations.play('ani', 6, true, false);
 
       game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
+      game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
 
 
       if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
@@ -94,9 +95,6 @@ MyGame.playGameState.prototype = {
        if(game.time.now > 21000)
        {
            this.background.alpha = 0;
-       }
-       if (game.time.now > 25000){
-          this.gameOverScreen();
        }
 
   },
@@ -131,6 +129,7 @@ generateKoopa: function() {
       koopa.kill();
       fireball.kill();
     },
+    
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
   }
