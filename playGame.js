@@ -9,7 +9,9 @@ var fireballSpeed = 250;
 
 var yoshiSpeed = 250;
 var enemies;
-var lastWaveSpawned;
+var lastWaveSpawned = 0;
+var spawnDelay = 3000;
+var wave1 = 0;
 
 
 MyGame.playGameState = function (game) {};
@@ -22,6 +24,7 @@ MyGame.playGameState.prototype = {
       //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
+      lastWaveSpawned = 0;
 
 
       game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -32,8 +35,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-      
-      
+
+
 
 
       //Music
@@ -46,8 +49,8 @@ MyGame.playGameState.prototype = {
       this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.skyboss.alpha = 0;
       this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-      
-      
+
+
       this.goomba = this.add.sprite(100, 50, 'goomba');
       this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
@@ -90,8 +93,8 @@ MyGame.playGameState.prototype = {
     currentScore += 1;
     scoreText.text = 'score: ' + currentScore;
 
-    
-    
+
+
     this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
@@ -114,6 +117,10 @@ MyGame.playGameState.prototype = {
      {
          this.background.alpha = 0;
      }
+
+
+     //Spawn Enemies
+     this.waveManager();
 
   },
 
@@ -158,23 +165,23 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.anchor.setTo(0.5, 0.5);
 
     },
-    //PICKUP FUNCTION RANDOMIZE
-    generatePickUp: function(x,y){    
-        var random =  game.rnd.integerInRange(0,100);
-        if(random < 30){
-        this.pickUp = this.add.sprite(x,y,'questionblock');
-        this.pickUp.animations.add('block-spin', [0,1,2,3]);
-        this.pickUp.animations.play('block-spin', 5, true, false);}
-        else{
-        this.pickUp = this.add.sprite(x,y,'coin');
-        this.pickUp.animations.add('coin-spin', [0,1,2,3]);
-        this.pickUp.animations.play('coin-spin', 5, true, false);}
-        game.physics.enable(this.pickUp, Phaser.Physics.ARCADE);
+  //PICKUP FUNCTION RANDOMIZE
+  generatePickUp: function(x,y){
+      var random =  game.rnd.integerInRange(0,100);
+      if(random < 30){
+      this.pickUp = this.add.sprite(x,y,'questionblock');
+      this.pickUp.animations.add('block-spin', [0,1,2,3]);
+      this.pickUp.animations.play('block-spin', 5, true, false);}
+      else{
+      this.pickUp = this.add.sprite(x,y,'coin');
+      this.pickUp.animations.add('coin-spin', [0,1,2,3]);
+      this.pickUp.animations.play('coin-spin', 5, true, false);}
+      game.physics.enable(this.pickUp, Phaser.Physics.ARCADE);
 
-        this.pickUp.body.velocity.y = 100;
-        
-        
-    },
+      this.pickUp.body.velocity.y = 100;
+
+
+  },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
@@ -184,24 +191,29 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     },
 
   waveManager: function(){
-    this.spawnWave(5, 50, 50, 30, 30, 150, 'koopa'); //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-    this.spawnWave(2, 50, 300, 30, -50, 200, 'koopa');
-    //if gametime is right, spawn again
-    // if(game.time.now > (this.lastWaveSpawned + spawnDelay))
-    //   {
-    //     this.spawnWave(5, 50, 30); //Amount , Spacing, startXposition
-    //
-    //   }
+  //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+  console.log(spawnDelay);
+    if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < 10)
+      {
+        console.log("spawning waves");
+        var amount = Math.floor(Math.random() * 5 + 1); ;
+        this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
+        amount = Math.floor(Math.random() * 5 + 1); ;
+        this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
+
+        wave1++;
+      }
+
   },
 
   spawnWave: function(amount, spacing, startX, startY, velX, velY, enemyName){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
       this.generateEnemy(startX + i, startY, velX, velY, enemyName); //posX, posY, velX, velY, enemyName
     }
-    this.lastWaveSpawned = game.time.now;
+    lastWaveSpawned = game.time.now;
   },
 
-  
+
 
   gameOverScreen: function(){
     this.state.start('gameOver', true, false, currentScore);
