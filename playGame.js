@@ -16,7 +16,8 @@ MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
 
   create: function() {
-
+      game.time.now = 0;
+      currentScore = 0;
 
       game.physics.startSystem(Phaser.Physics.ARCADE);
       this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
