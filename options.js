@@ -34,19 +34,25 @@ MyGame.optionsState.prototype = {
 
 
   },
+  toggleSound: function(item){
+    if(!soundEnabled){
+        soundText.addColor('#ffff00', 15);
+        soundText.addColor('#fff', 18);
+        soundEnabled = true;
+    }
+    else{
+        soundText.addColor('#ffff00', 21);
+        soundEnabled = false;
+    }
+  },
   update: function(){
     this.background.tilePosition.y += 2;
     creditsText.text = 'Jens Van Assche - Jordy Pereira \nLennert Peeters - Tymo de Kock';
     soundText.text = 'enable sound - yes / no';
-    soundText.events.onInputDown()
-    if(soundEnabled){
-        soundText.addColor('#ffff00', 15);
-        soundText.addColor('#fff', 18);
-    }
-    else{
-        soundText.addColor('#ffff00', 21);
-    }
+    soundText.events.onInputDown.add(toggleSound, this);
+
   },
+  
   startGame: function(){
     game.state.start('playGame');
   },
