@@ -16,6 +16,7 @@ var enemies;
 
 var spawnDelay = 3000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
+var velMultiplier = 0;
 
 var wave1 = 0;
 var wave2 = 0;
@@ -38,7 +39,10 @@ MyGame.playGameState.prototype = {
       game.time.now = 0;
       currentScore = 0;
       currentGold = 0;
-
+      fireDelay = 400;
+      fireballSpeed = 250;
+      yoshiSpeed = 250;
+      
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
@@ -46,20 +50,19 @@ MyGame.playGameState.prototype = {
 
 
       //Backgrounds
-      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
-      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-      this.skyboss.alpha = 0;
-      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      // this.skyboss.alpha = 0;
       //Music
 
 
       //Backgrounds
-      this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
-      this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-      this.skyboss.alpha = 0;
-      this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
+      // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+      // this.skyboss.alpha = 0;
+      // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
 
 
       this.goomba = this.add.sprite(100, 50, 'goomba');
@@ -104,8 +107,8 @@ MyGame.playGameState.prototype = {
   {
     //Move Background
     this.background.tilePosition.y += 2;
-    this.skyboss.tilePosition.y += 2;
-    this.hidden.tilePosition.y += 2;
+    // this.skyboss.tilePosition.y += 2;
+    // this.hidden.tilePosition.y += 2;
 
     //Score
     scoreText.text = 'score: ' + currentScore;
@@ -121,10 +124,12 @@ MyGame.playGameState.prototype = {
     game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
     game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
 
-      
 
 
-
+// if(game.time.now > 21000)
+//     {
+//         this.background.alpha = 0;
+//     }
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -133,13 +138,6 @@ MyGame.playGameState.prototype = {
     else{
       game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
-
-
-
-     if(game.time.now > 21000)
-     {
-         this.background.alpha = 0;
-     }
 
      //Waves
      this.waveManager();
@@ -193,6 +191,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.anchor.setTo(0.5, 0.5);
 
     },
+
     //PICKUP FUNCTION RANDOMIZE
     generatePickUp: function(x,y){
         var random =  game.rnd.integerInRange(0,100);
@@ -210,11 +209,6 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             game.physics.enable(coin, Phaser.Physics.ARCADE);
             coin.body.velocity.y = 100;
         }
-        
-
-        
-
-
     },
 
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
@@ -233,17 +227,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       var random =  game.rnd.integerInRange(0,2);
         if(random==0){
             fireDelay -= 50;
-            console.log('less fire delay');
-            
+
         }
         if(random==1){
             fireballSpeed += 25;
-            console.log('faster BALLS');
 
         }
         if(random==2){
             yoshiSpeed += 50;
-            console.log('more speed');
 
         }
     },
@@ -254,7 +245,6 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
 
-  // console.log(wave2);
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
@@ -271,17 +261,23 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     {
       var amount = Math.floor(Math.random() * 5 + 1);
       var startX = Math.floor(Math.random() * 250 + 0);
-      var velY = Math.floor(Math.random() * 200 + 100);
+      var velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
 
       this.spawnWave(amount, 50, startX, 30, 30, velY, 'koopa');
 
       amount = Math.floor(Math.random() * 5 + 1);
       startX = Math.floor(Math.random() * 150 + 150);
-      velY = Math.floor(Math.random() * 200 + 150);
+      velY = Math.floor(Math.random() * 200 + 150 + velMultiplier);
 
       this.spawnWave(amount, 50, startX, 30, -50, velY, 'koopa');
 
       wave2++;
+    }
+    if (wave1 == wave1Max && wave2 == wave2Max) {
+      wave1 = 0;
+      wave2 = 0;
+      velMultiplier += 50;
+      spawnDelay -= 20;
     }
   },
 
