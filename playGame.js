@@ -85,6 +85,7 @@ MyGame.playGameState.prototype = {
        if(game.time.now > 21000)
        {
            this.background.alpha = 0;
+           
        }
       
   },
