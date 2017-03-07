@@ -28,7 +28,7 @@ MyGame.playGameState.prototype = {
 
       //Player
       //Add Player
-      this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY +100), 'yoshi');
+      this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY + 100, 'yoshi');
       //Add Player Animations
       this.yoshi.animations.add('ani', [0,1,2,3]);
       this.yoshi.anchor.setTo(0.5, 0.5);
@@ -163,7 +163,6 @@ generateKoopa: function(x, y) {
 
   spawnWave: function(amount, spacing, startX){
     for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      console.log("spawnWave");
       this.generateKoopa(startX + i, 50);
     }
   },
