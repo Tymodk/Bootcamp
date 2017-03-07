@@ -7,7 +7,7 @@ var lastFireballFired;
 var fireDelay = 400;
 var fireballSpeed = 250;
 
-var yoshiSpeed = 200;
+var yoshiSpeed = 250;
 var koopas;
 
 
@@ -51,13 +51,8 @@ MyGame.playGameState.prototype = {
       this.block.animations.add('block-spin', [0,1,2,]);
 
       //Player
-      //Add Player
-      this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY + 100, 'yoshi');
-      //Add Player Animations
-      this.yoshi.animations.add('ani', [0,1,2,3]);
-      this.yoshi.anchor.setTo(0.5, 0.5);
-      game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
-      // this.generatePlayer(game.world.centerX, game.world.centerY +100);
+
+      this.generatePlayer(game.world.centerX, game.world.centerY +100);
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
@@ -97,7 +92,6 @@ MyGame.playGameState.prototype = {
 
 
     this.block.animations.play('block-spin', 5, true, false);
-    this.yoshi.animations.play('ani', 6, true, false);
 
     game.physics.arcade.overlap(fireballs, koopas, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, koopas, this.gameOverScreen, null, this);
@@ -123,9 +117,13 @@ MyGame.playGameState.prototype = {
 
   },
 
-  // generatePlayer: function(x, y) {
-  //
-  //   },
+  generatePlayer: function(x, y) {
+    this.yoshi = this.add.sprite(game.world.centerX, game.world.centerY + 100, 'yoshi');
+    this.yoshi.animations.add('ani', [0,1,2,3]);
+    this.yoshi.anchor.setTo(0.5, 0.5);
+    game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
+    this.yoshi.animations.play('ani', 6, true, false);
+    },
 
 generateFireball: function() {
     var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
