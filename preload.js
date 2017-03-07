@@ -12,7 +12,7 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('fireball-mini', 'assets/fireballs.png', 19, 20, 4);
         this.load.spritesheet('fireball-big', 'assets/bigfireballs.png', 16, 16, 2);
         this.load.spritesheet('fireball-bigger', 'assets/biggerfireballs.png', 21, 21, 2);
-
+        this.load.spritesheet('explosion', 'assets/explosion.png', 31 ,48,9);
         this.load.spritesheet('koopa', 'assets/koopas.png', 40, 46, 10);
 
 
