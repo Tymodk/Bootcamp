@@ -1,5 +1,6 @@
 //Variables
 var currentScore = 0;
+var scoreTick = 10;
 var scoreText;
 
 var fireballs;
@@ -71,9 +72,13 @@ MyGame.playGameState.prototype = {
       //      this.fireballbig.animations.add('woosh', [0,1]);
       //      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
       //      this.fireballbigger.animations.add('woosh2', [0,1]);
+
+      // scoreTimer
+      game.time.events.repeat(Phaser.Timer.SECOND, addScore, this);
   },
-
-
+addScore: function () {
+    currentScore += scoreTick;
+},
   update: function()
   {
     //Move Background
