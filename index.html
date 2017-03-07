@@ -7,24 +7,32 @@
 	<script type="text/javascript" src="preload.js" ></script>
 	<script type="text/javascript" src="titlescreen.js"></script>
 	<script type="text/javascript" src="playGame.js" ></script>
+	<script type="text/javascript" src="gameOver.js" ></script>
 	<style>
-		body{
-			margin: 0;
-		}
+		body { margin: 0; }
+        
 		@font-face {
     		font-family: "Pixel";
     		src: url("fonts/Pixel Emulator.otf") format("opentype");
-}
+        }
 	</style>
 </head>
 <body>
 	<script type="text/javascript">
-				var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
+        var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
 
+<<<<<<< HEAD
 				game.state.add('preload', MyGame.preloadState);
 				game.state.add('titlescreen', MyGame.titlescreenState);
 				game.state.add('playGame',  MyGame.playGameState);
+				game.state.add('gameOver', MyGame.gameOverState);
 				game.state.start('preload');
+=======
+		game.state.add('preload', MyGame.preloadState);
+		game.state.add('titlescreen', MyGame.titlescreenState);
+		game.state.add('playGame',  MyGame.playGameState);
+		game.state.start('preload');
+>>>>>>> 1804c14a585a61d61cab10a0546b26c1a47e2eee
     </script>
 </body>
 </html>
