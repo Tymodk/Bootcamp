@@ -12,7 +12,7 @@ MyGame.gameOverState.prototype = {
     gameOverTitle.anchor.set(0.5, 0);
     scoreText = game.add.text( game.world.centerX, game.world.centerY - 50, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     scoreText.anchor.set(0.5);
-    highscoreText = game.add.text( game.world.centerX, game.world.centerY, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    highscoreText = game.add.text( game.world.centerX, game.world.centerY, 'highscore: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     highscoreText.anchor.set(0.5);
     var retryButton = game.add.button(game.width / 2, game.height - 300, 'retry', this.startGame);
      retryButton.scale.setTo(1.5);
