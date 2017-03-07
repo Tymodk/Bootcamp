@@ -46,6 +46,12 @@ MyGame.optionsState.prototype = {
     this.background.tilePosition.y += 2;
     creditsText.text = 'Jens Van Assche - Jordy Pereira \nLennert Peeters - Tymo de Kock';
     soundText.text = 'enable sound - ';
+    if(soundEnabled){
+          music.mute = false;
+      }
+      else{
+          music.mute = true;
+      }
   },
   startGame: function(){
     game.state.start('playGame');
