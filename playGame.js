@@ -11,7 +11,8 @@ var yoshiSpeed = 250;
 var enemies;
 var lastWaveSpawned = 0;
 var spawnDelay = 3000;
-var wave1 = 0;
+var wave1, wave2, wave3, wave4 = 0;
+var wave1Max, wave2Max, wave3Max, wave4Max = 5;
 
 
 MyGame.playGameState = function (game) {};
@@ -181,20 +182,35 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       pickUp.kill();
     },
 
-  waveManager: function(){
+
+//WAVEMANAGER
+  waveManager: function()
+  {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  console.log(spawnDelay);
-    if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < 10)
+
+  //Wave 1
+    if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
-        console.log("spawning waves");
-        var amount = Math.floor(Math.random() * 5 + 1); ;
+        var amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
-        amount = Math.floor(Math.random() * 5 + 1); ;
+        amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
 
         wave1++;
       }
+  //Wave 2
+  if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
+    {
+      var amount = Math.floor(Math.random() * 5 + 1);
+      var startX = Math.floor(Math.random() * 150 + 150);
+      this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
 
+      amount = Math.floor(Math.random() * 5 + 1);
+
+      this.spawnWave(amount, 50, startX, 30, -50, 200, 'koopa');
+
+      wave1++;
+    }
   },
 
   spawnWave: function(amount, spacing, startX, startY, velX, velY, enemyName){
