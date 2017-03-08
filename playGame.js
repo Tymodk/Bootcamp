@@ -159,10 +159,13 @@ MyGame.playGameState.prototype = {
      //PickUpText
      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
      pickUpTextFD.anchor.set(0.5);
+     pickUpTextFD.visible = false;
      pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
      pickUpTextFS.anchor.set(0.5);
+     pickUpTextFS.visible = false;
      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
      pickUpTextYS.anchor.set(0.5);
+     pickUpTextYS.visible = false;
      if(pickUpTextTime + 2000 > game.time.now ){
     		pickUpTextFD.visible = false;
     		pickUpTextFS.visible = false;
