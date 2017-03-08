@@ -440,7 +440,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       currentScore += 1000;
       fireball.kill();
-      enemy.damage(playerDamage);
+      enemy.health -= playerDamage;
 
       if(enemy.health == 0)
       {
@@ -539,7 +539,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
 
-        this.spawnKoopaWave(amount /1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
+        this.spawnKoopaWave(amount / 1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
 
         this.generateBoo(20, 50, 500, 150);
         amount = this.getRndInteger(minAmount, maxAmount);
