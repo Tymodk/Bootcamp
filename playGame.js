@@ -3,8 +3,8 @@ var currentScore = 0;
 var scoreTick = 1;
 var scoreText;
 var gameDelay = 4000;
-var goldText;
-var currentGold = 0;
+var coinText;
+var currentCoins = 0;
 
 var fireballs;
 var fireDelay = 400;
@@ -50,7 +50,7 @@ MyGame.playGameState.prototype = {
       //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
-      currentGold = 0;
+      currentCoins = 0;
       fireDelay = 400;
       fireballSpeed = 250;
       yoshiSpeed = 250;
@@ -84,7 +84,7 @@ MyGame.playGameState.prototype = {
 
       //Score
       scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-      goldText = game.add.text( 4, game.height - 64, 'gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+      coinText = game.add.text( 4, game.height - 64, 'coins: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
 
       //Fireballs
       fireballs = game.add.group();
@@ -140,7 +140,7 @@ MyGame.playGameState.prototype = {
 
     //Score
     scoreText.text = 'score: ' + currentScore;
-    goldText.text = 'gold: ' + currentGold;
+    coinText.text = 'coins: ' + currentCoins;
 
     //Fire
     this.fireSequence();
@@ -282,7 +282,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
     getCoin: function(yoshi, coin) {
       coin.kill();
-      currentGold += 10;
+      currentCoins += 10;
       coinSound.play();
     },
 
@@ -395,7 +395,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
      yoshiPosX = this.yoshi.world.x;
     yoshiPosY = this.yoshi.world.y;
 
-    this.state.start('death', true, false, currentScore, currentGold);
+    this.state.start('death', true, false, currentScore, currentCoins);
   }
 
 
