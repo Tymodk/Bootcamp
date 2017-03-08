@@ -144,15 +144,15 @@ MyGame.playGameState.prototype = {
       game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
 
       //pick up text
-      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE RATE UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFD.anchor.set(0.5);
-      pickUpTextFD.visible = false;
-      pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFD.alpha = 0;
+      pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY-50, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFS.anchor.set(0.5);
-      pickUpTextFS.visible = false;
-      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFS.alpha = 0;
+      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY-100, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextYS.anchor.set(0.5);
-      pickUpTextYS.visible = false;
+      pickUpTextYS.alpha = 0;
   },
 
   addScore: function () {
@@ -193,51 +193,60 @@ MyGame.playGameState.prototype = {
   //         this.background.alpha = 0;
   //     }
 
-    if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
-      {
-        this.yoshi.body.velocity.setTo(0, 0);
-      }
-    else{
-    	if(this.yoshi.y < game.height - 100){
-    		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-    	}
-    	else{
-    		this.yoshi.body.velocity.y = 0;
-    		if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y)){
-        		this.yoshi.body.velocity.setTo(0, 0);
-      		}
-      		else if(game.input.mousePointer.y < game.height - 100){
-                game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-            }
-    		else if(this.yoshi.x > 20 && game.input.mousePointer.x < game.width - 20){
-    			if(game.input.mousePointer.x < this.yoshi.x){
-    				this.yoshi.body.velocity.x = -yoshiSpeed;
-    			}
-    			else{
-    				this.yoshi.body.velocity.x = yoshiSpeed;
-    			}
-    		}
-    	}
+    // vertical movement
+    if(game.input.mousePointer.y + 10 < this.yoshi.y){
+      this.yoshi.body.velocity.y = - yoshiSpeed;
     }
-    if(this.yoshi.x < 20){
+    else if(game.input.mousePointer.y - 10 > this.yoshi.y){
+      this.yoshi.body.velocity.y = yoshiSpeed;
+    }
+    else{
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    // vertical borders
+    if(this.yoshi.y <= 52){
+      this.yoshi.y = 52;
+    }
+    if(this.yoshi.y < 52){
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    if(this.yoshi.y >= game.height - 120){
+      this.yoshi.y = game.height - 120;
+    }
+    if(this.yoshi.y > game.height - 120){
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    // horizontal movement
+    if(game.input.mousePointer.x + 10 < this.yoshi.x){
+      this.yoshi.body.velocity.x = - yoshiSpeed;
+    }
+    else if(game.input.mousePointer.x - 10 > this.yoshi.x){
+      this.yoshi.body.velocity.x = yoshiSpeed;
+    }
+    else{
+      this.yoshi.body.velocity.x = 0;
+    }
+
+    // horizontal borders
+    if(this.yoshi.x <= 20){
     	this.yoshi.x = 20;
+    }
+    if (this.yoshi.x < 20) {
     	this.yoshi.body.velocity.x = 0;
     }
 
-    if(this.yoshi.x > game.width - 20){
+    if(this.yoshi.x >= game.width - 20){
     	this.yoshi.x = game.width - 20;
+    }
+    if(this.yoshi.x > game.width - 20){
     	this.yoshi.body.velocity.x = 0;
     }
 
      //Waves
      this.waveManager();
-
-     //PickUpText
-     if(pickUpTextTime + 2000 > game.time.now ){
-    		pickUpTextFD.visible = false;
-    		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = false;
-    	}
   },
 
   generatePlayer: function(x, y) {
@@ -394,38 +403,27 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
         if(random == 0 && fireDelay > fireDelayMin){
-            fireDelay /= 1.3;
-            pickUpNr = 0;
+            fireDelay /= 1.1;
+            pickUpNr = 0;   
+            this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
+
         }
         if(random==1 && fireballSpeed < maxFireballSpeed){
             fireballSpeed += 25;
             pickUpNr = 1;
+            
+            this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
         }
         if(random==2 && yoshiSpeed < maxYoshiSpeed){
             yoshiSpeed += 50;
             pickUpNr = 2;
+           
+            this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
         }
-        this.pickUpNotification();
+        
         blockSound.play();
     },
-    pickUpNotification: function(){
-    	pickUpTextTime = game.time.now;
-    	if(pickUpNr == 0){
-    		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = false;
-    		pickUpTextFD.visible = true;
-    	}
-    	if(pickUpNr == 1){
-    		pickUpTextFD.visible = false;
-    		pickUpTextYS.visible = false;
-    		pickUpTextFS.visible = true;
-    	}
-    	if(pickUpNr == 2){
-    		pickUpTextFD.visible = false;
-    		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = true;
-    	}
-    },
+    
 
 
 //WAVEMANAGER
