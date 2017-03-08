@@ -12,6 +12,7 @@ var fireDelay = 400;
 var fireDelayMin = 100;
 var lastFireballFired = gameDelay - fireDelay;
 var fireballSpeed = 250;
+var maxFireballSpeed = 750;
 
 //Pickup Text
 var pickUpNr;
@@ -22,6 +23,7 @@ var pickUpTextTime;
 
 //Player
 var yoshiSpeed = 250;
+var maxYoshiSpeed = 600;
 var enemies;
 var bulletChance = 125; // op 1000
 
@@ -384,14 +386,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
         if(random == 0 && fireDelay > fireDelayMin){
-            fireDelay /= 1.1;
+            fireDelay /= 1.3;
             pickUpNr = 0;
         }
-        if(random==1){
+        if(random==1 && fireballSpeed < maxFireballSpeed){
             fireballSpeed += 25;
             pickUpNr = 1;
         }
-        if(random==2){
+        if(random==2 && yoshiSpeed < maxYoshiSpeed){
             yoshiSpeed += 50;
             pickUpNr = 2;
         }
