@@ -23,7 +23,7 @@ var pickUpTextTime;
 //Player
 var yoshiSpeed = 250;
 var enemies;
-var bulletChance = 500; // 50 op 1000
+var bulletChance = 250; // op 1000
 
 
 //Wave Manager
@@ -55,7 +55,7 @@ MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
 
   create: function()
-  {      
+  {
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       //Reset Variables on New Game
@@ -217,7 +217,7 @@ MyGame.playGameState.prototype = {
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     this.yoshi.scale.setTo(1.75,1.75);
-    
+
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.width = 25;
     this.yoshi.body.height = 45;
@@ -260,21 +260,22 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     enemy.body.velocity.x =  velX;
   },
 
-  generateBulletEnemy: function(posX, posY, velX, velY, scale, enemyName = 'bullet'){
-    var enemy = enemies.create(posX, posY, enemyName); //position, sprite
+  generateBulletEnemy: function(velY){
+    var posX = this.getRndInteger(1, game.width);
+    var enemy = enemies.create(posX, 0, 'bullet'); //position, sprite
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
-    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+    // enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     enemy.body.velocity.y = velY;
-    enemy.body.velocity.x =  velX;
-    enemy.scale.setTo(scale);
+    // enemy.body.velocity.x =  velX;
+    enemy.scale.setTo(0.5);
   },
 
-  spawnBulletEnemy: function(shootBullet, posX, posY, velX, velY, scale){
-    if(shootBullet < this.bulletChance){
-      this.generateBullet(posX, posY, velX, velY, scale);
+  spawnBulletEnemy: function(shootBullet, velY){
+    if(shootBullet < bulletChance){
+      this.generateBulletEnemy(velY);
     }
-  }
+  },
 
   generateExplosion: function(x, y) {
     this.explosion = this.add.sprite(x, y, 'explosion');
@@ -403,7 +404,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         amount = this.getRndInteger(minAmount, maxAmount);
         this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
 
-        this.spawnBulletEnemy(shootBullet, 30, 50, 0, 50, 0.75);
+        this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
+
         wave1++;
       }
   //Wave 2
@@ -418,6 +420,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
 
       this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+      this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
       wave2++;
     }
@@ -438,6 +441,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
 
         this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+        this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
         wave3++;
       }
