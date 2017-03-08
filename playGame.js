@@ -20,7 +20,10 @@ var pickUpTextTime;
 var yoshiSpeed = 250;
 var enemies;
 
+
+//Wave Manager
 var spawnDelay = 3000;
+var minSpawnDelay = 1000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
@@ -36,6 +39,8 @@ var wave3Max = 5;
 var wave4Max = 5;
 var stage;
 var minAmount = 1;
+var maxAmount = 5;
+var maxMinAmount = 4;
 var velYMultiplier;
 
 
@@ -56,12 +61,14 @@ MyGame.playGameState.prototype = {
       fireballSpeed = 250;
       yoshiSpeed = 250;
 
+      //WaveManager Resets
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
       wave4 = 0;
       stage = 1;
       minAmount = 1;
+      maxAmount = 5;
       velYMultiplier = 0;
       spawnDelay = 3000;
       spacingYMultiplier = 1;
@@ -189,7 +196,7 @@ MyGame.playGameState.prototype = {
 
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
-    
+
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
@@ -338,8 +345,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   waveManager: function()
   {
   //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  var maxMinAmount = 5;
-  var amount = this.getRndInteger(minAmount, 5); //1 to 5
+  var amount = this.getRndInteger(minAmount, maxAmount); //1 to 5
   var startX = this.getRndInteger(0, 250);
   var velX = 30;
   var spacingX = 50;
@@ -351,7 +357,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
         this.spawnWave(amount, spacingX, spacingY, 50, 30, 30, 150, 'koopa');
-        amount = Math.floor(Math.random() * 5 + minAmount);
+        amount = this.getRndInteger(minAmount, maxAmount);
         this.spawnWave(amount, spacingX, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
 
         wave1++;
@@ -359,13 +365,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   //Wave 2
   if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave2 < wave2Max)
     {
-      amount = Math.floor(Math.random() * 5 + minAmount);
+      amount = this.getRndInteger(minAmount, maxAmount);
 
       this.spawnWave(amount, spacingX, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
 
-      amount = Math.floor(Math.random() * 5 + minAmount);
-      startX = Math.floor(Math.random() * 150 + 150);
-      velY = Math.floor(Math.random() * 200 + (150 + velYMultiplier));
+      amount = this.getRndInteger(minAmount, maxAmount);
+      startX = this.getRndInteger(150, 300);
+      velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
 
       this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
 
@@ -378,15 +384,20 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       spacingYMultiplier += 5;
       velYMultiplier += 50;
       velX += 50;
-      spawnDelay /= 1.2;
-      if( minAmount <= maxMinAmount) { minAmount += 0.5; }
+      if (spawnDelay > minSpawnDelay) { //Increase spawn rate till limit
+        spawnDelay /= 1.2;
+      }
+      if( minAmount <= maxMinAmount) { //Increase Amounts till limit
+        minAmount += 0.5; maxAmount += 0.25;
+      }
       stage++;
 
       console.log('round: ' + stage);
       console.log('spawn delay: ' + spawnDelay);
       console.log('spacing Y multiplier: ' + spacingYMultiplier);
       console.log('velocity Y multiplier: ' + velYMultiplier);
-      console.log('minamount: ' + minAmount);
+      console.log('min amount: ' + minAmount);
+      console.log('max amount: ' + maxAmount);
       console.log('fire Delay: ' + fireDelay);
       console.log('fire ball speed: ' + fireballSpeed);
       console.log('yoshi Speed: ' + yoshiSpeed);
