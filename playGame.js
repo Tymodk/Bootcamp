@@ -70,6 +70,7 @@ MyGame.playGameState.prototype = {
       fireDelay = 400;
       fireballSpeed = 250;
       yoshiSpeed = 250;
+      typeFire = 'normal';
 
       //WaveManager Resets
       wave1 = 0;
@@ -336,8 +337,8 @@ generateFireball: function() {
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
         fireSmallSound.play();
-        
-        
+
+
     }
     else if(typeFire == 'big-double'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
@@ -380,7 +381,7 @@ generateFireball: function() {
             fireball2.animations.play('spin', 8, true, false);
             fireball.body.velocity.x = 25;
             fireball2.body.velocity.x = -25;
-            
+
             fireball2.body.velocity.y = - fireballSpeed;
 
             fireball2.body.width = 25;
@@ -529,7 +530,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
     },
       starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
-      currentScore += 1000;      
+      currentScore += 1000;
       enemy.health -= 90000;
 
 
