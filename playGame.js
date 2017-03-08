@@ -132,18 +132,18 @@ MyGame.playGameState.prototype = {
     this.fireSequence();
 
 
-//    this.goomba.animations.play('goomba-fly', 7, true, false);
-    game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
-    game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
-    game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
-    game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
+  //    this.goomba.animations.play('goomba-fly', 7, true, false);
+      game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+      game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
+      game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
+      game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
 
 
 
-// if(game.time.now > 21000)
-//     {
-//         this.background.alpha = 0;
-//     }
+  // if(game.time.now > 21000)
+  //     {
+  //         this.background.alpha = 0;
+  //     }
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -281,17 +281,17 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     	if(pickUpNr == 0){
     		pickUpTextFS.visible = false;
     		pickUpTextYS.visible = false;
-    		pickUpTextFD.visible = true;    		
+    		pickUpTextFD.visible = true;
     	}
     	if(pickUpNr == 1){
     		pickUpTextFD.visible = false;
     		pickUpTextYS.visible = false;
-    		pickUpTextFS.visible = true;    		
+    		pickUpTextFS.visible = true;
     	}
     	if(pickUpNr == 2){
     		pickUpTextFD.visible = false;
     		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = true;    		
+    		pickUpTextYS.visible = true;
     	}
         blockSound.play();
     },
