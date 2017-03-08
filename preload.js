@@ -15,14 +15,14 @@ MyGame.preloadState.prototype = {
         
         this.load.spritesheet('yoshi', 'assets/yoshi.png', 27, 50, 4);
         this.load.spritesheet('fireball', 'assets/mario_fireball.png', 27, 50, 4);
-        this.load.spritesheet('fireball-mini', 'assets/fireballs.png', 19, 20, 4);
+        this.load.spritesheet('fireball-mini', 'assets/fireballs2.png', 28, 29, 4);
         this.load.spritesheet('fireball-big', 'assets/bigfireballs.png', 16, 16, 2);
         this.load.spritesheet('fireball-bigger', 'assets/biggerfireballs.png', 21, 21, 2);
         this.load.spritesheet('explosion', 'assets/explosion.png', 31 ,48,9);
-        this.load.spritesheet('koopa', 'assets/koopas.png', 40, 46, 10);
-        this.load.spritesheet('questionblock', 'assets/questionblock.png', 18, 18, 4);
-        this.load.spritesheet('coin', 'assets/coin.png', 16 , 16 , 4 );
-        this.load.spritesheet('goomba', 'assets/Goomba.png', 34 ,22,3);
+        this.load.spritesheet('koopa', 'assets/koopas2.png', 80, 92, 10);
+        this.load.spritesheet('questionblock', 'assets/questionblock2.png', 36, 35, 4);
+        this.load.spritesheet('coin', 'assets/coin2.png', 32 , 32 , 4 );
+        this.load.spritesheet('goomba', 'assets/Goomba2.png', 67 ,44,3);
 
         this.load.image('title', 'assets/titlescreen_title.jpg');
         this.load.image('gameOverTitle', 'assets/gameOver.png');

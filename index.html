@@ -28,15 +28,15 @@
 
 				var soundEnabled = true;
 				var music;
-                
+
 				var totalCoins = 0;
 
 				game.state.add('preload', MyGame.preloadState);
 				game.state.add('titlescreen', MyGame.titlescreenState);
 				game.state.add('options', MyGame.optionsState);
-                game.state.add('preGame', MyGame.preGameState);
+        game.state.add('preGame', MyGame.preGameState);
 				game.state.add('playGame',  MyGame.playGameState);
-                game.state.add('death', MyGame.deathState)
+        game.state.add('death', MyGame.deathState)
 				game.state.add('gameOver', MyGame.gameOverState);
 				game.state.start('preload');
     </script>

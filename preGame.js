@@ -17,6 +17,8 @@ MyGame.preGameState.prototype = {
         var scoreBack = game.add.image(0, 0, 'scoreBackground');
         scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+        
+        i = 0;
     },
     
     update: function()
@@ -71,6 +73,8 @@ MyGame.preGameState.prototype = {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
+        this.yoshi.scale.setTo(1.25,1.25);
+
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.animations.play('ani', 6, true, false);
     },
