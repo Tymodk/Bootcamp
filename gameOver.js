@@ -25,7 +25,7 @@ MyGame.gameOverState.prototype = {
      retryButton.scale.setTo(1.5);
      retryButton.anchor.set(0.5);
     var exitButton = game.add.button(game.width / 2, game.height - 150, 'exit', this.exitGame);
-     exitButton.scale.setTo(0.7);
+     exitButton.scale.setTo(1);
      exitButton.anchor.set(0.5);
       
 
