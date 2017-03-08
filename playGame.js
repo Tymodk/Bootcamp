@@ -313,8 +313,11 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
 
 
   gameOverScreen: function(){
-      backgroundPos = this.background.tilePosition.y;
-    this.state.start('gameOver', true, false, currentScore, currentGold);
+     backgroundPos = this.background.tilePosition.y;
+     yoshiPosX = this.yoshi.world.x;
+    yoshiPosY = this.yoshi.world.y;
+      
+    this.state.start('death', true, false, currentScore, currentGold);
   }
 
 
