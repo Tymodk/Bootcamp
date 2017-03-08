@@ -5,6 +5,8 @@ var yoshiSpeed = 250;
 var yoshiPosX;
 var yoshiPosY;
 
+var backgroundPos;
+
 MyGame.preGameState = function (game) {};
 
 MyGame.preGameState.prototype = {
@@ -46,6 +48,8 @@ MyGame.preGameState.prototype = {
         {
             yoshiPosX = this.yoshi.world.x;
             yoshiPosY = this.yoshi.world.y;
+            backgroundPos = this.background.tilePosition.y;
+            
             game.state.start('playGame', true, false, yoshiPosX, yoshiPosY);
         }
         
