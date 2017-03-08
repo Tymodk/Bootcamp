@@ -166,6 +166,7 @@ MyGame.playGameState.prototype = {
      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
      pickUpTextYS.anchor.set(0.5);
      pickUpTextYS.visible = false;
+     this.pickUpNotification();
      if(pickUpTextTime + 2000 > game.time.now ){
     		pickUpTextFD.visible = false;
     		pickUpTextFS.visible = false;
