@@ -107,12 +107,6 @@ MyGame.playGameState.prototype = {
       unkillableEnemies = game.add.group();
       unkillableEnemies.enableBody = true;
 
-
-      //Score
-      var scoreBack = game.add.image(0, 0, 'scoreBackground');
-      scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-      coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-
       //Fireballs
       fireballs = game.add.group();
       fireballs.enableBody = true;
@@ -154,6 +148,11 @@ MyGame.playGameState.prototype = {
       pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY-100, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextYS.anchor.set(0.5);
       pickUpTextYS.alpha = 0;
+
+      //Score
+      var scoreBack = game.add.image(0, 0, 'scoreBackground');
+      scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+      coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
   },
 
   addScore: function () {
