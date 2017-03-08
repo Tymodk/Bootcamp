@@ -9,6 +9,7 @@ MyGame.gameOverState = function (game) {};
 MyGame.gameOverState.prototype = {
   create: function() {
     this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+    this.background.tilePosition.y = backgroundPos;
     var gameOverTitle = game.add.image(game.world.centerX, 20, 'gameOverTitle');
     gameOverTitle.scale.setTo(0.7);
     gameOverTitle.anchor.set(0.5, 0);
@@ -32,6 +33,8 @@ MyGame.gameOverState.prototype = {
   },
   update: function(){
     this.background.tilePosition.y += 2;
+    backgroundPos = this.background.tilePosition.y;
+      
     if(highscore < currentScore){
       highscore = currentScore;
     }
@@ -46,7 +49,8 @@ MyGame.gameOverState.prototype = {
   },
     
   startGame: function(){
+      yoshiPosX = game.world.centerX;
+      yoshiPosY = game.world.centerY + 200;
     game.state.start('playGame');
   }
-
 }
