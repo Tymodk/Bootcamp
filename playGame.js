@@ -189,6 +189,7 @@ MyGame.playGameState.prototype = {
 
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
+    
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
