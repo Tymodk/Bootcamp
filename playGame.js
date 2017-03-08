@@ -8,6 +8,7 @@ var currentGold = 0;
 
 var fireballs;
 var fireDelay = 400;
+var fireDelayMin = 100;
 var lastFireballFired = gameDelay - fireDelay;
 var fireballSpeed = 250;
 
@@ -26,6 +27,7 @@ var wave1Max = 5;
 var wave2Max = 5;
 var wave3Max = 5;
 var wave4Max = 5;
+var stage = 1;
 
 
 MyGame.playGameState = function (game) {};
@@ -42,11 +44,12 @@ MyGame.playGameState.prototype = {
       fireDelay = 400;
       fireballSpeed = 250;
       yoshiSpeed = 250;
-      
+
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
       wave4 = 0;
+      stage = 1;
 
 
       //Backgrounds
@@ -225,9 +228,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     getBlock: function(yoshi, block) {
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
-        if(random==0){
-            fireDelay -= 50;
-
+        if(fireDelay > fireDelayMin){
+            fireDelay /= 1.2;
         }
         if(random==1){
             fireballSpeed += 25;
@@ -244,12 +246,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-
+  var amount;
+  var startX ;
+  var velY;
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
-        var amount = Math.floor(Math.random() * 5 + 1);
+        amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
         amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
@@ -259,9 +263,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   //Wave 2
   if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave2 < wave2Max)
     {
-      var amount = Math.floor(Math.random() * 5 + 1);
-      var startX = Math.floor(Math.random() * 250 + 0);
-      var velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
+      amount = Math.floor(Math.random() * 5 + 1);
+      startX = Math.floor(Math.random() * 250 + 0);
+      velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
 
       this.spawnWave(amount, 50, startX, 30, 30, velY, 'koopa');
 
@@ -273,11 +277,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
 
       wave2++;
     }
+    //When both waves are completed, repeat but more difficult
     if (wave1 == wave1Max && wave2 == wave2Max) {
       wave1 = 0;
       wave2 = 0;
       velMultiplier += 50;
       spawnDelay -= 20;
+
+      stage++;
     }
   },
 
