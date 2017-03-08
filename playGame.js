@@ -244,8 +244,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   damageEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
       enemy.kill();
-      this.generateExplosion(enemy.centerX, enemy.centerY);
-      this.generatePickUp(enemy.centerX, enemy.centerY);
+      //damage enemy, if enemy health = 0 -> call destroyEnemy
     },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       currentScore += 1000;
