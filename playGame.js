@@ -179,10 +179,10 @@ generateFireball: function() {
 
   },
 
-generateEnemy: function(posX, posY, velX, velY, enemyName)
+generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 {
     var enemy = enemies.create(posX, posY, enemyName); //position, sprite
-
+    var enemyHealth = health;
     enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]); //Animation frames still hardcoded
     enemy.animations.play(enemyName + '-ani', 10, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
@@ -218,7 +218,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             coin.body.velocity.y = 100;
         }
     },
-
+  damageEnemy: function(fireball, enemy) { //fireballs, koopa
+      fireball.kill();
+      enemy.kill();
+      this.generateExplosion(enemy.centerX, enemy.centerY);
+      this.generatePickUp(enemy.centerX, enemy.centerY);
+    },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       currentScore += 1000;
       fireball.kill();
@@ -226,11 +231,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
     },
+
     getCoin: function(yoshi, coin) {
       coin.kill();
       currentGold += 10;
       coinSound.play();
     },
+
     getBlock: function(yoshi, block) {
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
