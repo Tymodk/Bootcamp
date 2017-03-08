@@ -105,6 +105,12 @@ MyGame.playGameState.prototype = {
       blockSound = game.add.audio('blockSound');
       fireSmallSound = game.add.audio('fireSmallSound');
       deathSound = game.add.audio('deathSound');
+      if(soundEnabled){
+          music.mute = false;
+      }
+      else{
+          music.mute = true;
+      }
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');

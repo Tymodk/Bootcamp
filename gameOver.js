@@ -27,6 +27,7 @@ MyGame.gameOverState.prototype = {
     var exitButton = game.add.button(game.width / 2, game.height - 150, 'exit', this.exitGame);
      exitButton.scale.setTo(0.7);
      exitButton.anchor.set(0.5);
+      
 
      //add current coins to total coins
      totalCoins += currentCoins;
