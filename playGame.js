@@ -54,7 +54,7 @@ MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
 
   create: function()
-  {
+  {      
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       //Reset Variables on New Game
@@ -145,6 +145,9 @@ MyGame.playGameState.prototype = {
       pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextYS.anchor.set(0.5);
       pickUpTextYS.visible = false;
+      
+      
+      game.add.sprite(0, 0, 'bullet');
   },
 
   addScore: function () {
