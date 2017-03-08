@@ -25,6 +25,7 @@ MyGame.titlescreenState.prototype = {
      //music
      
      music.play();
+     music.loop = true;
      
   },
   update: function(){

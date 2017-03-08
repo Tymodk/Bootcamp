@@ -19,15 +19,18 @@ var spawnDelay = 3000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
 var velMultiplier = 0;
 
-var wave1 = 0;
-var wave2 = 0;
-var wave3 = 0;
-var wave4 = 0;
+var wave1;
+var wave2;
+var wave3;
+var wave4;
 var wave1Max = 5;
 var wave2Max = 5;
 var wave3Max = 5;
 var wave4Max = 5;
-var stage = 1;
+var stage;
+var minAmount = 1;
+var velMultiplier;
+
 
 
 MyGame.playGameState = function (game) {};
@@ -44,12 +47,17 @@ MyGame.playGameState.prototype = {
       fireDelay = 400;
       fireballSpeed = 250;
       yoshiSpeed = 250;
-
+      
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
       wave4 = 0;
       stage = 1;
+      minAmount = 1;
+      velMultiplier = 0;
+      spawnDelay = 3000;
+
+
 
 
       //Backgrounds
@@ -84,6 +92,10 @@ MyGame.playGameState.prototype = {
       blocks.enableBody = true;
       coins = game.add.group();
       coins.enableBody = true;
+      
+      //SFX
+      coinSound = game.add.audio('coinSound');
+      blockSound = game.add.audio('blockSound');
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -217,11 +229,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     getCoin: function(yoshi, coin) {
       coin.kill();
       currentGold += 10;
+      coinSound.play();
     },
     getBlock: function(yoshi, block) {
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
-        if(fireDelay > fireDelayMin){
+        if(random == 0 && fireDelay > fireDelayMin){
             fireDelay /= 1.2;
         }
         if(random==1){
@@ -232,6 +245,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             yoshiSpeed += 50;
 
         }
+        blockSound.play();
     },
 
 
@@ -239,16 +253,17 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  var amount;
-  var startX ;
-  var velY;
+  var maxMinAmount = 5;
+  var amount = Math.floor(Math.random() * 5 + minAmount); //1 to 5
+  var startX = Math.floor(Math.random() * 250 + 0);
+  velY = Math.floor(Math.random() * 200 + (100 + velMultiplier));
+
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
-        amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
-        amount = Math.floor(Math.random() * 5 + 1);
+        amount = Math.floor(Math.random() * 5 + minAmount);
         this.spawnWave(amount, 50, 300, 30, -50, 200, 'goomba');
 
         wave1++;
@@ -256,15 +271,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   //Wave 2
   if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave2 < wave2Max)
     {
-      amount = Math.floor(Math.random() * 5 + 1);
-      startX = Math.floor(Math.random() * 250 + 0);
-      velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
+      amount = Math.floor(Math.random() * 5 + minAmount);
 
       this.spawnWave(amount, 50, startX, 30, 30, velY, 'goomba');
 
-      amount = Math.floor(Math.random() * 5 + 1);
+      amount = Math.floor(Math.random() * 5 + minAmount);
       startX = Math.floor(Math.random() * 150 + 150);
-      velY = Math.floor(Math.random() * 200 + 150 + velMultiplier);
+      velY = Math.floor(Math.random() * 200 + (150 + velMultiplier));
 
       this.spawnWave(amount, 50, startX, 30, -50, velY, 'koopa');
 
@@ -275,8 +288,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       wave1 = 0;
       wave2 = 0;
       velMultiplier += 50;
-      spawnDelay -= 20;
-
+      spawnDelay /= 1.2;
+      if( minAmount <= maxMinAmount) { minAmount += 0.5; }
+      console.log('round: ' + stage);
+      console.log('spawn delay: ' + spawnDelay);
+      console.log('velocity multiplier: ' + velMultiplier);
+      console.log('minamount: ' + minAmount);
       stage++;
     }
   },
