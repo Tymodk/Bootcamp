@@ -437,6 +437,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
             coin.body.velocity.y = 100;
         }
     },
+
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
       enemy.health -= playerDamage;
