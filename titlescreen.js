@@ -1,4 +1,5 @@
 var backgroundPos = 0;
+var startGameText;
 
 MyGame.titlescreenState = function (game) {};
 
@@ -9,6 +10,15 @@ MyGame.titlescreenState.prototype = {
   	 var title = game.add.image(game.world.centerX, 20, 'title');
      title.scale.setTo(0.7);
      title.anchor.set(0.5, 0);
+     
+     startGameText = game.add.text(4, game.height - 11, 'a team JoJo creation', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+     startGameText.scale.setTo(0.5);
+     startGameText.anchor.set(0, 0.5);
+     /*
+     startGameText.inputEnabled = true;
+     startGameText.events.onInputDown.add(this.startGame);
+     */
+
      var startGameButton = game.add.button(game.width / 2, game.height - 400, 'startGame', this.startGame);
      startGameButton.scale.setTo(1);
      startGameButton.anchor.set(0.5);
