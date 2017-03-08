@@ -181,8 +181,8 @@ MyGame.playGameState.prototype = {
 
   update: function()
   {
-    var starChance =  game.rnd.integerInRange(0,5);
-    if(starChance ==  5){this.generateStar()};
+    var starChance =  game.rnd.integerInRange(0,10000);
+    if(starChance ==  10000){this.generateStar()};
     //Move Background
     this.background.tilePosition.y += 2;
     // this.skyboss.tilePosition.y += 2;
