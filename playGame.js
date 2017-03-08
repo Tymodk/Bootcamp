@@ -194,50 +194,60 @@ MyGame.playGameState.prototype = {
   //         this.background.alpha = 0;
   //     }
 
-    if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
-      {
-        this.yoshi.body.velocity.setTo(0, 0);
-      }
-    else{
-    	if(this.yoshi.y < game.height - 100){
-    		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-    	}
-    	else{
-    		this.yoshi.body.velocity.y = 0;
-    		if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y)){
-        		this.yoshi.body.velocity.setTo(0, 0);
-      		}
-      		else if(game.input.mousePointer.y < game.height - 100){
-                game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-            }
-    		else if(this.yoshi.x > 20 && game.input.mousePointer.x < game.width - 20){
-    			if(game.input.mousePointer.x + 10 < this.yoshi.x){
-    				this.yoshi.body.velocity.x = - yoshiSpeed;
-    			}
-    			else if(game.input.mousePointer.x - 10 > this.yoshi.x){
-    				this.yoshi.body.velocity.x = yoshiSpeed;
-          }
-          else{
-            this.yoshi.body.velocity.x = 0;
-          }
-    		}
-    	}
+    // vertical movement
+    if(game.input.mousePointer.y + 10 < this.yoshi.y){
+      this.yoshi.body.velocity.y = - yoshiSpeed;
     }
-    if(this.yoshi.x < 20){
+    else if(game.input.mousePointer.y - 10 > this.yoshi.y){
+      this.yoshi.body.velocity.y = yoshiSpeed;
+    }
+    else{
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    // vertical borders
+    if(this.yoshi.y <= 52){
+      this.yoshi.y = 52;
+    }
+    if(this.yoshi.y < 52){
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    if(this.yoshi.y >= game.height - 120){
+      this.yoshi.y = game.height - 120;
+    }
+    if(this.yoshi.y > game.height - 120){
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    // horizontal movement
+    if(game.input.mousePointer.x + 10 < this.yoshi.x){
+      this.yoshi.body.velocity.x = - yoshiSpeed;
+    }
+    else if(game.input.mousePointer.x - 10 > this.yoshi.x){
+      this.yoshi.body.velocity.x = yoshiSpeed;
+    }
+    else{
+      this.yoshi.body.velocity.x = 0;
+    }
+
+    // horizontal borders
+    if(this.yoshi.x <= 20){
     	this.yoshi.x = 20;
+    }
+    if (this.yoshi.x < 20) {
     	this.yoshi.body.velocity.x = 0;
     }
 
-    if(this.yoshi.x > game.width - 20){
+    if(this.yoshi.x >= game.width - 20){
     	this.yoshi.x = game.width - 20;
+    }
+    if(this.yoshi.x > game.width - 20){
     	this.yoshi.body.velocity.x = 0;
     }
 
      //Waves
      this.waveManager();
-
-     //PickUpText
-    
   },
 
   generatePlayer: function(x, y) {
@@ -294,23 +304,33 @@ generateFireball: function() {
 
 generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 {
+    if (health == null) {
+      health = 1;  // IF standard VALUE possible -> Change function
+    }
     var enemy = enemies.create(posX, posY, enemyName); //position, sprite
-    var enemyHealth = health;
+    enemy.health = health;
     enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]); //Animation frames still hardcoded
     enemy.animations.play(enemyName + '-ani', 10, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     enemy.body.velocity.y = velY;
-    enemy.body.velocity.x =  velX;
+    enemy.body.velocity.x = velX;
   },
+
+  generateKoopa: function(posX, posY, velX, velY)
+  {
+      var koopaHealth = 2;
+      this.generateEnemy(posX, posY, velX, velY, 'koopa', koopaHealth)
+    },
 
   generateBulletEnemy: function(velY){
     var posX = this.getRndInteger(1, game.width);
-    var enemy = unkillableEnemies.create(posX, 0, 'bullet'); //position, sprite
+    var posY = 0;
+    var enemy = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
-    // enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     enemy.body.velocity.y = velY;
     // enemy.body.velocity.x =  velX;
     enemy.scale.setTo(0.5);
@@ -350,35 +370,36 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
             coin.body.velocity.y = 100;
         }
     },
-  damageEnemy: function(fireball, enemy) { //fireballs, koopa
-      fireball.kill();
-      enemy.kill();
-      //damage enemy, if enemy health = 0 -> call destroyEnemy
-    },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       currentScore += 1000;
       fireball.kill();
-      game.physics.enable(enemy, Phaser.Physics.ARCADE);
+      enemy.damage(1);
 
+      if(enemy.health == 0)
+      {
+        game.physics.enable(enemy, Phaser.Physics.ARCADE);
 
-      this.generateExplosion(enemy.centerX, enemy.centerY);
-      this.generatePickUp(enemy.centerX, enemy.centerY);
-      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
-      enemy.allowGravity = true;
-      enemy.body.gravity.y = 400;
-      if(enemy.centerX < 240){
-      enemy.body.velocity.x = -200;}
-      else{
-          enemy.body.velocity.x = 200;
+        this.generateExplosion(enemy.centerX, enemy.centerY);
+        this.generatePickUp(enemy.centerX, enemy.centerY);
+        enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+        enemy.allowGravity = true;
+        enemy.body.gravity.y = 400;
+        if(enemy.centerX < 240){
+        enemy.body.velocity.x = -200;}
+        else{
+            enemy.body.velocity.x = 200;
+        }
+        enemy.body.velocity.y = 25;
+
+        enemy.body.checkCollision.up = false;
+        enemy.body.checkCollision.down = false;
+        enemy.body.checkCollision.left = false;
+        enemy.body.checkCollision.right = false;
+
+        enemy.angle += 180;
       }
-      enemy.body.velocity.y = 25;
 
-      enemy.body.checkCollision.up = false;
-      enemy.body.checkCollision.down = false;
-      enemy.body.checkCollision.left = false;
-      enemy.body.checkCollision.right = false;
 
-      enemy.angle += 180;
     },
 
     destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
@@ -446,28 +467,31 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
 
-        this.spawnWave(amount, spacingX, spacingY, 50, 30, 30, 150, 'koopa');
+        this.spawnKoopaWave(amount /1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
+
         amount = this.getRndInteger(minAmount, maxAmount);
-        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba', 1);
 
         this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
         wave1++;
+        lastWaveSpawned = game.time.now;
       }
   //Wave 2
   if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave2 < wave2Max)
     {
       amount = this.getRndInteger(minAmount, maxAmount);
 
-      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
+      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba', 1);
 
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
       velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
 
-      this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+      this.spawnKoopaWave(amount / 1.2, startX, 30, -50, velY);
       this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
+      lastWaveSpawned = game.time.now;
       wave2++;
     }
 
@@ -476,19 +500,20 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       {
         amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
 
-        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba');
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba', 1);
 
         amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
 
-        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba');
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba', 1);
 
         amount = this.getRndInteger(minAmount, maxAmount);
         startX = this.getRndInteger(150, 300);
         velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
 
-        this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+        this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
         this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
+        lastWaveSpawned = game.time.now;
         wave3++;
       }
     //When both waves are completed, repeat but more difficult
@@ -525,11 +550,18 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       return Math.floor(Math.random() * (max - min) ) + min;
   },
 
-  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName){
+  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health){
     for (var i = 0; i < amount ; i ++) {
-      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName); //posX, posY, velX, velY, enemyName
+      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName, health); //posX, posY, velX, velY, enemyName
     }
-    lastWaveSpawned = game.time.now;
+  },
+
+  spawnKoopaWave: function(amount, startX, startY, velX, velY){
+    spacingX = 85;
+    spacingY = 0;
+    for (var i = 0; i < amount ; i ++) {
+      this.generateKoopa(startX + (spacingX * i), startY - (spacingY * i), velX, velY); //posX, posY, velX, velY, enemyName
+    }
   },
 
 
