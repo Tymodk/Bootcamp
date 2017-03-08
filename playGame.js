@@ -182,7 +182,7 @@ MyGame.playGameState.prototype = {
   update: function()
   {
     var starChance =  game.rnd.integerInRange(0,10000);
-    if(starChance = 10000){this.generateStar};
+    if(starChance ==  10000){this.generateStar()};
     //Move Background
     this.background.tilePosition.y += 2;
     // this.skyboss.tilePosition.y += 2;
@@ -203,16 +203,20 @@ MyGame.playGameState.prototype = {
         hasStar = false;
       }
       if(hasStar){
-          game.physics.arcade.overlap(this.yoshi, enemies, this.destroyEnemy, null, this);
-          game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+          game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);          
+          game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.starDestroyUnkillableEnemy, null, this);
+
       }
       else{
-          game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+         
           game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
-          game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+          
           game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
       }
+       game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+      game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+      game.physics.arcade.overlap(this.yoshi, stars, this.getStar, null, this);
 
       game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
       game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
@@ -300,9 +304,18 @@ MyGame.playGameState.prototype = {
       }
   },
 generateStar: function() {
-
-
+    var star = stars.create(0,0,'star');
+    game.physics.enable(star, Phaser.Physics.ARCADE);
+    star.animations.add('flicker', [0,1,2,1,0]);
+    star.animations.play('flicker', 4, true, false);
+    star.scale.setTo(2,2);
+    star.checkWorldBounds = true;
+    star.body.collideWorldBounds = true; 
+    star.body.velocity.setTo(200,100);
+    star.body.bounce.set(1);  
+    
 },
+    
 generateFireball: function() {
     if(typeFire == 'big'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
@@ -350,6 +363,11 @@ generateFireball: function() {
         fireSmallSound.play();
     }
   },
+getStar: function(yoshi, star) {
+        hasStar = true;
+        starLength = game.time.now + 9000;
+        star.kill();
+},
 
 generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 {
@@ -437,13 +455,45 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
             coin.body.velocity.y = 100;
         }
     },
+
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
-      enemy.damage(playerDamage);
+      enemy.health -= playerDamage;
 
       if(enemy.health == 0)
       {
         currentScore += 1000;
+        game.physics.enable(enemy, Phaser.Physics.ARCADE);
+
+        enemy.body.collideWorldBounds = false;
+        this.generateExplosion(enemy.centerX, enemy.centerY);
+        this.generatePickUp(enemy.centerX, enemy.centerY);
+        enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+        enemy.allowGravity = true;
+        enemy.body.gravity.y = 400;
+        if(enemy.centerX < 240){
+        enemy.body.velocity.x = -200;}
+        else{
+            enemy.body.velocity.x = 200;
+        }
+        enemy.body.velocity.y = 25;
+
+        enemy.body.checkCollision.up = false;
+        enemy.body.checkCollision.down = false;
+        enemy.body.checkCollision.left = false;
+        enemy.body.checkCollision.right = false;
+
+        enemy.angle += 180;
+      }
+
+
+    },
+      starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
+      currentScore += 1000;      
+      enemy.health -= playerDamage;
+
+      if(enemy.health == 0)
+      {
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
 
         this.generateExplosion(enemy.centerX, enemy.centerY);
@@ -472,8 +522,11 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
         fireball.kill();
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
-
-
+        enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      },
+    starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet
+        enemy.kill();
+        game.physics.enable(enemy, Phaser.Physics.ARCADE);
         enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       },
 
@@ -539,7 +592,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
 
-        this.spawnKoopaWave(amount /1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
+        this.spawnKoopaWave(amount / 1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
 
         this.generateBoo(20, 50, 500, 50);
         amount = this.getRndInteger(minAmount, maxAmount);
