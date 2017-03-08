@@ -272,9 +272,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
-      enemy.body.velocity.x = -100;}
+      enemy.body.velocity.x = -200;}
       else{
-          enemy.body.velocity.x = 100;
+          enemy.body.velocity.x = 200;
       }
       enemy.body.velocity.y = 25;
 
@@ -290,7 +290,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
     getCoin: function(yoshi, coin) {
       coin.kill();
-      currentCoins += 10;
+      currentCoins += 1;
       coinSound.play();
     },
 
