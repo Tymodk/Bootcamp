@@ -210,12 +210,15 @@ MyGame.playGameState.prototype = {
                 game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
             }
     		else if(this.yoshi.x > 20 && game.input.mousePointer.x < game.width - 20){
-    			if(game.input.mousePointer.x < this.yoshi.x){
-    				this.yoshi.body.velocity.x = -yoshiSpeed;
+    			if(game.input.mousePointer.x + 10 < this.yoshi.x){
+    				this.yoshi.body.velocity.x = - yoshiSpeed;
     			}
-    			else{
+    			else if(game.input.mousePointer.x - 10 > this.yoshi.x){
     				this.yoshi.body.velocity.x = yoshiSpeed;
-    			}
+          }
+          else{
+            this.yoshi.body.velocity.x = 0;
+          }
     		}
     	}
     }
