@@ -192,6 +192,7 @@ MyGame.playGameState.prototype = {
     
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
+    this.yoshi.scale.setTo(1.25,1.25);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.animations.play('ani', 6, true, false);
     },
