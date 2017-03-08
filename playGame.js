@@ -37,6 +37,7 @@ MyGame.playGameState.prototype = {
   create: function()
   {
       game.physics.startSystem(Phaser.Physics.ARCADE);
+      
       //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
@@ -88,6 +89,8 @@ MyGame.playGameState.prototype = {
       //SFX
       coinSound = game.add.audio('coinSound');
       blockSound = game.add.audio('blockSound');
+      fireSmallSound = game.add.audio('fireSmallSound');
+      deathSound = game.add.audio('deathSound');
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -168,6 +171,7 @@ generateFireball: function() {
     fireball.checkWorldBounds = true;
     fireball.body.velocity.y = - fireballSpeed;
     lastFireballFired = game.time.now;
+    fireSmallSound.play();
 
   },
 
@@ -189,6 +193,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
     this.explosion.animations.play('explosion-boom', 9, false, true);
     this.explosion.anchor.setTo(0.5, 0.5);
+    deathSound.play();
 
     },
 
@@ -214,9 +219,18 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
       currentScore += 1000;
       fireball.kill();
-      enemy.kill();
+      game.physics.enable(enemy, Phaser.Physics.ARCADE);
+      
+      
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      enemy.allowGravity = true;
+      enemy.body.gravity.y = 400;
+      enemy.body.enable = false; 
+      enemy.angle += 180;
+      
+      
     },
     getCoin: function(yoshi, coin) {
       coin.kill();

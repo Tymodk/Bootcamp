@@ -36,6 +36,9 @@ MyGame.preloadState.prototype = {
         this.load.audio('water', 'assets/underwater.mp3');
         this.load.audio('coinSound', 'assets/smw_coin.wav');
         this.load.audio('blockSound', 'assets/smw_message_block.wav');
+        this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');
+        this.load.audio('deathSound', 'assets/smw_stomp.wav');
+
 
     },
 
