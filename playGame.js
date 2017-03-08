@@ -173,6 +173,7 @@ MyGame.playGameState.prototype = {
       var scoreBack = game.add.image(0, 0, 'scoreBackground');
       scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
       coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+      
   },
 
   addScore: function () {
@@ -181,8 +182,8 @@ MyGame.playGameState.prototype = {
 
   update: function()
   {
-    var starChance =  game.rnd.integerInRange(0,5);
-    if(starChance ==  5){this.generateStar()};
+    var starChance =  game.rnd.integerInRange(0,10000);
+    if(starChance ==  10000){this.generateStar()};
     //Move Background
     this.background.tilePosition.y += 2;
     // this.skyboss.tilePosition.y += 2;
@@ -365,7 +366,7 @@ generateFireball: function() {
   },
 getStar: function(yoshi, star) {
         hasStar = true;
-        starLength = game.time.now + 9000;
+        starLength = game.time.now + 15000;
         star.kill();
 },
 
@@ -495,7 +496,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       if(enemy.health == 0)
       {
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
-
+        enemy.body.collideWorldBounds = false;
+  
         this.generateExplosion(enemy.centerX, enemy.centerY);
         this.generatePickUp(enemy.centerX, enemy.centerY);
         enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );

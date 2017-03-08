@@ -1,69 +1,70 @@
+//state variables
 var soundText;
 var sfxText;
 var creditsText;
 var yesButton;
 var noButton;
-
+//initiating state
 MyGame.optionsState = function (game) {};
-
 MyGame.optionsState.prototype = {
   create: function() {
+    //background and title
     this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
-      this.background.tilePosition.y = backgroundPos;
-      
-     var title = game.add.image(game.world.centerX, 20, 'title');
-     title.scale.setTo(0.7);
-     title.anchor.set(0.5, 0);
-     soundText = game.add.text(game.world.centerX - 60, game.height - 450, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
-     soundText.scale.setTo(0.75);
-     soundText.anchor.set(0.5);
-     yesButton = game.add.button(game.world.centerX + 120, game.height - 450, 'buttonYes', this.toggleSound);
-     yesButton.scale.setTo(0.7);
-     yesButton.anchor.set(0.5);
-     if(soundEnabled){
+    this.background.tilePosition.y = backgroundPos;
+    var title = game.add.image(game.world.centerX, 20, 'title');
+    title.scale.setTo(0.7);
+    title.anchor.set(0.5, 0);
+    //sound enabler text
+    soundText = game.add.text(game.world.centerX - 60, game.height - 450, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
+    soundText.scale.setTo(0.75);
+    soundText.anchor.set(0.5);
+    yesButton = game.add.button(game.world.centerX + 120, game.height - 450, 'buttonYes', this.toggleSound);
+    yesButton.scale.setTo(0.7);
+    yesButton.anchor.set(0.5);
+    if(soundEnabled){
       yesButton.visible = true;
-     }
-     else{
+    }
+    else{
       yesButton.visible = false;
-     }
-     noButton = game.add.button(game.world.centerX + 120, game.height - 450, 'buttonNo', this.toggleSound);
-     noButton.scale.setTo(0.7);
-     noButton.anchor.set(0.5);
-     if(soundEnabled){
+    }
+    noButton = game.add.button(game.world.centerX + 120, game.height - 450, 'buttonNo', this.toggleSound);
+    noButton.scale.setTo(0.7);
+    noButton.anchor.set(0.5);
+    if(soundEnabled){
       noButton.visible = false;
-     }
-     else{
+    }
+    else{
       noButton.visible = true;
-     }
-     sfxText = game.add.text(game.world.centerX - 70, game.height - 400, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
-     sfxText.scale.setTo(0.75);
-     sfxText.anchor.set(0.5);
-     yesSFXButton = game.add.button(game.world.centerX + 140, game.height - 400, 'buttonYes', this.toggleSFXSound);
-     yesSFXButton.scale.setTo(0.7);
-     yesSFXButton.anchor.set(0.5);
-     if(sfxEnabled){
+    }
+    //sfx enabler text
+    sfxText = game.add.text(game.world.centerX - 70, game.height - 400, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
+    sfxText.scale.setTo(0.75);
+    sfxText.anchor.set(0.5);
+    yesSFXButton = game.add.button(game.world.centerX + 140, game.height - 400, 'buttonYes', this.toggleSFXSound);
+    yesSFXButton.scale.setTo(0.7);
+    yesSFXButton.anchor.set(0.5);
+    if(sfxEnabled){
       yesSFXButton.visible = true;
-     }
-     else{
+    }
+    else{
       yesSFXButton.visible = false;
-     }
-     noSFXButton = game.add.button(game.world.centerX + 140, game.height - 400, 'buttonNo', this.toggleSFXSound);
-     noSFXButton.scale.setTo(0.7);
-     noSFXButton.anchor.set(0.5);
-     if(sfxEnabled){
+    }
+    noSFXButton = game.add.button(game.world.centerX + 140, game.height - 400, 'buttonNo', this.toggleSFXSound);
+    noSFXButton.scale.setTo(0.7);
+    noSFXButton.anchor.set(0.5);
+    if(sfxEnabled){
       noSFXButton.visible = false;
-     }
-     else{
+    }
+    else{
       noSFXButton.visible = true;
-     }
-     var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.exitGame);
-     exitButton.scale.setTo(0.7);
-     exitButton.anchor.set(0.5);
-     creditsText = game.add.text( 10, game.height - 10, '',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-     creditsText.anchor.set(0, 1)
-     creditsText.scale.setTo(0.7);
-
-
+    }
+    //exit button and credits
+    var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.exitGame);
+    exitButton.scale.setTo(0.7);
+    exitButton.anchor.set(0.5);
+    creditsText = game.add.text( 10, game.height - 10, '',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    creditsText.anchor.set(0, 1)
+    creditsText.scale.setTo(0.7);
   },
   toggleSound: function(){
     if(!soundEnabled){
@@ -106,5 +107,4 @@ MyGame.optionsState.prototype = {
   exitGame: function(){
     game.state.start('titlescreen');
   },
-
 }

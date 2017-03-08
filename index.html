@@ -26,12 +26,12 @@
 <body>
 	<script type="text/javascript">
 				var game = new Phaser.Game(480, 800, Phaser.AUTO, "");
-
+				//global variables
 				var soundEnabled = true;
 				var sfxEnabled = true;
 				var music;
-
 				var totalCoins = 0;
+				//game states
 				game.state.add('preload', MyGame.preloadState);
 				game.state.add('titlescreen', MyGame.titlescreenState);
 				game.state.add('options', MyGame.optionsState);
