@@ -46,7 +46,7 @@ MyGame.playGameState.prototype = {
   create: function()
   {
       game.physics.startSystem(Phaser.Physics.ARCADE);
-      
+
       //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
@@ -255,17 +255,17 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       currentScore += 1000;
       fireball.kill();
       game.physics.enable(enemy, Phaser.Physics.ARCADE);
-      
-      
+
+
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
       enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
-      enemy.body.enable = false; 
+      enemy.body.enable = false;
       enemy.angle += 180;
-      
-      
+
+
     },
 
     getCoin: function(yoshi, coin) {
@@ -352,6 +352,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       velMultiplier += 50;
       spawnDelay /= 1.2;
       if( minAmount <= maxMinAmount) { minAmount += 0.5; }
+      stage++;
+      
       console.log('round: ' + stage);
       console.log('spawn delay: ' + spawnDelay);
       console.log('velocity multiplier: ' + velMultiplier);
@@ -361,7 +363,6 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       console.log('yoshi Speed: ' + yoshiSpeed);
       console.log('\n');
 
-      stage++;
     }
   },
 
