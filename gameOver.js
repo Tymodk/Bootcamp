@@ -32,9 +32,6 @@ MyGame.gameOverState.prototype = {
      totalGold += currentGold;
   },
   update: function(){
-    this.background.tilePosition.y += 2;
-    backgroundPos = this.background.tilePosition.y;
-      
     if(highscore < currentScore){
       highscore = currentScore;
     }
