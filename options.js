@@ -14,12 +14,12 @@ MyGame.optionsState.prototype = {
      title.scale.setTo(0.7);
      title.anchor.set(0.5, 0);
      soundText = game.add.text(game.world.centerX - 60, game.height - 450, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
-     soundText.scale.setTo(0.7);
+     soundText.scale.setTo(0.75);
      soundText.anchor.set(0.5);
-     yesButton = game.add.button(game.world.centerX + 120, game.height - 449, 'buttonYes', this.toggleSound);
+     yesButton = game.add.button(game.world.centerX + 120, game.height - 452, 'buttonYes', this.toggleSound);
      yesButton.scale.setTo(0.7);
      yesButton.anchor.set(0.5);
-     noButton = game.add.button(game.world.centerX + 120, game.height - 449, 'buttonNo', this.toggleSound);
+     noButton = game.add.button(game.world.centerX + 120, game.height - 452, 'buttonNo', this.toggleSound);
      noButton.scale.setTo(0.7);
      noButton.anchor.set(0.5);
      noButton.visible = false;
