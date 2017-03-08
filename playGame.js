@@ -247,6 +247,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
     this.explosion.animations.play('explosion-boom', 9, false, true);
     this.explosion.anchor.setTo(0.5, 0.5);
+    this.explosion.scale.setTo(1.5,1.5);
     deathSound.play();
 
     },
