@@ -139,13 +139,13 @@ MyGame.playGameState.prototype = {
       //pick up text
       pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFD.anchor.set(0.5);
-      pickUpTextFD.visible = false;
+      pickUpTextFD.alpha = 0;
       pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFS.anchor.set(0.5);
-      pickUpTextFS.visible = false;
+      pickUpTextFS.alpha = 0;
       pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextYS.anchor.set(0.5);
-      pickUpTextYS.visible = false;
+      pickUpTextYS.alpha = 0;
   },
 
   addScore: function () {
@@ -220,11 +220,7 @@ MyGame.playGameState.prototype = {
      this.waveManager();
 
      //PickUpText
-     if(pickUpTextTime + 2000 > game.time.now ){
-    		pickUpTextFD.visible = false;
-    		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = false;
-    	}
+    
   },
 
   generatePlayer: function(x, y) {
@@ -365,37 +361,25 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       var random =  game.rnd.integerInRange(0,2);
         if(random == 0 && fireDelay > fireDelayMin){
             fireDelay /= 1.1;
-            pickUpNr = 0;
+            pickUpNr = 0;   
+            this.add.tween(pickUpTextFD).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true,  0, 1000, true);
         }
         if(random==1){
             fireballSpeed += 25;
             pickUpNr = 1;
+            
+            this.add.tween(pickUpTextFS).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true,  0, 1000, true);
         }
         if(random==2){
             yoshiSpeed += 50;
             pickUpNr = 2;
+           
+            this.add.tween(pickUpTextYS).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true,  0, 1000, true);
         }
-        this.pickUpNotification();
+        
         blockSound.play();
     },
-    pickUpNotification: function(){
-    	pickUpTextTime = game.time.now;
-    	if(pickUpNr == 0){
-    		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = false;
-    		pickUpTextFD.visible = true;
-    	}
-    	if(pickUpNr == 1){
-    		pickUpTextFD.visible = false;
-    		pickUpTextYS.visible = false;
-    		pickUpTextFS.visible = true;
-    	}
-    	if(pickUpNr == 2){
-    		pickUpTextFD.visible = false;
-    		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = true;
-    	}
-    },
+    
 
 
 //WAVEMANAGER
