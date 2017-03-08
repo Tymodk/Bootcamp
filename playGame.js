@@ -288,7 +288,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
     getCoin: function(yoshi, coin) {
       coin.kill();
-      currentCoins += 10;
+      currentCoins += 1;
       coinSound.play();
     },
 
