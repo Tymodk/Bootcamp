@@ -47,7 +47,7 @@ MyGame.playGameState.prototype = {
       fireDelay = 400;
       fireballSpeed = 250;
       yoshiSpeed = 250;
-      
+
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
@@ -92,7 +92,7 @@ MyGame.playGameState.prototype = {
       blocks.enableBody = true;
       coins = game.add.group();
       coins.enableBody = true;
-      
+
       //SFX
       coinSound = game.add.audio('coinSound');
       blockSound = game.add.audio('blockSound');
@@ -294,6 +294,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       console.log('spawn delay: ' + spawnDelay);
       console.log('velocity multiplier: ' + velMultiplier);
       console.log('minamount: ' + minAmount);
+      console.log('fire Delay: ' + fireDelay);
+      console.log('fire ball speed: ' + fireballSpeed);
+      console.log('yoshi Speed: ' + yoshiSpeed);
       stage++;
     }
   },
