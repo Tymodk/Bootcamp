@@ -239,14 +239,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  var amount;
-  var startX ;
-  var velY;
+  var amount = Math.floor(Math.random() * 5 + 1); //1 to 5
+  var startX = Math.floor(Math.random() * 250 + 0);
+  var velY = Math.floor(Math.random() * 200 + (100 + velMultiplier));
+
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
-        amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
         amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 300, 30, -50, 200, 'goomba');
@@ -257,14 +257,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   if(wave1 == wave1Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave2 < wave2Max)
     {
       amount = Math.floor(Math.random() * 5 + 1);
-      startX = Math.floor(Math.random() * 250 + 0);
-      velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
 
       this.spawnWave(amount, 50, startX, 30, 30, velY, 'goomba');
 
       amount = Math.floor(Math.random() * 5 + 1);
       startX = Math.floor(Math.random() * 150 + 150);
-      velY = Math.floor(Math.random() * 200 + 150 + velMultiplier);
+      velY = Math.floor(Math.random() * 200 + (150 + velMultiplier));
 
       this.spawnWave(amount, 50, startX, 30, -50, velY, 'koopa');
 
