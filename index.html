@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="options.js"></script>
 	<script type="text/javascript" src="preGame.js"></script>
 	<script type="text/javascript" src="playGame.js" ></script>
+	<script type="text/javascript" src="death.js"></script>
 	<script type="text/javascript" src="gameOver.js" ></script>
 	<style>
 		body{
@@ -35,6 +36,7 @@
 				game.state.add('options', MyGame.optionsState);
                 game.state.add('preGame', MyGame.preGameState);
 				game.state.add('playGame',  MyGame.playGameState);
+                game.state.add('death', MyGame.deathState)
 				game.state.add('gameOver', MyGame.gameOverState);
 				game.state.start('preload');
     </script>

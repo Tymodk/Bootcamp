@@ -114,6 +114,17 @@ MyGame.playGameState.prototype = {
 
       // scoreTimer
       game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
+
+      //pick up text
+      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFD.anchor.set(0.5);
+      pickUpTextFD.visible = false;
+      pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFS.anchor.set(0.5);
+      pickUpTextFS.visible = false;
+      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextYS.anchor.set(0.5);
+      pickUpTextYS.visible = false;
   },
 
   addScore: function () {
@@ -160,15 +171,6 @@ MyGame.playGameState.prototype = {
      this.waveManager();
 
      //PickUpText
-     pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
-     pickUpTextFD.anchor.set(0.5);
-     pickUpTextFD.visible = false;
-     pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
-     pickUpTextFS.anchor.set(0.5);
-     pickUpTextFS.visible = false;
-     pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
-     pickUpTextYS.anchor.set(0.5);
-     pickUpTextYS.visible = false;
      this.pickUpNotification();
      if(pickUpTextTime + 2000 > game.time.now ){
     		pickUpTextFD.visible = false;
@@ -376,8 +378,11 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
 
   gameOverScreen: function(){
-      backgroundPos = this.background.tilePosition.y;
-    this.state.start('gameOver', true, false, currentScore, currentGold);
+     backgroundPos = this.background.tilePosition.y;
+     yoshiPosX = this.yoshi.world.x;
+    yoshiPosY = this.yoshi.world.y;
+      
+    this.state.start('death', true, false, currentScore, currentGold);
   }
 
 
