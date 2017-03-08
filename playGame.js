@@ -351,7 +351,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   generateKoopa: function(posX, posY, velX, velY)
   {
       var koopaHealth = 2;
-      this.generateEnemy(posX, posY, velX, velY, 'koopa', koopaHealth)
+      this.generateEnemy(posX, posY, velX, velY, 'koopa', koopaHealth);
     },
 
   generateBulletEnemy: function(velY){
@@ -401,12 +401,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         }
     },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
-      currentScore += 1000;
       fireball.kill();
       enemy.damage(1);
 
       if(enemy.health == 0)
       {
+        currentScore += 1000;
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
 
         this.generateExplosion(enemy.centerX, enemy.centerY);
@@ -584,7 +584,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       return Math.floor(Math.random() * (max - min) ) + min;
   },
 
-  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health){
+  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health, enemyScore){
     for (var i = 0; i < amount ; i ++) {
       this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName, health); //posX, posY, velX, velY, enemyName
     }
