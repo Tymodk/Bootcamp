@@ -23,6 +23,7 @@ var pickUpTextTime;
 //Player
 var yoshiSpeed = 250;
 var enemies;
+var bulletChance = 250; // op 1000
 
 
 //Wave Manager
@@ -54,7 +55,7 @@ MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
 
   create: function()
-  {      
+  {
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       //Reset Variables on New Game
@@ -232,7 +233,7 @@ MyGame.playGameState.prototype = {
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     this.yoshi.scale.setTo(1.75,1.75);
-    
+
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.width = 25;
     this.yoshi.body.height = 45;
@@ -273,6 +274,23 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     enemy.body.velocity.y = velY;
     enemy.body.velocity.x =  velX;
+  },
+
+  generateBulletEnemy: function(velY){
+    var posX = this.getRndInteger(1, game.width);
+    var enemy = enemies.create(posX, 0, 'bullet'); //position, sprite
+    game.physics.enable(enemy, Phaser.Physics.ARCADE);
+    enemy.anchor.setTo(0.5, 0.5);
+    // enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+    enemy.body.velocity.y = velY;
+    // enemy.body.velocity.x =  velX;
+    enemy.scale.setTo(0.5);
+  },
+
+  spawnBulletEnemy: function(shootBullet, velY){
+    if(shootBullet < bulletChance){
+      this.generateBulletEnemy(velY);
+    }
   },
 
   generateExplosion: function(x, y) {
@@ -388,16 +406,21 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   var startX = this.getRndInteger(0, 250);
   var velX = 30;
   var spacingX = 85;
+  var spacingXGoomba = 70;
   var spacingY = 0;
+  var shootBullet = this.getRndInteger(1,1000);
   velY = this.getRndInteger((100 + velYMultiplier), (300 + velYMultiplier));
 
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
+
         this.spawnWave(amount, spacingX, spacingY, 50, 30, 30, 150, 'koopa');
         amount = this.getRndInteger(minAmount, maxAmount);
-        this.spawnWave(amount, spacingX - 15, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
+
+        this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
         wave1++;
       }
@@ -406,20 +429,43 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     {
       amount = this.getRndInteger(minAmount, maxAmount);
 
-      this.spawnWave(amount, spacingX - 15, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
+      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
 
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
       velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
 
       this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+      this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
       wave2++;
     }
+
+    //Wave 3
+    if(wave2 == wave2Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave3 < wave3Max)
+      {
+        amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba');
+
+        amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba');
+
+        amount = this.getRndInteger(minAmount, maxAmount);
+        startX = this.getRndInteger(150, 300);
+        velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
+
+        this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+        this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
+
+        wave3++;
+      }
     //When both waves are completed, repeat but more difficult
-    if (wave1 == wave1Max && wave2 == wave2Max) {
+    if (wave3 == wave3Max) {
       wave1 = 0;
       wave2 = 0;
+      wave3 = 0;
       spacingYMultiplier += 5;
       velYMultiplier += 50;
       velX += 50;
