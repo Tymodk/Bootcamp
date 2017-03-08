@@ -1,7 +1,7 @@
 var i = 0;
 var countDownSprite;
 var yoshiSpeed = 250;
-
+//yohsi positions
 var yoshiPosX;
 var yoshiPosY;
 
@@ -29,9 +29,19 @@ MyGame.preGameState.prototype = {
         {
             this.yoshi.body.velocity.setTo(0, 0);
         }
-        else
-        {
-            game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+        else{
+            if(this.yoshi.y < 700){
+                game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+            }
+            else if(game.input.mousePointer.y < 700){
+                game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+            }
+            else{
+                this.yoshi.body.velocity.y = 0;
+                var horizontalTween = game.add.tween(this.yoshi).to({ 
+                        x: game.input.mousePointer.x
+                    }, yoshiSpeed, Phaser.Easing.Linear.None, true);
+            }
         }
         
         if (i == 1)
