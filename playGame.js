@@ -269,6 +269,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             yoshiSpeed += 50;
             pickUpNr = 2;
         }
+        blockSound.play();
     },
     pickUpNotification: function(){
     	pickUpTextTime = game.time.now;
@@ -287,7 +288,6 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     		pickUpTextFS.visible = false;
     		pickUpTextYS.visible = true;    		
     	}
-        blockSound.play();
     },
 
 
