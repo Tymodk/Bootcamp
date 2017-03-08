@@ -72,7 +72,7 @@ MyGame.playGameState.prototype = {
       wave4 = 0;
       stage = 1;
       minAmount = 1;
-      maxAmount = 5;
+      maxAmount = 3;
       velYMultiplier = 0;
       spawnDelay = 3000;
       spacingYMultiplier = 1;
@@ -84,7 +84,7 @@ MyGame.playGameState.prototype = {
       // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
       this.background.tilePosition.y = backgroundPos;
-      
+
       // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       // this.skyboss.alpha = 0;
       // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
@@ -192,12 +192,12 @@ MyGame.playGameState.prototype = {
     	}
     	else{
     		this.yoshi.body.velocity.y = 0;
-    		var horizontalTween = game.add.tween(this.yoshi).to({ 
+    		var horizontalTween = game.add.tween(this.yoshi).to({
                     x: game.input.mousePointer.x
                }, yoshiSpeed, Phaser.Easing.Linear.None, true);
     	}
     }
-    
+
 
      //Waves
      this.waveManager();
@@ -215,7 +215,7 @@ MyGame.playGameState.prototype = {
 
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
-    this.yoshi.scale.setTo(1.25,1.25);
+    this.yoshi.scale.setTo(1.75,1.75);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.animations.play('ani', 6, true, false);
     },
@@ -366,7 +366,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   var amount = this.getRndInteger(minAmount, maxAmount); //1 to 5
   var startX = this.getRndInteger(0, 250);
   var velX = 30;
-  var spacingX = 50;
+  var spacingX = 85;
   var spacingY = 0;
   velY = this.getRndInteger((100 + velYMultiplier), (300 + velYMultiplier));
 
@@ -376,7 +376,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       {
         this.spawnWave(amount, spacingX, spacingY, 50, 30, 30, 150, 'koopa');
         amount = this.getRndInteger(minAmount, maxAmount);
-        this.spawnWave(amount, spacingX, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
+        this.spawnWave(amount, spacingX - 15, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
 
         wave1++;
       }
@@ -385,7 +385,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     {
       amount = this.getRndInteger(minAmount, maxAmount);
 
-      this.spawnWave(amount, spacingX, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
+      this.spawnWave(amount, spacingX - 15, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
 
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
