@@ -318,7 +318,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     //PICKUP FUNCTION RANDOMIZE
     generatePickUp: function(x,y){
         var random =  game.rnd.integerInRange(0,100);
-        if(random < 100){
+        if(random < 5){
             var block = blocks.create(x,y,'questionblock');
             block.animations.add('block-spin', [0,1,2,3]);
             block.animations.play('block-spin', 5, true, false);
