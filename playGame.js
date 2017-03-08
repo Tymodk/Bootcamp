@@ -144,7 +144,7 @@ MyGame.playGameState.prototype = {
       game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
 
       //pick up text
-      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE RATE UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFD.anchor.set(0.5);
       pickUpTextFD.alpha = 0;
       pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY-50, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
