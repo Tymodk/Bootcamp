@@ -1,8 +1,8 @@
 var highscore = 0;
 var scoreText;
 var highscoreText;
-var currentGoldText;
-var totalGoldText;
+var currentCoinText;
+var totalCoinText;
 
 MyGame.gameOverState = function (game) {};
 
@@ -17,10 +17,10 @@ MyGame.gameOverState.prototype = {
     scoreText.anchor.set(0.5);
     highscoreText = game.add.text( game.world.centerX, game.world.centerY - 50, 'highscore: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
     highscoreText.anchor.set(0.5);
-    currentGoldText = game.add.text( game.world.centerX, game.world.centerY, 'earned gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-    currentGoldText.anchor.set(0.5);
-    totalGoldText = game.add.text( game.world.centerX, game.world.centerY + 50, 'total gold: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-    totalGoldText.anchor.set(0.5);
+    currentCoinText = game.add.text( game.world.centerX, game.world.centerY, 'earned coins: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    currentCoinText.anchor.set(0.5);
+    totalCoinText = game.add.text( game.world.centerX, game.world.centerY + 50, 'total coins: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    totalCoinText.anchor.set(0.5);
     var retryButton = game.add.button(game.width / 2, game.height - 250, 'retry', this.startGame);
      retryButton.scale.setTo(1.5);
      retryButton.anchor.set(0.5);
@@ -38,8 +38,8 @@ MyGame.gameOverState.prototype = {
     }
     scoreText.text = 'score: ' + currentScore;
     highscoreText.text = 'highscore: ' + highscore;
-    currentGoldText.text = 'earned gold: ' + currentGold;
-    totalGoldText.text = 'total gold: ' + totalGold;
+    currentCoinText.text = 'earned coins: ' + currentCoins;
+    totalCoinText.text = 'total coins: ' + totalCoins;
     
   },
   exitGame: function(){

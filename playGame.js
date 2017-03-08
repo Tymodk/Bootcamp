@@ -337,6 +337,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   var maxMinAmount = 5;
   var amount = Math.floor(Math.random() * 5 + minAmount); //1 to 5
   var startX = Math.floor(Math.random() * 250 + 0);
+  var velX = 30;
   velY = Math.floor(Math.random() * 200 + (100 + velMultiplier));
 
 
@@ -354,7 +355,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     {
       amount = Math.floor(Math.random() * 5 + minAmount);
 
-      this.spawnWave(amount, 50, 50, 30, 30, velY, 'goomba');
+      this.spawnWave(amount, 50, 50, 30, velX, velY, 'goomba');
 
       amount = Math.floor(Math.random() * 5 + minAmount);
       startX = Math.floor(Math.random() * 150 + 150);
@@ -369,13 +370,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       wave1 = 0;
       wave2 = 0;
       velMultiplier += 50;
+      velX ++;
       spawnDelay /= 1.2;
       if( minAmount <= maxMinAmount) { minAmount += 0.5; }
       stage++;
-      
+
       console.log('round: ' + stage);
       console.log('spawn delay: ' + spawnDelay);
-      console.log('velocity multiplier: ' + velMultiplier);
+      console.log('velocity Y multiplier: ' + velMultiplier);
       console.log('minamount: ' + minAmount);
       console.log('fire Delay: ' + fireDelay);
       console.log('fire ball speed: ' + fireballSpeed);
@@ -398,7 +400,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
      backgroundPos = this.background.tilePosition.y;
      yoshiPosX = this.yoshi.world.x;
     yoshiPosY = this.yoshi.world.y;
-      
+
     this.state.start('death', true, false, currentScore, currentGold);
   }
 
