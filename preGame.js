@@ -17,6 +17,8 @@ MyGame.preGameState.prototype = {
         var scoreBack = game.add.image(0, 0, 'scoreBackground');
         scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+        
+        i = 0;
     },
     
     update: function()
