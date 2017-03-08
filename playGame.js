@@ -357,9 +357,18 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   generateBoo: function(posX, posY, velX, velY)
   {
       var health = 3;
-      enemy = this.generateEnemy(posX, posY, velX, velY, 'boo', health)
+      var enemy = enemies.create(posX, posY, 'boo'); //position, sprite
+      enemy.health = health;
+      enemy.animations.add('boo-ani', [0,1]); //Animation frames still hardcoded
+      enemy.animations.play('boo-ani', 2, true, false);
+      game.physics.enable(enemy, Phaser.Physics.ARCADE);
+      enemy.anchor.setTo(0.5, 0.5);
+      enemy.body.velocity.y = velY;
+      enemy.body.velocity.x = velX;
       enemy.body.collideWorldBounds = true;
       enemy.body.bounce.set(0.8);
+      enemy.scale.setTo(0.15);
+
 
   },
 
@@ -513,7 +522,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
         this.spawnKoopaWave(amount /1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
 
-        this.generateBoo(0, 0, 5, 500);
+        this.generateBoo(20, 50, 500, 150);
         amount = this.getRndInteger(minAmount, maxAmount);
         this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba', 1);
 
