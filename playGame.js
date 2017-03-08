@@ -11,6 +11,11 @@ var fireDelay = 400;
 var fireDelayMin = 100;
 var lastFireballFired = gameDelay - fireDelay;
 var fireballSpeed = 250;
+var pickUpNr;
+var pickUpTextFD;
+var pickUpTextFS;
+var pickUpTextYS;
+var pickUpTextTime;
 
 var yoshiSpeed = 250;
 var enemies;
@@ -23,6 +28,7 @@ var wave1;
 var wave2;
 var wave3;
 var wave4;
+
 var wave1Max = 5;
 var wave2Max = 5;
 var wave3Max = 5;
@@ -149,6 +155,19 @@ MyGame.playGameState.prototype = {
 
      //Waves
      this.waveManager();
+
+     //PickUpText
+     pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+     pickUpTextFD.anchor.set(0.5);
+     pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+     pickUpTextFS.anchor.set(0.5);
+     pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+     pickUpTextYS.anchor.set(0.5);
+     if(pickUpTextTime + 2000 > game.time.now ){
+    		pickUpTextFD.visible = false;
+    		pickUpTextFS.visible = false;
+    		pickUpTextYS.visible = false;
+    	}
   },
 
   generatePlayer: function(x, y) {
@@ -242,16 +261,35 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
         if(random == 0 && fireDelay > fireDelayMin){
-            fireDelay /= 1.2;
+            fireDelay /= 1.1;
+            pickUpNr = 0;
         }
         if(random==1){
             fireballSpeed += 25;
-
+            pickUpNr = 1;
         }
         if(random==2){
             yoshiSpeed += 50;
-
+            pickUpNr = 2;
         }
+    },
+    pickUpNotification: function(){
+    	pickUpTextTime = game.time.now;
+    	if(pickUpNr == 0){
+    		pickUpTextFS.visible = false;
+    		pickUpTextYS.visible = false;
+    		pickUpTextFD.visible = true;    		
+    	}
+    	if(pickUpNr == 1){
+    		pickUpTextFD.visible = false;
+    		pickUpTextYS.visible = false;
+    		pickUpTextFS.visible = true;    		
+    	}
+    	if(pickUpNr == 2){
+    		pickUpTextFD.visible = false;
+    		pickUpTextFS.visible = false;
+    		pickUpTextYS.visible = true;    		
+    	}
         blockSound.play();
     },
 
