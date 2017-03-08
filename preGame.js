@@ -29,10 +29,10 @@ MyGame.preGameState.prototype = {
         
     // vertical movement
     if(game.input.mousePointer.y + 10 < this.yoshi.y){
-      this.yoshi.body.velocity.y = - yoshiSpeed;
+      game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
     else if(game.input.mousePointer.y - 10 > this.yoshi.y){
-      this.yoshi.body.velocity.y = yoshiSpeed;
+      game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
     else{
       this.yoshi.body.velocity.y = 0;
@@ -55,10 +55,10 @@ MyGame.preGameState.prototype = {
 
     // horizontal movement
     if(game.input.mousePointer.x + 10 < this.yoshi.x){
-      this.yoshi.body.velocity.x = - yoshiSpeed;
+      game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
     else if(game.input.mousePointer.x - 10 > this.yoshi.x){
-      this.yoshi.body.velocity.x = yoshiSpeed;
+      game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
     else{
       this.yoshi.body.velocity.x = 0;
