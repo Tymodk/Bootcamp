@@ -23,6 +23,9 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('questionblock', 'assets/questionblock2.png', 36, 35, 4);
         this.load.spritesheet('coin', 'assets/coin2.png', 32 , 32 , 4 );
         this.load.spritesheet('goomba', 'assets/Goomba2.png', 67 ,44,3);
+        this.load.spritesheet('star', 'assets/star.png', 16, 16, 3);
+
+        this.load.spritesheet('boo', 'assets/boo.png', 300, 300, 2);
         this.load.image('bullet', 'assets/bullet_bill.png');
 
         this.load.image('title', 'assets/titlescreen_title.jpg');
