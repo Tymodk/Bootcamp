@@ -112,7 +112,7 @@ MyGame.playGameState.prototype = {
       //Fireballs
       fireballs = game.add.group();
       fireballs.enableBody = true;
-      
+
       //Stars
       stars = game.add.group();
       stars.enableBody = true;
@@ -200,10 +200,10 @@ MyGame.playGameState.prototype = {
 
     //Interactions
       if(starLength <= game.time.now){
-        hasStar = false;   
+        hasStar = false;
       }
       if(hasStar){
-          game.physics.arcade.overlap(this.yoshi, enemies, this.destroyEnemy, null, this);          
+          game.physics.arcade.overlap(this.yoshi, enemies, this.destroyEnemy, null, this);
           game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
       }
       else{
@@ -300,9 +300,9 @@ MyGame.playGameState.prototype = {
       }
   },
 generateStar: function() {
-    
-    
-}
+
+
+},
 generateFireball: function() {
     if(typeFire == 'big'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
