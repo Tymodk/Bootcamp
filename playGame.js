@@ -128,6 +128,7 @@ MyGame.playGameState.prototype = {
       blockSound = game.add.audio('blockSound');
       fireSmallSound = game.add.audio('fireSmallSound');
       deathSound = game.add.audio('deathSound');
+      star = game.add.audio('star');
 
       //muted or not
       if(soundEnabled){
@@ -202,6 +203,8 @@ MyGame.playGameState.prototype = {
     //Interactions
       if(starLength <= game.time.now){
         hasStar = false;
+        music.mute = false;
+        star.stop();
       }
       if(hasStar){
           game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);          
@@ -321,6 +324,7 @@ generateFireball: function() {
     if(typeFire == 'big'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
+        playerDamage = 2;
         fireball.animations.add('spin', [0,1]);
         fireball.animations.play('spin', 4, true, false);
         fireball.scale.setTo(2,2);
@@ -332,6 +336,38 @@ generateFireball: function() {
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
         fireSmallSound.play();
+        
+        
+    }
+    else if(typeFire == 'big-double'){
+        var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball, Phaser.Physics.ARCADE);
+        playerDamage = 2;
+        fireball.animations.add('spin', [0,1]);
+        fireball.animations.play('spin', 4, true, false);
+        fireball.scale.setTo(2,2);
+        fireball.body.width = 30;
+        fireball.body.height = 30;
+        fireball.angle -= 90;
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.checkWorldBounds = true;
+        fireball.body.velocity.y = - fireballSpeed;
+        lastFireballFired = game.time.now;
+        fireSmallSound.play();
+         var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+        fireball2.scale.setTo(2,2);
+        fireball2.angle -= 90;
+        fireball2.animations.add('spin', [0,1,2,3]);
+        fireball2.animations.play('spin', 8, true, false);
+        fireball.body.velocity.x = 25;
+        fireball2.body.velocity.x = -25;
+        fireball2.body.velocity.y = - fireballSpeed;
+
+        fireball2.body.width = 25;
+        fireball2.body.height = 25;
+        fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball2.checkWorldBounds = true;
     }
     else{
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
@@ -344,6 +380,7 @@ generateFireball: function() {
             fireball2.animations.play('spin', 8, true, false);
             fireball.body.velocity.x = 25;
             fireball2.body.velocity.x = -25;
+            
             fireball2.body.velocity.y = - fireballSpeed;
 
             fireball2.body.width = 25;
@@ -368,6 +405,8 @@ getStar: function(yoshi, star) {
         hasStar = true;
         starLength = game.time.now + 15000;
         star.kill();
+        music.mute = true;
+        star.play();
 },
 
 generateEnemy: function(posX, posY, velX, velY, enemyName, health)
@@ -441,7 +480,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     //PICKUP FUNCTION RANDOMIZE
     generatePickUp: function(x,y){
         var random =  game.rnd.integerInRange(0,100);
-        if(random < 5){
+        if(random < 15){
             var block = blocks.create(x,y,'questionblock');
             block.animations.add('block-spin', [0,1,2,3]);
             block.animations.play('block-spin', 5, true, false);
@@ -461,7 +500,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       fireball.kill();
       enemy.health -= playerDamage;
 
-      if(enemy.health == 0)
+      if(enemy.health <= 0)
       {
         currentScore += 1000;
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
@@ -491,9 +530,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     },
       starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
       currentScore += 1000;      
-      enemy.health -= playerDamage;
+      enemy.health -= 90000;
 
-      if(enemy.health == 0)
+      if(enemy.health <= 0)
       {
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
         enemy.body.collideWorldBounds = false;
@@ -540,8 +579,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
     getBlock: function(yoshi, block) {
       block.kill();
-      var random =  game.rnd.integerInRange(0,2);
-        if(random == 0 && fireDelay > fireDelayMin){
+      var random =  game.rnd.integerInRange(0,4);
+        if(random < 3 && fireDelay > fireDelayMin){
             fireDelay -= 50;
             pickUpNr = 0;
             this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
@@ -556,14 +595,14 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
             fireDelay = 400;
             playerDamage = 2;
         }
-        if(random==1 && fireballSpeed < maxFireballSpeed){
+        if(random==3 && fireballSpeed < maxFireballSpeed){
             fireballSpeed += 25;
             pickUpNr = 1;
 
             this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
         }
 
-        if(random==2 && yoshiSpeed < maxYoshiSpeed){
+        if(random==4 && yoshiSpeed < maxYoshiSpeed){
             yoshiSpeed += 50;
             pickUpNr = 2;
 
