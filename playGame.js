@@ -23,7 +23,7 @@ var pickUpTextTime;
 //Player
 var yoshiSpeed = 250;
 var enemies;
-var bulletChance = 250; // op 1000
+var bulletChance = 125; // op 1000
 
 
 //Wave Manager
@@ -96,9 +96,14 @@ MyGame.playGameState.prototype = {
 
       //Player
       this.generatePlayer(yoshiPosX, yoshiPosY);
+
       //Enemies
       enemies = game.add.group();
       enemies.enableBody = true;
+      //Unkillable Enemies
+      unkillableEnemies = game.add.group();
+      unkillableEnemies.enableBody = true;
+
 
       //Score
       var scoreBack = game.add.image(0, 0, 'scoreBackground');
@@ -168,8 +173,14 @@ MyGame.playGameState.prototype = {
 
 
   //    this.goomba.animations.play('goomba-fly', 7, true, false);
+
+    //Interactions
       game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
       game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
+
+      game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+      game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
+
       game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
       game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
 
@@ -215,7 +226,7 @@ MyGame.playGameState.prototype = {
     	this.yoshi.x = game.width - 20;
     	this.yoshi.body.velocity.x = 0;
     }
-    
+
      //Waves
      this.waveManager();
 
@@ -278,7 +289,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
   generateBulletEnemy: function(velY){
     var posX = this.getRndInteger(1, game.width);
-    var enemy = enemies.create(posX, 0, 'bullet'); //position, sprite
+    var enemy = unkillableEnemies.create(posX, 0, 'bullet'); //position, sprite
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
     // enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
@@ -350,9 +361,15 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       enemy.body.checkCollision.right = false;
 
       enemy.angle += 180;
-
-
     },
+
+    destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
+        fireball.kill();
+        game.physics.enable(enemy, Phaser.Physics.ARCADE);
+
+
+        enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      },
 
     getCoin: function(yoshi, coin) {
       coin.kill();
