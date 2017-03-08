@@ -208,12 +208,14 @@ MyGame.playGameState.prototype = {
 
       }
       else{
-          game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+         
           game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
-          game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+          
           game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
       }
+       game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+      game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
       game.physics.arcade.overlap(this.yoshi, stars, this.getStar, null, this);
 
       game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
@@ -486,9 +488,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
     },
       starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
-      currentScore += 1000;
-      
-      enemy.damage(1);
+      currentScore += 1000;      
+      enemy.health -= playerDamage;
 
       if(enemy.health == 0)
       {
@@ -520,15 +521,11 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
         fireball.kill();
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
-
-
         enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       },
     starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet
         enemy.kill();
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
-
-
         enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       },
 
