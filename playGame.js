@@ -171,7 +171,6 @@ MyGame.playGameState.prototype = {
      this.waveManager();
 
      //PickUpText
-     this.pickUpNotification();
      if(pickUpTextTime + 2000 > game.time.now ){
     		pickUpTextFD.visible = false;
     		pickUpTextFS.visible = false;
@@ -292,6 +291,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
             yoshiSpeed += 50;
             pickUpNr = 2;
         }
+        this.pickUpNotification();
         blockSound.play();
     },
     pickUpNotification: function(){
