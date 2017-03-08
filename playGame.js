@@ -55,7 +55,7 @@ MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
 
   create: function()
-  {
+  {      
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       //Reset Variables on New Game
@@ -217,7 +217,10 @@ MyGame.playGameState.prototype = {
     this.yoshi.animations.add('ani', [0,1,2,3]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     this.yoshi.scale.setTo(1.75,1.75);
+    
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
+    this.yoshi.body.width = 25;
+    this.yoshi.body.height = 45;
     this.yoshi.animations.play('ani', 6, true, false);
     },
 
@@ -234,6 +237,8 @@ generateFireball: function() {
     fireball.animations.add('spin', [0,1,2,3]);
     fireball.animations.play('spin', 8, true, false);
     game.physics.enable(fireball, Phaser.Physics.ARCADE);
+    fireball.body.width = 25;
+    fireball.body.height = 25;
     fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
     fireball.checkWorldBounds = true;
     fireball.body.velocity.y = - fireballSpeed;
