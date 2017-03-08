@@ -6,17 +6,21 @@ var gameDelay = 4000;
 var coinText;
 var currentCoins = 0;
 
+//Fire
 var fireballs;
 var fireDelay = 400;
 var fireDelayMin = 100;
 var lastFireballFired = gameDelay - fireDelay;
 var fireballSpeed = 250;
+
+//Pickup Text
 var pickUpNr;
 var pickUpTextFD;
 var pickUpTextFS;
 var pickUpTextYS;
 var pickUpTextTime;
 
+//Player
 var yoshiSpeed = 250;
 var enemies;
 
