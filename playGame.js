@@ -27,7 +27,8 @@ var yoshiSpeed = 250;
 var maxYoshiSpeed = 600;
 var enemies;
 var bulletChance = 125; // op 1000
-
+var hasStar = false;
+var starLength = 0;
 
 //Wave Manager
 var spawnDelay = 3000;
@@ -110,6 +111,10 @@ MyGame.playGameState.prototype = {
       //Fireballs
       fireballs = game.add.group();
       fireballs.enableBody = true;
+      
+      //Stars
+      stars = game.add.group();
+      stars.enableBody = true;
 
       //PickUps
       blocks = game.add.group();
@@ -161,6 +166,8 @@ MyGame.playGameState.prototype = {
 
   update: function()
   {
+    var starChance =  game.rnd.integerInRange(0,10000);
+    if(starChance = 10000){this.generateStar};
     //Move Background
     this.background.tilePosition.y += 2;
     // this.skyboss.tilePosition.y += 2;
@@ -177,11 +184,20 @@ MyGame.playGameState.prototype = {
   //    this.goomba.animations.play('goomba-fly', 7, true, false);
 
     //Interactions
-      game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
-      game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
+      if(starLength <= game.time.now){
+        hasStar = false;   
+      }
+      if(hasStar){
+          game.physics.arcade.overlap(this.yoshi, enemies, this.destroyEnemy, null, this);          
+          game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+      }
+      else{
+          game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+          game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
-      game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
-      game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
+          game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
+          game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
+      }
 
       game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
       game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
@@ -268,7 +284,10 @@ MyGame.playGameState.prototype = {
           this.generateFireball();
       }
   },
-
+generateStar: function() {
+    
+    
+}
 generateFireball: function() {
     
     if(typeFire == 'big'){
