@@ -14,6 +14,9 @@ MyGame.preGameState.prototype = {
         this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
         this.background.tilePosition.y = backgroundPos;
         this.generatePlayer(game.world.centerX, game.world.centerY + 200);
+        var scoreBack = game.add.image(0, 0, 'scoreBackground');
+        scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+        coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     },
     
     update: function()

@@ -6,6 +6,7 @@ MyGame.preloadState.prototype = {
 
     preload: function() {
         this.load.image('sky', 'assets/background-tile.jpg');
+        this.load.image('scoreBackground','assets/scoreBackground.jpg');
         this.load.image('sky-boss', 'assets/background-tile-boss.png');
         
         this.load.image('ready', 'assets/preGame_ready.png');

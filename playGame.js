@@ -22,7 +22,8 @@ var enemies;
 
 var spawnDelay = 3000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
-var velMultiplier = 0;
+var velYMultiplier = 0;
+var spacingYMultiplier = 1;
 
 var wave1;
 var wave2;
@@ -35,7 +36,7 @@ var wave3Max = 5;
 var wave4Max = 5;
 var stage;
 var minAmount = 1;
-var velMultiplier;
+var velYMultiplier;
 
 
 
@@ -61,8 +62,9 @@ MyGame.playGameState.prototype = {
       wave4 = 0;
       stage = 1;
       minAmount = 1;
-      velMultiplier = 0;
+      velYMultiplier = 0;
       spawnDelay = 3000;
+      spacingYMultiplier = 1;
 
 
 
@@ -71,6 +73,7 @@ MyGame.playGameState.prototype = {
       // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
       this.background.tilePosition.y = backgroundPos;
+      var scoreBack = game.add.image(0, 0, 'scoreBackground');
       // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       // this.skyboss.alpha = 0;
       // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
@@ -83,8 +86,8 @@ MyGame.playGameState.prototype = {
       this.generatePlayer(yoshiPosX, yoshiPosY);
 
       //Score
-      scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-      coinText = game.add.text( 4, game.height - 64, 'coins: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+      scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+      coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
 
       //Fireballs
       fireballs = game.add.group();
@@ -334,20 +337,22 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 //WAVEMANAGER
   waveManager: function()
   {
-  //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
+  //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
   var maxMinAmount = 5;
   var amount = Math.floor(Math.random() * 5 + minAmount); //1 to 5
   var startX = Math.floor(Math.random() * 250 + 0);
   var velX = 30;
-  velY = Math.floor(Math.random() * 200 + (100 + velMultiplier));
+  var spacingX = 50;
+  var spacingY = 0;
+  velY = Math.floor(Math.random() * 200 + (100 + velYMultiplier));
 
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
-        this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
+        this.spawnWave(amount, spacingX, spacingY, 50, 30, 30, 150, 'koopa');
         amount = Math.floor(Math.random() * 5 + minAmount);
-        this.spawnWave(amount, 50, 300, 30, -50, 200, 'goomba');
+        this.spawnWave(amount, spacingX, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
 
         wave1++;
       }
@@ -356,13 +361,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     {
       amount = Math.floor(Math.random() * 5 + minAmount);
 
-      this.spawnWave(amount, 50, 50, 30, velX, velY, 'goomba');
+      this.spawnWave(amount, spacingX, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
 
       amount = Math.floor(Math.random() * 5 + minAmount);
       startX = Math.floor(Math.random() * 150 + 150);
-      velY = Math.floor(Math.random() * 200 + (150 + velMultiplier));
+      velY = Math.floor(Math.random() * 200 + (150 + velYMultiplier));
 
-      this.spawnWave(amount, 50, startX, 30, -50, velY, 'koopa');
+      this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
 
       wave2++;
     }
@@ -370,7 +375,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     if (wave1 == wave1Max && wave2 == wave2Max) {
       wave1 = 0;
       wave2 = 0;
-      velMultiplier += 50;
+      spacingYMultiplier += 5;
+      velYMultiplier += 50;
       velX += 50;
       spawnDelay /= 1.2;
       if( minAmount <= maxMinAmount) { minAmount += 0.5; }
@@ -378,7 +384,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
       console.log('round: ' + stage);
       console.log('spawn delay: ' + spawnDelay);
-      console.log('velocity Y multiplier: ' + velMultiplier);
+      console.log('spacing Y multiplier: ' + spacingYMultiplier);
+      console.log('velocity Y multiplier: ' + velYMultiplier);
       console.log('minamount: ' + minAmount);
       console.log('fire Delay: ' + fireDelay);
       console.log('fire ball speed: ' + fireballSpeed);
@@ -388,9 +395,9 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     }
   },
 
-  spawnWave: function(amount, spacing, startX, startY, velX, velY, enemyName){
-    for (var i = 0; i < (amount * spacing) ; i += spacing) {
-      this.generateEnemy(startX + i, startY, velX, velY, enemyName); //posX, posY, velX, velY, enemyName
+  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName){
+    for (var i = 0; i < amount ; i ++) {
+      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName); //posX, posY, velX, velY, enemyName
     }
     lastWaveSpawned = game.time.now;
   },
