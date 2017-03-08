@@ -144,13 +144,13 @@ MyGame.playGameState.prototype = {
       game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
 
       //pick up text
-      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE DELAY DOWN', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFD = game.add.text(game.world.centerX, game.world.centerY, 'FIRE RATE UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFD.anchor.set(0.5);
       pickUpTextFD.alpha = 0;
-      pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextFS = game.add.text(game.world.centerX, game.world.centerY-50, 'FIRE SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextFS.anchor.set(0.5);
       pickUpTextFS.alpha = 0;
-      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+      pickUpTextYS = game.add.text(game.world.centerX, game.world.centerY-100, 'YOSHI SPEED UP', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
       pickUpTextYS.anchor.set(0.5);
       pickUpTextYS.alpha = 0;
   },
@@ -394,20 +394,20 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         if(random == 0 && fireDelay > fireDelayMin){
             fireDelay /= 1.1;
             pickUpNr = 0;   
-            this.add.tween(pickUpTextFD).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true,  0, 1000, true);
+            this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
 
         }
         if(random==1 && fireballSpeed < maxFireballSpeed){
             fireballSpeed += 25;
             pickUpNr = 1;
             
-            this.add.tween(pickUpTextFS).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true,  0, 1000, true);
+            this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
         }
         if(random==2 && yoshiSpeed < maxYoshiSpeed){
             yoshiSpeed += 50;
             pickUpNr = 2;
            
-            this.add.tween(pickUpTextYS).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true,  0, 1000, true);
+            this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
         }
         
         blockSound.play();
