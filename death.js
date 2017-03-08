@@ -9,6 +9,9 @@ MyGame.deathState.prototype = {
         this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
         this.background.tilePosition.y = backgroundPos;
         this.generatePlayer(yoshiPosX, yoshiPosY);
+        gameover = game.add.audio('gameover');
+        music.mute = true;
+        gameover.play();
     },
     
     update: function()
