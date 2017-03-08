@@ -34,6 +34,9 @@ MyGame.preloadState.prototype = {
         this.load.image('buttonNo', 'assets/button_no.png');
 
         this.load.audio('water', 'assets/underwater.mp3');
+        this.load.audio('coinSound', 'assets/smw_coin.wav');
+        this.load.audio('blockSound', 'assets/smw_message_block.wav');
+
     },
 
 
@@ -42,6 +45,7 @@ MyGame.preloadState.prototype = {
         game.scale.pageAlignVertically = true;
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         music = game.add.audio('water');
+        
 
         this.state.start('titlescreen');
     }

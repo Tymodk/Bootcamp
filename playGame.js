@@ -24,16 +24,19 @@ var spawnDelay = 3000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
 var velMultiplier = 0;
 
+var wave1;
+var wave2;
+var wave3;
+var wave4;
 
-var wave1 = 0;
-var wave2 = 0;
-var wave3 = 0;
-var wave4 = 0;
 var wave1Max = 5;
 var wave2Max = 5;
 var wave3Max = 5;
 var wave4Max = 5;
-var stage = 1;
+var stage;
+var minAmount = 1;
+var velMultiplier;
+
 
 
 MyGame.playGameState = function (game) {};
@@ -56,6 +59,11 @@ MyGame.playGameState.prototype = {
       wave3 = 0;
       wave4 = 0;
       stage = 1;
+      minAmount = 1;
+      velMultiplier = 0;
+      spawnDelay = 3000;
+
+
 
 
       //Backgrounds
@@ -90,6 +98,10 @@ MyGame.playGameState.prototype = {
       blocks.enableBody = true;
       coins = game.add.group();
       coins.enableBody = true;
+
+      //SFX
+      coinSound = game.add.audio('coinSound');
+      blockSound = game.add.audio('blockSound');
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -236,6 +248,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     getCoin: function(yoshi, coin) {
       coin.kill();
       currentGold += 10;
+      coinSound.play();
     },
     getBlock: function(yoshi, block) {
       block.kill();
@@ -252,7 +265,6 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             yoshiSpeed += 50;
             pickUpNr = 2;
         }
-
     },
     pickUpNotification: function(){
     	pickUpTextTime = game.time.now;
@@ -271,6 +283,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     		pickUpTextFS.visible = false;
     		pickUpTextYS.visible = true;    		
     	}
+        blockSound.play();
     },
 
 
@@ -278,11 +291,10 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
   waveManager: function()
   {
   //Amount of Enemies spawned, Spacing between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
-  var minAmount = 1;
   var maxMinAmount = 5;
   var amount = Math.floor(Math.random() * 5 + minAmount); //1 to 5
   var startX = Math.floor(Math.random() * 250 + 0);
-  var velY = Math.floor(Math.random() * 200 + (100 + velMultiplier));
+  velY = Math.floor(Math.random() * 200 + (100 + velMultiplier));
 
 
   //Wave 1
@@ -315,12 +327,16 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       wave2 = 0;
       velMultiplier += 50;
       spawnDelay /= 1.2;
-      if( minAmount <= maxMinAmount) { minAmount += 1; }
-      console.log(stage);
-      console.log(spawnDelay);
-      console.log(velMultiplier);
-      console.log(minAmount);
-      console.log(amount);
+      if( minAmount <= maxMinAmount) { minAmount += 0.5; }
+      console.log('round: ' + stage);
+      console.log('spawn delay: ' + spawnDelay);
+      console.log('velocity multiplier: ' + velMultiplier);
+      console.log('minamount: ' + minAmount);
+      console.log('fire Delay: ' + fireDelay);
+      console.log('fire ball speed: ' + fireballSpeed);
+      console.log('yoshi Speed: ' + yoshiSpeed);
+      console.log('\n');
+
       stage++;
     }
   },
@@ -335,6 +351,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
 
 
   gameOverScreen: function(){
+      backgroundPos = this.background.tilePosition.y;
     this.state.start('gameOver', true, false, currentScore, currentGold);
   }
 
