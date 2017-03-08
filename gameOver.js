@@ -44,6 +44,7 @@ MyGame.gameOverState.prototype = {
   exitGame: function(){
     game.state.start('titlescreen');
   },
+    
   startGame: function(){
     game.state.start('playGame');
   }
