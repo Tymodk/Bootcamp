@@ -11,7 +11,10 @@ MyGame.deathState.prototype = {
         this.generatePlayer(yoshiPosX, yoshiPosY);
         gameover = game.add.audio('gameover');
         music.mute = true;
-        gameover.play();
+        if(soundEnabled){
+            gameover.play();
+        }
+        
         
         j = 0;
     },
