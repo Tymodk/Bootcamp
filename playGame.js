@@ -263,7 +263,11 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
-      enemy.body.velocity.x = 25;
+      if(enemy.centerX < 240){
+      enemy.body.velocity.x = -100;}
+      else{
+          enemy.body.velocity.x = 100;
+      }
       enemy.body.velocity.y = 25;
 
       enemy.body.checkCollision.up = false;

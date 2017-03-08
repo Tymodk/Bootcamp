@@ -1,3 +1,5 @@
+j = 0;
+
 MyGame.deathState = function (game) {};
 
 MyGame.deathState.prototype = {
@@ -7,16 +9,13 @@ MyGame.deathState.prototype = {
         this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
         this.background.tilePosition.y = backgroundPos;
         this.generatePlayer(yoshiPosX, yoshiPosY);
-        
-        i = 0;
     },
     
     update: function()
     {
-        i += 1;
-        console.log(i);
+        j += 1;
         
-        if(i > 80)
+        if(j > 80)
         {
             game.state.start('gameOver');
         }
