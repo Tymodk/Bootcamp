@@ -47,7 +47,7 @@ MyGame.playGameState.prototype = {
       fireDelay = 400;
       fireballSpeed = 250;
       yoshiSpeed = 250;
-
+      
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
@@ -92,6 +92,10 @@ MyGame.playGameState.prototype = {
       blocks.enableBody = true;
       coins = game.add.group();
       coins.enableBody = true;
+      
+      //SFX
+      coinSound = game.add.audio('coinSound');
+      blockSound = game.add.audio('blockSound');
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -225,6 +229,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     getCoin: function(yoshi, coin) {
       coin.kill();
       currentGold += 10;
+      coinSound.play();
     },
     getBlock: function(yoshi, block) {
       block.kill();
@@ -240,6 +245,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             yoshiSpeed += 50;
 
         }
+        blockSound.play();
     },
 
 
