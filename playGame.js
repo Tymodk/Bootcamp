@@ -174,7 +174,7 @@ MyGame.playGameState.prototype = {
       var scoreBack = game.add.image(0, 0, 'scoreBackground');
       scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
       coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-      
+
   },
 
   addScore: function () {
@@ -207,15 +207,15 @@ MyGame.playGameState.prototype = {
         star.stop();
       }
       if(hasStar){
-          game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);          
+          game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
           game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.starDestroyUnkillableEnemy, null, this);
 
       }
       else{
-         
+
           game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
 
-          
+
           game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
       }
        game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
@@ -314,12 +314,12 @@ generateStar: function() {
     star.animations.play('flicker', 4, true, false);
     star.scale.setTo(2,2);
     star.checkWorldBounds = true;
-    star.body.collideWorldBounds = true; 
+    star.body.collideWorldBounds = true;
     star.body.velocity.setTo(200,100);
-    star.body.bounce.set(1);  
-    
+    star.body.bounce.set(1);
+
 },
-    
+
 generateFireball: function() {
     if(typeFire == 'big'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
@@ -532,11 +532,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       currentScore += 1000;      
       enemy.health -= 90000;
 
+
       if(enemy.health <= 0)
       {
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
         enemy.body.collideWorldBounds = false;
-  
+
         this.generateExplosion(enemy.centerX, enemy.centerY);
         this.generatePickUp(enemy.centerX, enemy.centerY);
         enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
@@ -635,9 +636,10 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
         this.spawnKoopaWave(amount / 1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
 
-        this.generateBoo(20, 50, 500, 50);
         amount = this.getRndInteger(minAmount, maxAmount);
         this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba', 1);
+
+        this.spawnBooWave();
 
         this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
 
@@ -654,6 +656,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
       velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
+
+      this.spawnBooWave();
 
       this.spawnKoopaWave(amount / 1.2, startX, 30, -50, velY);
       this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
@@ -672,10 +676,11 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
 
         this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba', 1);
-
         amount = this.getRndInteger(minAmount, maxAmount);
         startX = this.getRndInteger(150, 300);
         velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
+        this.spawnBooWave();
+
 
         this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
         this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
@@ -732,11 +737,17 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     }
   },
 
-  spawnBooWave: function(amount, startX, startY, velX, velY){
-    spacingX = 85;
-    spacingY = 0;
-    for (var i = 0; i < amount ; i ++) {
-      this.generateKoopa(startX + (spacingX * i), startY - (spacingY * i), velX, velY);
+  spawnBooWave: function(){
+    spawnPoint = this.getRndInteger(1, 3);
+    spawnBoo = this.getRndInteger(1, 100);
+    if (spawnBoo < 30) {
+      console.log(spawnPoint);
+      if(spawnPoint == 1){
+        this.generateBoo(20, 50, 500, 50); //Spawn Left
+      }
+      else {
+        this.generateBoo(game.width - 50, 50, -500, 50); //Spawn Right
+      }
     }
   },
 
