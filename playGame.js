@@ -65,8 +65,8 @@ MyGame.playGameState.prototype = {
       // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
 
 
-      this.goomba = this.add.sprite(100, 50, 'goomba');
-      this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
+//      this.goomba = this.add.sprite(100, 50, 'goomba');
+//      this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
 
       //Player
       this.generatePlayer(yoshiPosX, yoshiPosY);
@@ -118,7 +118,7 @@ MyGame.playGameState.prototype = {
     this.fireSequence();
 
 
-    this.goomba.animations.play('goomba-fly', 7, true, false);
+//    this.goomba.animations.play('goomba-fly', 7, true, false);
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
     game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
@@ -252,7 +252,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
         var amount = Math.floor(Math.random() * 5 + 1);
         this.spawnWave(amount, 50, 50, 30, 30, 150, 'koopa');
         amount = Math.floor(Math.random() * 5 + 1);
-        this.spawnWave(amount, 50, 300, 30, -50, 200, 'koopa');
+        this.spawnWave(amount, 50, 300, 30, -50, 200, 'goomba');
 
         wave1++;
       }
@@ -263,7 +263,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       var startX = Math.floor(Math.random() * 250 + 0);
       var velY = Math.floor(Math.random() * 200 + 100 + velMultiplier);
 
-      this.spawnWave(amount, 50, startX, 30, 30, velY, 'koopa');
+      this.spawnWave(amount, 50, startX, 30, 30, velY, 'goomba');
 
       amount = Math.floor(Math.random() * 5 + 1);
       startX = Math.floor(Math.random() * 150 + 150);
