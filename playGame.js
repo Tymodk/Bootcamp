@@ -370,7 +370,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       wave1 = 0;
       wave2 = 0;
       velMultiplier += 50;
-      velX ++;
+      velX += 50;
       spawnDelay /= 1.2;
       if( minAmount <= maxMinAmount) { minAmount += 0.5; }
       stage++;

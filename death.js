@@ -12,6 +12,8 @@ MyGame.deathState.prototype = {
         gameover = game.add.audio('gameover');
         music.mute = true;
         gameover.play();
+        
+        j = 0;
     },
     
     update: function()
