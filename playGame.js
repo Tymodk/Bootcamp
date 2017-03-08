@@ -193,50 +193,60 @@ MyGame.playGameState.prototype = {
   //         this.background.alpha = 0;
   //     }
 
-    if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
-      {
-        this.yoshi.body.velocity.setTo(0, 0);
-      }
-    else{
-    	if(this.yoshi.y < game.height - 100){
-    		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-    	}
-    	else{
-    		this.yoshi.body.velocity.y = 0;
-    		if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y)){
-        		this.yoshi.body.velocity.setTo(0, 0);
-      		}
-      		else if(game.input.mousePointer.y < game.height - 100){
-                game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-            }
-    		else if(this.yoshi.x > 20 && game.input.mousePointer.x < game.width - 20){
-    			if(game.input.mousePointer.x + 10 < this.yoshi.x){
-    				this.yoshi.body.velocity.x = - yoshiSpeed;
-    			}
-    			else if(game.input.mousePointer.x - 10 > this.yoshi.x){
-    				this.yoshi.body.velocity.x = yoshiSpeed;
-          }
-          else{
-            this.yoshi.body.velocity.x = 0;
-          }
-    		}
-    	}
+    // vertical movement
+    if(game.input.mousePointer.y + 10 < this.yoshi.y){
+      this.yoshi.body.velocity.y = - yoshiSpeed;
     }
-    if(this.yoshi.x < 20){
+    else if(game.input.mousePointer.y - 10 > this.yoshi.y){
+      this.yoshi.body.velocity.y = yoshiSpeed;
+    }
+    else{
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    // vertical borders
+    if(this.yoshi.y <= 52){
+      this.yoshi.y = 52;
+    }
+    if(this.yoshi.y < 52){
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    if(this.yoshi.y >= game.height - 120){
+      this.yoshi.y = game.height - 120;
+    }
+    if(this.yoshi.y > game.height - 120){
+      this.yoshi.body.velocity.y = 0;
+    }
+
+    // horizontal movement
+    if(game.input.mousePointer.x + 10 < this.yoshi.x){
+      this.yoshi.body.velocity.x = - yoshiSpeed;
+    }
+    else if(game.input.mousePointer.x - 10 > this.yoshi.x){
+      this.yoshi.body.velocity.x = yoshiSpeed;
+    }
+    else{
+      this.yoshi.body.velocity.x = 0;
+    }
+
+    // horizontal borders
+    if(this.yoshi.x <= 20){
     	this.yoshi.x = 20;
+    }
+    if (this.yoshi.x < 20) {
     	this.yoshi.body.velocity.x = 0;
     }
 
-    if(this.yoshi.x > game.width - 20){
+    if(this.yoshi.x >= game.width - 20){
     	this.yoshi.x = game.width - 20;
+    }
+    if(this.yoshi.x > game.width - 20){
     	this.yoshi.body.velocity.x = 0;
     }
 
      //Waves
      this.waveManager();
-
-     //PickUpText
-    
   },
 
   generatePlayer: function(x, y) {
