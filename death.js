@@ -33,6 +33,7 @@ MyGame.deathState.prototype = {
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.gravity.y = 1200;
     this.yoshi.body.velocity.y = -400;
+    
     //this.yoshi.animations.play('ani', 6, true, false);
     }
     
