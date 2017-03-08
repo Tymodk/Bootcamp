@@ -379,13 +379,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       var enemy = enemies.create(posX, posY, 'boo'); //position, sprite
       enemy.health = health;
       enemy.animations.add('boo-ani', [0,1]); //Animation frames still hardcoded
-      enemy.animations.play('boo-ani', 2, true, false);
+      enemy.animations.play('boo-ani', 3, true, false);
       game.physics.enable(enemy, Phaser.Physics.ARCADE);
       enemy.anchor.setTo(0.5, 0.5);
       enemy.body.velocity.y = velY;
       enemy.body.velocity.x = velX;
       enemy.body.collideWorldBounds = true;
-      enemy.body.bounce.set(0.8);
+      enemy.body.bounce.set(1);
       enemy.scale.setTo(0.15);
 
 
@@ -438,12 +438,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         }
     },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
-      currentScore += 1000;
       fireball.kill();
       enemy.health -= playerDamage;
 
       if(enemy.health == 0)
       {
+        currentScore += 1000;
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
 
         this.generateExplosion(enemy.centerX, enemy.centerY);
@@ -541,7 +541,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
         this.spawnKoopaWave(amount / 1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
 
-        this.generateBoo(20, 50, 500, 150);
+        this.generateBoo(20, 50, 500, 50);
         amount = this.getRndInteger(minAmount, maxAmount);
         this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba', 1);
 
@@ -624,7 +624,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       return Math.floor(Math.random() * (max - min) ) + min;
   },
 
-  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health){
+  spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health, enemyScore){
     for (var i = 0; i < amount ; i ++) {
       this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName, health); //posX, posY, velX, velY, enemyName
     }
