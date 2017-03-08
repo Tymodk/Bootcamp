@@ -221,7 +221,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     getBlock: function(yoshi, block) {
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
-        if(fireDelay > fireDelayMin){
+        if(random == 0 && fireDelay > fireDelayMin){
             fireDelay /= 1.2;
         }
         if(random==1){
@@ -275,9 +275,13 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       wave1 = 0;
       wave2 = 0;
       velMultiplier += 50;
-      spawnDelay -= 20;
-      if(maxMinAmount > minAmount) { minAmount += 0.2; }
-      
+      spawnDelay /= 1.2;
+      if( minAmount <= maxMinAmount) { minAmount += 1; }
+      console.log(stage);
+      console.log(spawnDelay);
+      console.log(velMultiplier);
+      console.log(minAmount);
+      console.log(amount);
       stage++;
     }
   },
