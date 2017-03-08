@@ -1,10 +1,11 @@
-
+var backgroundPos = 0;
 
 MyGame.titlescreenState = function (game) {};
 
 MyGame.titlescreenState.prototype = {
   create: function() {
     this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+      this.background.tilePosition.y = backgroundPos;
   	 var title = game.add.image(game.world.centerX, 20, 'title');
      title.scale.setTo(0.7);
      title.anchor.set(0.5, 0);
@@ -28,7 +29,8 @@ MyGame.titlescreenState.prototype = {
   },
   update: function(){
     this.background.tilePosition.y += 2;
-    
+      
+      backgroundPos = this.background.tilePosition.y;
   },
   startGame: function(){
     game.state.start('preGame');

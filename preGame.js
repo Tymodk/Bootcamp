@@ -5,8 +5,6 @@ var yoshiSpeed = 250;
 var yoshiPosX;
 var yoshiPosY;
 
-var backgroundPos;
-
 MyGame.preGameState = function (game) {};
 
 MyGame.preGameState.prototype = {
@@ -14,6 +12,7 @@ MyGame.preGameState.prototype = {
     {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+        this.background.tilePosition.y = backgroundPos;
         this.generatePlayer(game.world.centerX, game.world.centerY + 100);
     },
     
@@ -48,8 +47,8 @@ MyGame.preGameState.prototype = {
         {
             yoshiPosX = this.yoshi.world.x;
             yoshiPosY = this.yoshi.world.y;
-            backgroundPos = this.background.tilePosition.y;
             
+            backgroundPos = this.background.tilePosition.y;
             game.state.start('playGame', true, false, yoshiPosX, yoshiPosY);
         }
         
