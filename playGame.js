@@ -127,11 +127,25 @@ MyGame.playGameState.prototype = {
       blockSound = game.add.audio('blockSound');
       fireSmallSound = game.add.audio('fireSmallSound');
       deathSound = game.add.audio('deathSound');
+
+      //muted or not
       if(soundEnabled){
           music.mute = false;
       }
       else{
           music.mute = true;
+      }
+      if(!sfxEnabled){
+        coinSound.mute = true;
+        blockSound.mute = true;
+        fireSmallSound.mute = true;
+        deathSound.mute = true;
+      }
+      else{
+        coinSound.mute = false;
+        blockSound.mute = false;
+        fireSmallSound.mute = false;
+        deathSound.mute = false;
       }
 
       //Fireball
