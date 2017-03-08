@@ -184,10 +184,10 @@ MyGame.playGameState.prototype = {
         this.yoshi.body.velocity.setTo(0, 0);
       }
     else{
-    	if(this.yoshi.y < game.height - 100){
+    	if(this.yoshi.y < game.height - 300){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
-    	else if(game.input.mousePointer.y < game.height - 100){
+    	else if(game.input.mousePointer.y < game.height - 300){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
     	else{
