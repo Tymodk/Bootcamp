@@ -322,7 +322,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     {
       amount = Math.floor(Math.random() * 5 + minAmount);
 
-      this.spawnWave(amount, 50, startX, 30, 30, velY, 'goomba');
+      this.spawnWave(amount, 50, 50, 30, 30, velY, 'goomba');
 
       amount = Math.floor(Math.random() * 5 + minAmount);
       startX = Math.floor(Math.random() * 150 + 150);
