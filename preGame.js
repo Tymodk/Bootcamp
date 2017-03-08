@@ -13,7 +13,7 @@ MyGame.preGameState.prototype = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
         this.background.tilePosition.y = backgroundPos;
-        this.generatePlayer(game.world.centerX, game.world.centerY + 100);
+        this.generatePlayer(game.world.centerX, game.world.centerY + 200);
     },
     
     update: function()

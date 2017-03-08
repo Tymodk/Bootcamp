@@ -49,7 +49,8 @@ MyGame.gameOverState.prototype = {
   },
     
   startGame: function(){
+      yoshiPosX = game.world.centerX;
+      yoshiPosY = game.world.centerY + 200;
     game.state.start('playGame');
   }
-
 }
