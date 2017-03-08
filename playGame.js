@@ -463,7 +463,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
         currentScore += 1000;
         game.physics.enable(enemy, Phaser.Physics.ARCADE);
 
-        enemy.body.collideWorldBounds = true;
+        enemy.body.collideWorldBounds = false;
         this.generateExplosion(enemy.centerX, enemy.centerY);
         this.generatePickUp(enemy.centerX, enemy.centerY);
         enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
