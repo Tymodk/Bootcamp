@@ -297,6 +297,8 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
       console.log('fire Delay: ' + fireDelay);
       console.log('fire ball speed: ' + fireballSpeed);
       console.log('yoshi Speed: ' + yoshiSpeed);
+      console.log('\n');
+
       stage++;
     }
   },
