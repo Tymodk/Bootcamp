@@ -46,6 +46,7 @@ MyGame.playGameState.prototype = {
   create: function()
   {
       game.physics.startSystem(Phaser.Physics.ARCADE);
+      
       //Reset Variables on New Game
       game.time.now = 0;
       currentScore = 0;
@@ -102,6 +103,8 @@ MyGame.playGameState.prototype = {
       //SFX
       coinSound = game.add.audio('coinSound');
       blockSound = game.add.audio('blockSound');
+      fireSmallSound = game.add.audio('fireSmallSound');
+      deathSound = game.add.audio('deathSound');
 
       //Fireball
       //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -132,18 +135,18 @@ MyGame.playGameState.prototype = {
     this.fireSequence();
 
 
-//    this.goomba.animations.play('goomba-fly', 7, true, false);
-    game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
-    game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
-    game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
-    game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
+  //    this.goomba.animations.play('goomba-fly', 7, true, false);
+      game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+      game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
+      game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
+      game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
 
 
 
-// if(game.time.now > 21000)
-//     {
-//         this.background.alpha = 0;
-//     }
+  // if(game.time.now > 21000)
+  //     {
+  //         this.background.alpha = 0;
+  //     }
 
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -199,13 +202,14 @@ generateFireball: function() {
     fireball.checkWorldBounds = true;
     fireball.body.velocity.y = - fireballSpeed;
     lastFireballFired = game.time.now;
+    fireSmallSound.play();
 
   },
 
-generateEnemy: function(posX, posY, velX, velY, enemyName)
+generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 {
     var enemy = enemies.create(posX, posY, enemyName); //position, sprite
-
+    var enemyHealth = health;
     enemy.animations.add(enemyName + '-ani', [0,1,2,3,4,5,6,7,8,9]); //Animation frames still hardcoded
     enemy.animations.play(enemyName + '-ani', 10, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
@@ -220,6 +224,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
     this.explosion.animations.play('explosion-boom', 9, false, true);
     this.explosion.anchor.setTo(0.5, 0.5);
+    deathSound.play();
 
     },
 
@@ -241,19 +246,35 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
             coin.body.velocity.y = 100;
         }
     },
-
-  destroyEnemy: function(fireball, enemy) { //fireballs, koopa
-      currentScore += 1000;
+  damageEnemy: function(fireball, enemy) { //fireballs, koopa
       fireball.kill();
       enemy.kill();
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
     },
+  destroyEnemy: function(fireball, enemy) { //fireballs, koopa
+      currentScore += 1000;
+      fireball.kill();
+      game.physics.enable(enemy, Phaser.Physics.ARCADE);
+      
+      
+      this.generateExplosion(enemy.centerX, enemy.centerY);
+      this.generatePickUp(enemy.centerX, enemy.centerY);
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      enemy.allowGravity = true;
+      enemy.body.gravity.y = 400;
+      enemy.body.enable = false; 
+      enemy.angle += 180;
+      
+      
+    },
+
     getCoin: function(yoshi, coin) {
       coin.kill();
       currentGold += 10;
       coinSound.play();
     },
+
     getBlock: function(yoshi, block) {
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
@@ -276,17 +297,17 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     	if(pickUpNr == 0){
     		pickUpTextFS.visible = false;
     		pickUpTextYS.visible = false;
-    		pickUpTextFD.visible = true;    		
+    		pickUpTextFD.visible = true;
     	}
     	if(pickUpNr == 1){
     		pickUpTextFD.visible = false;
     		pickUpTextYS.visible = false;
-    		pickUpTextFS.visible = true;    		
+    		pickUpTextFS.visible = true;
     	}
     	if(pickUpNr == 2){
     		pickUpTextFD.visible = false;
     		pickUpTextFS.visible = false;
-    		pickUpTextYS.visible = true;    		
+    		pickUpTextYS.visible = true;
     	}
     },
 
@@ -315,7 +336,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName)
     {
       amount = Math.floor(Math.random() * 5 + minAmount);
 
-      this.spawnWave(amount, 50, startX, 30, 30, velY, 'goomba');
+      this.spawnWave(amount, 50, 50, 30, 30, velY, 'goomba');
 
       amount = Math.floor(Math.random() * 5 + minAmount);
       startX = Math.floor(Math.random() * 150 + 150);
