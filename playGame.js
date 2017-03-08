@@ -23,6 +23,7 @@ var pickUpTextTime;
 //Player
 var yoshiSpeed = 250;
 var enemies;
+var bulletChance = 500; // 50 op 1000
 
 
 //Wave Manager
@@ -254,6 +255,22 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     enemy.body.velocity.x =  velX;
   },
 
+  generateBulletEnemy: function(posX, posY, velX, velY, scale, enemyName = 'bullet'){
+    var enemy = enemies.create(posX, posY, enemyName); //position, sprite
+    game.physics.enable(enemy, Phaser.Physics.ARCADE);
+    enemy.anchor.setTo(0.5, 0.5);
+    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+    enemy.body.velocity.y = velY;
+    enemy.body.velocity.x =  velX;
+    enemy.scale.setTo(scale);
+  },
+
+  spawnBulletEnemy: function(shootBullet, posX, posY, velX, velY, scale){
+    if(shootBullet < this.bulletChance){
+      this.generateBullet(posX, posY, velX, velY, scale);
+    }
+  }
+
   generateExplosion: function(x, y) {
     this.explosion = this.add.sprite(x, y, 'explosion');
     this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
@@ -367,17 +384,21 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   var startX = this.getRndInteger(0, 250);
   var velX = 30;
   var spacingX = 85;
+  var spacingXGoomba = 70;
   var spacingY = 0;
+  var shootBullet = this.getRndInteger(1,1000);
   velY = this.getRndInteger((100 + velYMultiplier), (300 + velYMultiplier));
 
 
   //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max)
       {
+
         this.spawnWave(amount, spacingX, spacingY, 50, 30, 30, 150, 'koopa');
         amount = this.getRndInteger(minAmount, maxAmount);
-        this.spawnWave(amount, spacingX - 15, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba');
 
+        this.spawnBulletEnemy(shootBullet, 30, 50, 0, 50, 0.75);
         wave1++;
       }
   //Wave 2
@@ -385,7 +406,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
     {
       amount = this.getRndInteger(minAmount, maxAmount);
 
-      this.spawnWave(amount, spacingX - 15, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
+      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 50, 30, velX, velY, 'goomba');
 
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
@@ -395,10 +416,31 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
 
       wave2++;
     }
+
+    //Wave 3
+    if(wave2 == wave2Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave3 < wave3Max)
+      {
+        amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba');
+
+        amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+
+        this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba');
+
+        amount = this.getRndInteger(minAmount, maxAmount);
+        startX = this.getRndInteger(150, 300);
+        velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
+
+        this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa');
+
+        wave3++;
+      }
     //When both waves are completed, repeat but more difficult
-    if (wave1 == wave1Max && wave2 == wave2Max) {
+    if (wave3 == wave3Max) {
       wave1 = 0;
       wave2 = 0;
+      wave3 = 0;
       spacingYMultiplier += 5;
       velYMultiplier += 50;
       velX += 50;
