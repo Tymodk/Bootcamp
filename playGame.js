@@ -9,7 +9,7 @@ var currentCoins = 0;
 //Fire
 var fireballs;
 var fireDelay = 400;
-var fireDelayMin = 100;
+var fireDelayMin = 200;
 var lastFireballFired = gameDelay - fireDelay;
 var fireballSpeed = 250;
 var maxFireballSpeed = 750;
@@ -270,35 +270,52 @@ MyGame.playGameState.prototype = {
   },
 
 generateFireball: function() {
-    var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
-    game.physics.enable(fireball, Phaser.Physics.ARCADE);
     
-    if(typeFire == 'double'){
-        var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
-        game.physics.enable(fireball2, Phaser.Physics.ARCADE);
-        fireball2.animations.add('spin', [0,1,2,3]);
-        fireball2.animations.play('spin', 8, true, false);
-        fireball.body.velocity.x = 25;
-        fireball2.body.velocity.x = -25;    
-        fireball2.body.velocity.y = - fireballSpeed;      
-
-        fireball2.body.width = 25;
-        fireball2.body.height = 25;
-        fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
-        fireball2.checkWorldBounds = true;
+    if(typeFire == 'big'){
+        var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball, Phaser.Physics.ARCADE);
+        fireball.animations.add('spin', [0,1]);
+        fireball.animations.play('spin', 4, true, false);
+        fireball.scale.setTo(2,2);
+        fireball.body.width = 30;
+        fireball.body.height = 30;
+        fireball.angle -= 90;
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.checkWorldBounds = true;
+        fireball.body.velocity.y = - fireballSpeed;
+        lastFireballFired = game.time.now;
+        fireSmallSound.play();
     }
-    
-    fireball.animations.add('spin', [0,1,2,3]);
-    fireball.animations.play('spin', 8, true, false);
-    
-    fireball.body.width = 25;
-    fireball.body.height = 25;
-    fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
-    fireball.checkWorldBounds = true;
-    fireball.body.velocity.y = - fireballSpeed;
-    lastFireballFired = game.time.now;
-    fireSmallSound.play();
+    else{
+        var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
+        game.physics.enable(fireball, Phaser.Physics.ARCADE);
 
+        if(typeFire == 'double'){
+            var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
+            game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+            fireball2.animations.add('spin', [0,1,2,3]);
+            fireball2.animations.play('spin', 8, true, false);
+            fireball.body.velocity.x = 25;
+            fireball2.body.velocity.x = -25;    
+            fireball2.body.velocity.y = - fireballSpeed;      
+
+            fireball2.body.width = 25;
+            fireball2.body.height = 25;
+            fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+            fireball2.checkWorldBounds = true;
+        }
+
+        fireball.animations.add('spin', [0,1,2,3]);
+        fireball.animations.play('spin', 8, true, false);
+
+        fireball.body.width = 25;
+        fireball.body.height = 25;
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.checkWorldBounds = true;
+        fireball.body.velocity.y = - fireballSpeed;
+        lastFireballFired = game.time.now;
+        fireSmallSound.play();
+    }
   },
 
 generateEnemy: function(posX, posY, velX, velY, enemyName, health)
@@ -419,13 +436,17 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       block.kill();
       var random =  game.rnd.integerInRange(0,2);
         if(random == 0 && fireDelay > fireDelayMin){
-            fireDelay /= 1.1;
+            fireDelay -= 50;
             pickUpNr = 0;   
             this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
 
         }
-        else if(fireDelay <= fireDelayMin){
+        else if(fireDelay <= fireDelayMin && typeFire != 'double'){
             typeFire = 'double';
+            fireDelay = 400;
+        }
+        else if(fireDelay <= fireDelayMin && typeFire != 'big'){            
+            typeFire = 'big';
             fireDelay = 400;
         }
         if(random==1 && fireballSpeed < maxFireballSpeed){
