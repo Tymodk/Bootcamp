@@ -71,6 +71,7 @@ MyGame.playGameState.prototype = {
       // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
       this.background.tilePosition.y = backgroundPos;
+      var scoreBack = game.add.image(0, 0, 'scoreBackground');
       // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
       // this.skyboss.alpha = 0;
       // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
@@ -83,8 +84,8 @@ MyGame.playGameState.prototype = {
       this.generatePlayer(yoshiPosX, yoshiPosY);
 
       //Score
-      scoreText = game.add.text( 4, game.height - 32, 'score: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-      coinText = game.add.text( 4, game.height - 64, 'coins: 0',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+      scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+      coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
 
       //Fireballs
       fireballs = game.add.group();
