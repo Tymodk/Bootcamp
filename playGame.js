@@ -339,12 +339,12 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
   {
   //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
   var maxMinAmount = 5;
-  var amount = Math.floor(Math.random() * 5 + minAmount); //1 to 5
-  var startX = Math.floor(Math.random() * 250 + 0);
+  var amount = this.getRndInteger(minAmount, 5); //1 to 5
+  var startX = this.getRndInteger(0, 250);
   var velX = 30;
   var spacingX = 50;
   var spacingY = 0;
-  velY = Math.floor(Math.random() * 200 + (100 + velYMultiplier));
+  velY = this.getRndInteger((100 + velYMultiplier), (300 + velYMultiplier));
 
 
   //Wave 1
@@ -393,6 +393,10 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
       console.log('\n');
 
     }
+  },
+
+  getRndInteger: function(min, max) {
+      return Math.floor(Math.random() * (max - min) ) + min;
   },
 
   spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName){
