@@ -462,7 +462,6 @@ MyGame.playGameState.prototype = {
     enemy.body.velocity.x = velX;
   },
   generateBoss: function(){
-    console.log('generateBoss');
     var baseHealth = 10;
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     var boss = bosses.create(game.width/2, 50, 'boo');
@@ -745,11 +744,10 @@ MyGame.playGameState.prototype = {
 
     //BossFight
     if (bossIsAlive) {
-      console.log('Boss still alive');
       if (!bossSpawned && !bossSpawnTimerStarted) {
         game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.generateBoss, this);
         bossSpawnTimerStarted = true;
-        console.log("Boss Spawned");
+        console.log("Boss Spawns in " + bossSpawnWaitTime + "s");
       }
     }
     //When both waves are completed, repeat but more difficult
