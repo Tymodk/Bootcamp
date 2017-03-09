@@ -61,7 +61,7 @@ var maxMinAmount = 4;
 var velYMultiplier;
 //tween
 var tween;
-
+var tweenSky;
 var warning;
 
 //initiating state
@@ -98,15 +98,14 @@ MyGame.playGameState.prototype = {
     spacingYMultiplier = 1;
     permanentSpawnDelay = 2000;
     //Backgrounds
-    // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+    
     this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
-
-    // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-    // this.skyboss.alpha = 0;
-    // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
-    // this.goomba = this.add.sprite(100, 50, 'goomba');
-    // this.goomba.animations.add('goomba-fly', [0,1,2,1,0]);
+    this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+    this.skyboss.tilePosition.y = backgroundPos;
+    this.skyboss.alpha = 0;
+    
+    
     //Player
     this.generatePlayer(yoshiPosX, yoshiPosY);
     //Enemies
@@ -135,6 +134,7 @@ MyGame.playGameState.prototype = {
     fireSmallSound = game.add.audio('fireSmallSound');
     deathSound = game.add.audio('deathSound');
     boomSound = game.add.audio('boom');
+    bossMusic = game.add.audio('bossMusic');
 
     starMusic = game.add.audio('star');
 
@@ -142,9 +142,12 @@ MyGame.playGameState.prototype = {
     if(soundEnabled){
       music.mute = false;
       music.loop = true;
+      bossMusic.loop = true;
+      bossMusic.mute = false; 
     }
     else{
       music.mute = true;
+      bossMusic.mute = true; 
     }
     if(!sfxEnabled){
       starMusic.mute = true;
@@ -200,8 +203,8 @@ MyGame.playGameState.prototype = {
     if(starChance ==  10000){this.generateStar()};
     //Move Background
     this.background.tilePosition.y += 2;
-    // this.skyboss.tilePosition.y += 2;
-    // this.hidden.tilePosition.y += 2;
+    this.skyboss.tilePosition.y += 2;
+    
     //Score
     scoreText.text = 'score: ' + currentScore;
     coinText.text = 'coins: ' + currentCoins;
@@ -458,7 +461,7 @@ MyGame.playGameState.prototype = {
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     var boss = bosses.create(game.width/2, 50, 'bowser');
     boss.health = health;
-    boss.animations.add('bowser-idle', [0,1,2,4]);
+    boss.animations.add('bowser-idle', [0,1,2,3]);
   
     boss.animations.add('bowser-throw', [0,1,6,7]); // 8frames/s
     boss.animations.play('bowser-idle', 12, true, false);
@@ -471,6 +474,9 @@ MyGame.playGameState.prototype = {
     boss.scale.setTo(2);
 
     bossSpawned = true;
+    tweenSky.stop();
+    this.skyboss.alpha = 1;
+  
   },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
@@ -593,6 +599,11 @@ MyGame.playGameState.prototype = {
       boss.animations.add('bowser-kill', [4,5]);
       boss.animations.play('bowser-kill', 8, true, false);
       game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.resetBoss, this);
+      tweenSky = this.add.tween(this.skyboss).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false); 
+      tweenSky.loop = false;
+      music.resume();
+      bossMusic.stop();
+
     }
   },
   resetBoss: function(){
@@ -748,7 +759,14 @@ MyGame.playGameState.prototype = {
         game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.generateBoss, this);
         bossSpawnTimerStarted = true;
         console.log("Boss Spawns in " + bossSpawnWaitTime + "s");
+        tweenSky = this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 1000, true);  
+        music.pause();
+        bossMusic.play();  
+          
       }
+        else{
+            
+        }
     }
     //When both waves are completed, repeat but more difficult
     //Scaling
