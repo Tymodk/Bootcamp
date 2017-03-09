@@ -24,13 +24,17 @@ var pickUpTextTime;
 var yoshiSpeed = 250;
 var maxYoshiSpeed = 600;
 var enemies;
-var bulletChance = 125; // op 1000
 var hasStar = false;
 var starLength = 0;
 //Wave Manager
 var spawnDelay = 3000;
 var minSpawnDelay = 1000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
+//Spawn Chances
+var permanentSpawn = 1000; // 1000 ms delay between perm. spawn
+var spawnBooChance = 150; //15% every 10s
+var bulletChance = 100; // 12.5% every 10s
+
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
 var wave1;
@@ -235,7 +239,8 @@ MyGame.playGameState.prototype = {
     }
      //Waves
      this.waveManager();
-  },
+  }, //END OF UPDATE FUNCTION
+
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
@@ -377,9 +382,10 @@ MyGame.playGameState.prototype = {
     enemy.body.bounce.set(1);
     enemy.scale.setTo(0.15);
   },
-  generateBulletEnemy: function(velY){
+  generateBulletEnemy: function(){
     var posX = this.getRndInteger(1, game.width);
     var posY = 0;
+    var velY = 1000;
     var enemy = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
@@ -388,9 +394,10 @@ MyGame.playGameState.prototype = {
     // enemy.body.velocity.x =  velX;
     enemy.scale.setTo(0.5);
   },
-  spawnBulletEnemy: function(shootBullet, velY){
+  spawnBulletEnemy: function(){
+    var shootBullet = this.getRndInteger(1,1000);
     if(shootBullet < bulletChance){
-      this.generateBulletEnemy(velY);
+      this.generateBulletEnemy();
     }
   },
   generateExplosion: function(x, y) {
@@ -469,6 +476,7 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
     }
+      
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
@@ -493,7 +501,7 @@ MyGame.playGameState.prototype = {
         pickUpNr = 0;
         this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
       }
-      else if(fireDelay <= fireDelayMin && typeFire != 'double'){
+      else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
         typeFire = 'double';
         fireDelay = 400;
       }
@@ -523,15 +531,18 @@ MyGame.playGameState.prototype = {
     var spacingX = 85;
     var spacingXGoomba = 70;
     var spacingY = 0;
-    var shootBullet = this.getRndInteger(1,1000);
     velY = this.getRndInteger((100 + velYMultiplier), (300 + velYMultiplier));
+    //Permanent Wave
+    if (game.time.now > permanentSpawn) {
+      this.spawnBooWave();
+      this.spawnBulletEnemy();
+      permanentSpawn = game.time.now + 1000;
+    }
     //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max){
       this.spawnKoopaWave(amount / 1.2 , 50, 30, 30, 150); //Amount, startX, startY, velX, velY
       amount = this.getRndInteger(minAmount, maxAmount);
       this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 300, 30, -50, 200, 'goomba', 1);
-      this.spawnBooWave();
-      this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
       wave1++;
       lastWaveSpawned = game.time.now;
     }
@@ -542,9 +553,7 @@ MyGame.playGameState.prototype = {
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
       velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
-      this.spawnBooWave();
       this.spawnKoopaWave(amount / 1.2, startX, 30, -50, velY);
-      this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
       lastWaveSpawned = game.time.now;
       wave2++;
     }
@@ -557,9 +566,7 @@ MyGame.playGameState.prototype = {
       amount = this.getRndInteger(minAmount, maxAmount);
       startX = this.getRndInteger(150, 300);
       velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
-      this.spawnBooWave();
       this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
-      this.spawnBulletEnemy(shootBullet, 1000); //bulletchance, velY
       lastWaveSpawned = game.time.now;
       wave3++;
     }
@@ -607,8 +614,8 @@ MyGame.playGameState.prototype = {
   },
   spawnBooWave: function(){
     spawnPoint = this.getRndInteger(1, 3);
-    spawnBoo = this.getRndInteger(1, 100);
-    if (spawnBoo < 30) {
+    spawnBoo = this.getRndInteger(1, 1000);
+    if (spawnBoo < spawnBooChance) {
       console.log(spawnPoint);
       if(spawnPoint == 1){
         this.generateBoo(20, 50, 500, 50); //Spawn Left
