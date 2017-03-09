@@ -93,7 +93,7 @@ MyGame.playGameState.prototype = {
     permanentSpawnDelay = 2000;
     //Backgrounds
     // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-    this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+    this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
     // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     // this.skyboss.alpha = 0;
@@ -220,10 +220,10 @@ MyGame.playGameState.prototype = {
         this.yoshi.body.velocity.setTo(0, 0);
       }
     else{
-    	if(this.yoshi.y < 700){
+    	if(this.yoshi.y < 720){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
-    	else if(game.input.mousePointer.y < 700){
+    	else if(game.input.mousePointer.y < 720){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
       /*

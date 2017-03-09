@@ -9,7 +9,7 @@ MyGame.gameOverState = function (game) {};
 MyGame.gameOverState.prototype = {
   create: function() {
     //background
-    this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+    this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
     //title
     var gameOverTitle = game.add.image(game.world.centerX, 20, 'gameOverTitle');

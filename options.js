@@ -12,7 +12,7 @@ MyGame.optionsState = function (game) {};
 MyGame.optionsState.prototype = {
   create: function() {
     //background and title
-    this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+    this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
     var title = game.add.image(game.world.centerX, 20, 'title');
     title.scale.setTo(0.7);
