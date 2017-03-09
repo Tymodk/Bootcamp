@@ -54,8 +54,8 @@ var wave1;
 var wave2;
 var wave3;
 var wave4;
-var wave1Max = 1;
-var wave2Max = 1;
+var wave1Max = 5;
+var wave2Max = 5;
 var wave3Max = 5;
 var wave4Max = 5;
 var round;
@@ -890,7 +890,7 @@ MyGame.playGameState.prototype = {
     }
   },
   gameOverScreen: function(){
-    bossMusic.stop();  
+    bossMusic.stop();
     backgroundPos = this.background.tilePosition.y;
     yoshiPosX = this.yoshi.world.x;
     yoshiPosY = this.yoshi.world.y;
