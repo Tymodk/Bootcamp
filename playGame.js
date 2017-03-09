@@ -64,6 +64,7 @@ MyGame.playGameState.prototype = {
     game.time.now = 0;
     currentScore = 0;
     currentCoins = 0;
+    typeFire = 'normal';
     fireDelay = 400;
     fireballSpeed = 250;
     yoshiSpeed = 250;
