@@ -500,7 +500,9 @@ MyGame.playGameState.prototype = {
   generateThrow: function(){
     var posX = this.boss.world.x;
     var posY = this.boss.world.y;
-    var object = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
+    var object = unkillableEnemies.create(posX, posY, 'spiny'); //position, sprite
+    object.animations.add('spiny-ani', [0,1]); // 8frames/s
+    object.animations.play('spiny-ani', 8, true, false);
     var velX = this.getRndInteger(25, 150);
     game.physics.enable(object, Phaser.Physics.ARCADE);
     object.body.collideWorldBounds = false;
@@ -518,7 +520,7 @@ MyGame.playGameState.prototype = {
     object.body.checkCollision.left = false;
     object.body.checkCollision.right = false;
     object.events.onOutOfBounds.add( function(){ object.kill(); } );
-    object.scale.setTo(0.4);
+    object.scale.setTo(2);
 
   },
   generateKoopa: function(posX, posY, velX, velY){
