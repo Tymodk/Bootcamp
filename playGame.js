@@ -32,10 +32,11 @@ var globalHealthMultiplier = 0;
 var spawnDelay = 3000;
 var minSpawnDelay = 1000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
+var permanentSpawn = 0;
 //Spawn Chances
-var permanentSpawn = 0; // 1000 ms delay between perm. spawn
-var spawnBooChance = 150; //15% every 10s
-var bulletChance = 100; // 10% every 10s
+var permanentSpawnDelay = 2000; // ms delay between perm. spawn
+var spawnBooChance = 150; // chance on 1000 every spawn
+var bulletChance = 100; // chance on 1000 every spawn
 
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
@@ -82,7 +83,7 @@ MyGame.playGameState.prototype = {
     velYMultiplier = 0;
     spawnDelay = 3000;
     spacingYMultiplier = 1;
-    permanentSpawn = 2000;
+    permanentSpawnDelay = 2000;
     //Backgrounds
     // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
@@ -197,7 +198,7 @@ MyGame.playGameState.prototype = {
     //     {
     //         this.background.alpha = 0;
     //     }
-      
+
     //movement
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -212,12 +213,12 @@ MyGame.playGameState.prototype = {
     	}
     	else{
     		this.yoshi.body.velocity.y = 0;
-    		var horizontalTween = game.add.tween(this.yoshi).to({ 
+    		var horizontalTween = game.add.tween(this.yoshi).to({
                     x: game.input.mousePointer.x
                }, yoshiSpeed, Phaser.Easing.Linear.None, true);
     	}
     }
-      
+
     // vertical borders
     if(this.yoshi.y <= 52){
       this.yoshi.y = 52;
@@ -232,7 +233,7 @@ MyGame.playGameState.prototype = {
     if(this.yoshi.y > game.height - 120){
       this.yoshi.body.velocity.y = 0;
     }
-      
+
     // horizontal borders
     if(this.yoshi.x <= 20){
     	this.yoshi.x = 20;
@@ -536,13 +537,13 @@ MyGame.playGameState.prototype = {
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
 
       }
-      
+
 //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
 //    onComplete: function(text){
 //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-//        
+//
 //
 //
 //
@@ -561,7 +562,7 @@ MyGame.playGameState.prototype = {
     if (game.time.now > permanentSpawn) {
       this.spawnBooWave();
       this.spawnBulletEnemy();
-      permanentSpawn = game.time.now + 1000;
+      permanentSpawn = game.time.now + permanentSpawnDelay;
     }
     //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max){
