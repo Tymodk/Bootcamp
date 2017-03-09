@@ -809,7 +809,7 @@ MyGame.playGameState.prototype = {
         spawnDelay -= 125;
       }
       if( minAmount <= maxMinAmount) { //Increase Amounts till limit
-        minAmount += 0.5; maxAmount += 0.25;
+        minAmount += 0.2; maxAmount += 0.1;
       }
 
       //Spawn Boss
