@@ -23,17 +23,19 @@ var pickUpTextTime;
 //Player
 var yoshiSpeed = 250;
 var maxYoshiSpeed = 600;
-var enemies;
 var hasStar = false;
 var starLength = 0;
+//Enemies
+var enemies;
+var globalHealthMultiplier = 0;
 //Wave Manager
 var spawnDelay = 3000;
 var minSpawnDelay = 1000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
 //Spawn Chances
-var permanentSpawn = 1000; // 1000 ms delay between perm. spawn
+var permanentSpawn = 0; // 1000 ms delay between perm. spawn
 var spawnBooChance = 150; //15% every 10s
-var bulletChance = 100; // 12.5% every 10s
+var bulletChance = 100; // 10% every 10s
 
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
@@ -68,6 +70,7 @@ MyGame.playGameState.prototype = {
     fireballSpeed = 250;
     yoshiSpeed = 250;
     typeFire = 'normal';
+    globalHealthMultiplier = 0;
     //WaveManager Resets
     wave1 = 0;
     wave2 = 0;
@@ -79,6 +82,7 @@ MyGame.playGameState.prototype = {
     velYMultiplier = 0;
     spawnDelay = 3000;
     spacingYMultiplier = 1;
+    permanentSpawn = 2000;
     //Backgrounds
     // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
@@ -482,7 +486,7 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
     }
-      
+
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
@@ -624,6 +628,13 @@ MyGame.playGameState.prototype = {
   spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health, enemyScore){
     for (var i = 0; i < amount ; i ++) {
       this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName, health); //posX, posY, velX, velY, enemyName
+    }
+  },
+  spawnGoombaWave: function(amount, startX, startY, velX, velY){
+    spacingX = 70;
+    spacingY = 0;
+    for (var i = 0; i < amount ; i ++) {
+      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, 'goomba', 1);
     }
   },
   spawnKoopaWave: function(amount, startX, startY, velX, velY){
