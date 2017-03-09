@@ -27,7 +27,7 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('star', 'assets/star.png', 16, 16, 3);
         this.load.spritesheet('boo', 'assets/boo.png', 300, 300, 2);
         this.load.spritesheet('warning', 'assets/warning.png', 98, 178, 2);
-        this.load.spritesheet('bowser', 'assets/bowser_spritesheet.png', 64, 96);
+        this.load.spritesheet('bowser', 'assets/bowser_spritesheet.png', 64, 100, 8);
         this.load.image('bullet', 'assets/bullet_bill.png');
         // loading options assets
         this.load.image('title', 'assets/titlescreen_title.jpg');
@@ -36,6 +36,7 @@ MyGame.preloadState.prototype = {
         this.load.image('store', 'assets/button_store.png');
         this.load.image('options', 'assets/button_options.png');
         this.load.image('exit', 'assets/button_exit.png');
+        this.load.image('exitOptions', 'assets/button_exit_options.png');
         this.load.image('retry', 'assets/button_retry.png');
         this.load.image('buttonYes', 'assets/button_yes.png');
         this.load.image('buttonNo', 'assets/button_no.png');
@@ -44,6 +45,7 @@ MyGame.preloadState.prototype = {
         //loading sound assets
         this.load.audio('water', 'assets/underwater.mp3');
         this.load.audio('menu', 'assets/menu.mp3');
+        this.load.audio('bossMusic', 'assets/boss_theme.mp3');
         this.load.audio('coinSound', 'assets/smw_coin.wav');
         this.load.audio('blockSound', 'assets/smw_message_block.wav');
         this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');

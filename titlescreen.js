@@ -13,17 +13,17 @@ MyGame.titlescreenState.prototype = {
     startGameText = game.add.text(4, game.height - 11, 'a team JoJo creation', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
     startGameText.scale.setTo(0.5);
     startGameText.anchor.set(0, 0.5);
-    var startGameButton = game.add.button(game.width / 2, game.height - 400, 'startGame', this.startGame);
+    var startGameButton = game.add.button(game.width / 2, game.height - 450, 'startGame', this.startGame);
     startGameButton.scale.setTo(1);
     startGameButton.anchor.set(0.5);
-    var storeButton = game.add.button(game.width / 2, game.height - 300, 'store');
-    storeButton.scale.setTo(1);
+    var storeButton = game.add.button(game.width / 2, game.height - 350, 'store');
+    storeButton.scale.setTo(1.4);
     storeButton.anchor.set(0.5);
-    var optionsButton = game.add.button(game.width / 2, game.height - 200, 'options', this.goToOptions);
+    var optionsButton = game.add.button(game.width / 2, game.height - 250, 'options', this.goToOptions);
     optionsButton.scale.setTo(1);
     optionsButton.anchor.set(0.5);
-    var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.exitApp);
-    exitButton.scale.setTo(1);
+    var exitButton = game.add.button(game.width / 2, game.height - 150, 'exit', this.exitApp);
+    exitButton.scale.setTo(1.4);
     exitButton.anchor.set(0.5);
     //music
      if(!isPlaying){
