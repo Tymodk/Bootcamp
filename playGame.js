@@ -198,7 +198,6 @@ MyGame.playGameState.prototype = {
     //     {
     //         this.background.alpha = 0;
     //     }
-
     //movement
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -211,6 +210,7 @@ MyGame.playGameState.prototype = {
     	else if(game.input.mousePointer.y < 700){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
+      /*
     	else{
     		this.yoshi.body.velocity.y = 0;
     		var horizontalTween = game.add.tween(this.yoshi).to({
@@ -218,7 +218,8 @@ MyGame.playGameState.prototype = {
                }, yoshiSpeed, Phaser.Easing.Linear.None, true);
     	}
     }
-
+      */
+      }
     // vertical borders
     if(this.yoshi.y <= 52){
       this.yoshi.y = 52;
@@ -423,7 +424,7 @@ MyGame.playGameState.prototype = {
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
     var random =  game.rnd.integerInRange(0,100);
-    if(random > 0){
+    if(random < 15){
       var block = blocks.create(x,y,'questionblock');
       block.animations.add('block-spin', [0,1,2,3]);
       block.animations.play('block-spin', 5, true, false);
@@ -648,13 +649,14 @@ MyGame.playGameState.prototype = {
   spawnBooWave: function(){
     spawnPoint = this.getRndInteger(1, 3);
     spawnBoo = this.getRndInteger(1, 1000);
+    var velX = 500;
+    var velY = 150;
     if (spawnBoo < spawnBooChance) {
-      console.log(spawnPoint);
       if(spawnPoint == 1){
-        this.generateBoo(20, 50, 500, 50); //Spawn Left
+        this.generateBoo(20, 50, velX, velY); //Spawn Left
       }
       else {
-        this.generateBoo(game.width - 50, 50, -500, 50); //Spawn Right
+        this.generateBoo(game.width - 50, 50, -velX, velY); //Spawn Right
       }
     }
   },
