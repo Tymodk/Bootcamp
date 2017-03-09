@@ -33,8 +33,12 @@ var bossSpawnTimerStarted = false;
 //Boss
 var bosses;
 var bossSpawnRound = 1;
+var bossHealth = 50;
 var bossIsAlive = false;
 var bossSpawnWaitTime = 5;
+var throwTime = 0;
+var throwDelay = 500;
+var bossThrowChance = 500;
 //Wave Manager
 var spawnDelay = 3000;
 var minSpawnDelay = 1500;
@@ -84,6 +88,7 @@ MyGame.playGameState.prototype = {
     bossIsAlive = false;
     bossSpawned = false;
     bossSpawnTimerStarted = false;
+    throwTime = 0;
 
     //WaveManager Resets
     wave1 = 0;
@@ -98,14 +103,14 @@ MyGame.playGameState.prototype = {
     spacingYMultiplier = 1;
     permanentSpawnDelay = 2000;
     //Backgrounds
-    
+
     this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
     this.skyboss = this.add.tileSprite(0, 0, 600, 820, 'sky-boss');
     this.skyboss.tilePosition.y = backgroundPos;
     this.skyboss.alpha = 0;
-    
-    
+
+
     //Player
     this.generatePlayer(yoshiPosX, yoshiPosY);
     //Enemies
@@ -143,11 +148,11 @@ MyGame.playGameState.prototype = {
       music.mute = false;
       music.loop = true;
       bossMusic.loop = true;
-      bossMusic.mute = false; 
+      bossMusic.mute = false;
     }
     else{
       music.mute = true;
-      bossMusic.mute = true; 
+      bossMusic.mute = true;
     }
     if(!sfxEnabled){
       starMusic.mute = true;
@@ -199,7 +204,7 @@ MyGame.playGameState.prototype = {
     //Move Background
     this.background.tilePosition.y += 2;
     this.skyboss.tilePosition.y += 2;
-    
+
     //Score
     scoreText.text = 'score: ' + currentScore;
     coinText.text = 'coins: ' + currentCoins;
@@ -448,26 +453,71 @@ MyGame.playGameState.prototype = {
     enemy.body.height = 60;
   },
   generateBoss: function(){
-    var baseHealth = 10;
+    var baseHealth = bossHealth;
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
-    var boss = bosses.create(game.width/2, 50, 'bowser');
-    boss.health = health;
-    boss.animations.add('bowser-idle', [0,1,2,3]);
-  
-    boss.animations.add('bowser-throw', [0,1,6,7]); // 8frames/s
-    boss.animations.play('bowser-idle', 12, true, false);
-    game.physics.enable(boss, Phaser.Physics.ARCADE);
-    boss.anchor.setTo(0.5, 0.5);
-    boss.body.velocity.y = 20;
-    boss.body.velocity.x = 150;
-    boss.body.collideWorldBounds = true;
-    boss.body.bounce.set(1);
-    boss.scale.setTo(2);
-
+    var posX = game.width / 2;
+    var posY = 50;
+    this.boss = bosses.create(posX, posY, 'bowser');
+    this.boss.health = health;
+    this.boss.animations.add('bowser-idle', [0,1,2,3]);
+    this.boss.animations.add('bowser-throw', [0,1,6,7]); // 8frames/s
+    this.boss.animations.play('bowser-idle', 12, true, false);
+    game.physics.enable(this.boss, Phaser.Physics.ARCADE);
+    this.boss.anchor.setTo(0.5, 0.5);
+    this.boss.body.velocity.y = 20;
+    this.boss.body.velocity.x = 150;
+    this.boss.body.collideWorldBounds = true;
+    this.boss.body.bounce.set(1);
+    this.boss.scale.setTo(2);
     bossSpawned = true;
     tweenSky.stop();
     this.skyboss.alpha = 1;
-  
+
+  },
+  bossMovement: function(){
+    if (bossSpawned) {
+      if (this.boss.world.y < (game.height / 4)) {
+        this.boss.body.velocity.y = 20;
+      }else {
+        this.boss.body.velocity.y = -20;
+      }
+    }
+  },
+  bowserThrow: function(alive){
+    if (alive && throwTime < game.time.now) {
+      var throwObject = this.getRndInteger(1,1000);
+      if (throwObject < bossThrowChance) {
+        this.generateThrow();
+      }
+      throwTime = game.time.now + throwDelay;
+    }
+
+  },
+  generateThrow: function(){
+    var posX = this.boss.world.x;
+    var posY = this.boss.world.y;
+    var object = unkillableEnemies.create(posX, posY, 'spiny'); //position, sprite
+    object.animations.add('spiny-ani', [0,1]); // 8frames/s
+    object.animations.play('spiny-ani', 8, true, false);
+    var velX = this.getRndInteger(25, 150);
+    game.physics.enable(object, Phaser.Physics.ARCADE);
+    object.body.collideWorldBounds = false;
+    object.allowGravity = true;
+    object.body.gravity.y = 800;
+    if(object.centerX < 240){
+      object.body.velocity.x = velX;
+    }
+    else{
+      object.body.velocity.x = -velX;
+    }
+    object.body.velocity.y = -400;
+    object.body.checkCollision.up = false;
+    object.body.checkCollision.down = false;
+    object.body.checkCollision.left = false;
+    object.body.checkCollision.right = false;
+    object.events.onOutOfBounds.add( function(){ object.kill(); } );
+    object.scale.setTo(2);
+
   },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
@@ -589,8 +639,10 @@ MyGame.playGameState.prototype = {
     if (boss.health <= 0) {
       boss.animations.add('bowser-kill', [4,5]);
       boss.animations.play('bowser-kill', 8, true, false);
+      bossSpawned = false;
+      this.bowserThrow(bossSpawned);
       game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.resetBoss, this);
-      tweenSky = this.add.tween(this.skyboss).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false); 
+      tweenSky = this.add.tween(this.skyboss).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
       tweenSky.loop = false;
       music.resume();
       bossMusic.stop();
@@ -600,7 +652,6 @@ MyGame.playGameState.prototype = {
   resetBoss: function(){
     bossSpawnTimerStarted = false;
     bossIsAlive = false;
-    bossSpawned = false;
   },
   starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
     currentScore += 1000;
@@ -742,14 +793,13 @@ MyGame.playGameState.prototype = {
         game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.generateBoss, this);
         bossSpawnTimerStarted = true;
         console.log("Boss Spawns in " + bossSpawnWaitTime + "s");
-        tweenSky = this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 1000, true);  
+        tweenSky = this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 1000, true);
         music.pause();
-        bossMusic.play();  
-          
+        bossMusic.play();
+
       }
-        else{
-            
-        }
+      this.bowserThrow(bossSpawned);
+      this.bossMovement();
     }
     //When both waves are completed, repeat but more difficult
     //Scaling
