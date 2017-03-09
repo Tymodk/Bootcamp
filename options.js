@@ -1,9 +1,15 @@
 //state variables
 var soundText;
 var sfxText;
+var difficultyText;
 var creditsText;
 var yesButton;
 var noButton;
+var yesSFXButton;
+var noSFXButton;
+var easyButton;
+var mediumButton;
+var hardButton;
 //initiating state
 MyGame.optionsState = function (game) {};
 MyGame.optionsState.prototype = {
@@ -58,6 +64,11 @@ MyGame.optionsState.prototype = {
     else{
       noSFXButton.visible = true;
     }
+    //difficulty text
+    difficultyText = game.add.text(game.world.centerX - 70, game.height - 350, '', {font: 'Pixel', fontSize: '28px', fill: '#fff'});
+    difficultyText.scale.setTo(0.75);
+    difficultyText.anchor.set(0.5);
+
     //exit button and credits
     var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.exitGame);
     exitButton.scale.setTo(0.7);

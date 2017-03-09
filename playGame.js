@@ -117,13 +117,15 @@ MyGame.playGameState.prototype = {
     blockSound = game.add.audio('blockSound');
     fireSmallSound = game.add.audio('fireSmallSound');
     deathSound = game.add.audio('deathSound');
-    star = game.add.audio('star');
+    starMusic = game.add.audio('star');
     //muted or not
     if(soundEnabled){
       music.mute = false;
+              
     }
     else{
       music.mute = true;
+      star.music = true;
     }
     if(!sfxEnabled){
       coinSound.mute = true;
@@ -178,8 +180,9 @@ MyGame.playGameState.prototype = {
     //Interactions
     if(starLength <= game.time.now){
       hasStar = false;
-      music.mute = false;
-      star.stop();
+      if(soundEnabled){ 
+      music.mute = false;}
+      starMusic.stop();
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
@@ -360,7 +363,8 @@ MyGame.playGameState.prototype = {
     starLength = game.time.now + 15000;
     star.kill();
     music.mute = true;
-    star.play();
+    if(soundEnabled){  
+    starMusic.play();}
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
@@ -518,7 +522,7 @@ MyGame.playGameState.prototype = {
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
         typeFire = 'double';
-        fireDelay = 400;
+        fireDelay = 700;
       }
       else if(fireDelay <= fireDelayMin && typeFire != 'big'){
         typeFire = 'big';

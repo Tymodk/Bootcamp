@@ -36,6 +36,9 @@ MyGame.preloadState.prototype = {
         this.load.image('retry', 'assets/button_retry.png');
         this.load.image('buttonYes', 'assets/button_yes.png');
         this.load.image('buttonNo', 'assets/button_no.png');
+        this.load.image('buttonEasy', 'assets/button_easy.png');
+        this.load.image('buttonMedium', 'assets/button_medium.png');
+        this.load.image('buttonHard', 'assets/button_hard.png');
         //loading sound assets
         this.load.audio('water', 'assets/underwater.mp3');
         this.load.audio('coinSound', 'assets/smw_coin.wav');
@@ -43,7 +46,7 @@ MyGame.preloadState.prototype = {
         this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');
         this.load.audio('deathSound', 'assets/smw_stomp.wav');
         this.load.audio('gameover', 'assets/smw_game_over.wav');
-        this.load.audio('star', 'assets/smw_game_over.wav');
+        this.load.audio('star', 'assets/smw_star.mp3');
         this.load.audio('yoshi-wah', 'assets/mlpit_yoshi_death.wav');
 
         
