@@ -878,7 +878,7 @@ MyGame.playGameState.prototype = {
   spawnBooWave: function(){
     spawnPoint = this.getRndInteger(1, 3);
     spawnBoo = this.getRndInteger(1, 1000);
-    var velX = 500;
+    var velX = 450;
     var velY = 150;
     if (spawnBoo < spawnBooChance) {
       if(spawnPoint == 1){
