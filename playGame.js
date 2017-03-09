@@ -32,8 +32,9 @@ var bossSpawned = false;
 var bossSpawnTimerStarted = false;
 //Boss
 var bosses;
-var bossSpawnRound = 0;
+var bossSpawnRound = 1;
 var bossIsAlive = false;
+var bossSpawnWaitTime = 5;
 //Wave Manager
 var spawnDelay = 3000;
 var minSpawnDelay = 1500;
@@ -79,7 +80,7 @@ MyGame.playGameState.prototype = {
     yoshiSpeed = 250;
     //Enemies reset
     globalHealthMultiplier = 0;
-    bossSpawnRound = 0;
+    bossSpawnRound = 1;
     bossIsAlive = false;
     bossSpawned = false;
     bossSpawnTimerStarted = false;
@@ -182,10 +183,10 @@ MyGame.playGameState.prototype = {
       var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
       swipeBottom.anchor.set(1);
       swipeBottom.scale.setTo(1, 0.75);
-    } 
+    }
     this.logRoundStats();
     //    this.generateStar();
-      
+
     //this.boss = this.add.sprite(0, 0, 'bowser');
     //this.boss.scale.setTo(2);
     //this.boss.animations.add('bowser-ani', [0, 1, 2, 3]);
@@ -514,22 +515,22 @@ MyGame.playGameState.prototype = {
         this.warning.scale.setTo(0.4);
         this.warning.animations.add('warning-ani', [0,1]);
         this.warning.animations.play('warning-ani', 10, true, false);
-        
+
         game.time.events.add(Phaser.Timer.SECOND * 0.8, this.warningKill, this);
     },
-    
+
     warningKill: function()
     {
         this.warning.kill();
     },
-    
+
   spawnBulletEnemy: function(){
     var shootBullet = this.getRndInteger(1,1000);
     if(shootBullet < bulletChance){
         var posX = this.getRndInteger(1, game.width);
         this.generateWarning(posX);
         game.time.events.add(Phaser.Timer.SECOND * 0.8, this.generateBulletEnemy, this, posX);
-        
+
     }
   },
   generateExplosion: function(x, y) {
@@ -592,7 +593,7 @@ MyGame.playGameState.prototype = {
   destroyBoss: function(fireball, boss){
     this.destroyEnemy(fireball, boss);
     if (boss.health <= 0) {
-      game.time.events.add(Phaser.Timer.SECOND * 7, this.resetBoss, this);
+      game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.resetBoss, this);
     }
   },
   resetBoss: function(){
@@ -608,7 +609,7 @@ MyGame.playGameState.prototype = {
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
-      
+
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
@@ -622,7 +623,7 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.left = false;
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
-      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );    
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     }
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
@@ -746,7 +747,7 @@ MyGame.playGameState.prototype = {
     if (bossIsAlive) {
       console.log('Boss still alive');
       if (!bossSpawned && !bossSpawnTimerStarted) {
-        game.time.events.add(Phaser.Timer.SECOND * 7, this.generateBoss, this);
+        game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.generateBoss, this);
         bossSpawnTimerStarted = true;
         console.log("Boss Spawned");
       }
@@ -767,10 +768,10 @@ MyGame.playGameState.prototype = {
       }
 
       //Spawn Boss
-      bossSpawnRound++;
       if (bossSpawnRound == 2) {
         this.spawnBoss();
       }else{
+        bossSpawnRound++;
         this.nextRound();
       }
       this.logRoundStats();
