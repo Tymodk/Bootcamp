@@ -26,15 +26,15 @@ MyGame.titlescreenState.prototype = {
     exitButton.scale.setTo(1.4);
     exitButton.anchor.set(0.5);
     //music
-     if(!isPlaying){
-         music.play();
-         music.loop = true;
-         isPlaying = true;
-     }
+    if(!isPlaying){
+      music.play();
+      music.loop = true;
+      isPlaying = true;
+    }
   },
   update: function(){
     this.background.tilePosition.y += 2;
-      backgroundPos = this.background.tilePosition.y;
+    backgroundPos = this.background.tilePosition.y;
   },
   startGame: function(){
     game.state.start('preGame');
