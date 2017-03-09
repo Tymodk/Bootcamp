@@ -33,7 +33,7 @@ var bossSpawnTimerStarted = false;
 //Boss
 var bosses;
 var bossSpawnRound = 1;
-var bossHealth = 50;
+var bossHealth = 30;
 var bossIsAlive = false;
 var bossSpawnWaitTime = 5;
 var throwTime = 0;
@@ -454,7 +454,7 @@ MyGame.playGameState.prototype = {
   },
   generateBoss: function(){
     var baseHealth = bossHealth;
-    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
+    var health = baseHealth + ((baseHealth / 2.5) * globalHealthMultiplier);
     var posX = game.width / 2;
     var posY = 50;
     this.boss = bosses.create(posX, posY, 'bowser');
