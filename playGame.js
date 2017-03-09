@@ -186,10 +186,6 @@ MyGame.playGameState.prototype = {
     this.logRoundStats();
     //    this.generateStar();
       
-    //this.boss = this.add.sprite(0, 0, 'bowser');
-    //this.boss.scale.setTo(2);
-    //this.boss.animations.add('bowser-ani', [0, 1, 2, 3]);
-    //this.boss.animations.play('bowser-ani', 12, true, false);
   }, //END OF CREATE FUNCTION
   addScore: function () {
     currentScore += scoreTick;
@@ -466,17 +462,17 @@ MyGame.playGameState.prototype = {
     console.log('generateBoss');
     var baseHealth = 10;
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
-    var boss = bosses.create(game.width/2, 50, 'boo');
+    var boss = bosses.create(game.width/2, 50, 'bowser');
     boss.health = health;
-    boss.animations.add('boo-ani', [0,1]);
-    boss.animations.play('boo-ani', 3, true, false);
+    boss.animations.add('bowser-ani', [0,1,2,3]);
+    boss.animations.play('bowser-ani', 12, true, false);
     game.physics.enable(boss, Phaser.Physics.ARCADE);
     boss.anchor.setTo(0.5, 0.5);
     boss.body.velocity.y = 20;
     boss.body.velocity.x = 150;
     boss.body.collideWorldBounds = true;
     boss.body.bounce.set(1);
-    boss.scale.setTo(0.50);
+    boss.scale.setTo(2);
 
     bossSpawned = true;
   },
@@ -594,6 +590,8 @@ MyGame.playGameState.prototype = {
   destroyBoss: function(fireball, boss){
     this.destroyEnemy(fireball, boss);
     if (boss.health <= 0) {
+        boss.animations.add('bowser-kill', [4,5]);
+        boss.animations.play('bowser-kill', 8, true, false);
       game.time.events.add(Phaser.Timer.SECOND * 7, this.resetBoss, this);
     }
   },
