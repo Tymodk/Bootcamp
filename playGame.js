@@ -890,6 +890,7 @@ MyGame.playGameState.prototype = {
     }
   },
   gameOverScreen: function(){
+    bossMusic.stop();  
     backgroundPos = this.background.tilePosition.y;
     yoshiPosX = this.yoshi.world.x;
     yoshiPosY = this.yoshi.world.y;
