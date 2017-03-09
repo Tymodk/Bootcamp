@@ -62,6 +62,8 @@ var velYMultiplier;
 var tween;
 
 var warning;
+var boss;
+
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -173,6 +175,14 @@ MyGame.playGameState.prototype = {
 
     this.logRoundStats();
     //    this.generateStar();
+      
+      
+      
+        this.boss = this.add.sprite(0, 0, 'bowser');
+        this.boss.scale.setTo(2);
+        this.boss.animations.add('bowser-ani', [0, 1, 2, 3]);
+        this.boss.animations.play('bowser-ani', 12, true, false);
+      
   }, //END OF CREATE FUNCTION
 
   addScore: function () {
