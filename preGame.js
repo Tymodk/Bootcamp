@@ -23,7 +23,9 @@ MyGame.preGameState.prototype = {
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         //counter variable
         i = 0;
-        
+        music = game.add.audio('water');
+        music.play();
+        music.loop = true;
         countdown.play();
 
     },

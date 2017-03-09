@@ -39,6 +39,8 @@ MyGame.preloadState.prototype = {
         this.load.image('buttonNo', 'assets/button_no.png');
         //loading sound assets
         this.load.audio('water', 'assets/underwater.mp3');
+        this.load.audio('menu', 'assets/menu.mp3');
+
         this.load.audio('coinSound', 'assets/smw_coin.wav');
         this.load.audio('blockSound', 'assets/smw_message_block.wav');
         this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');

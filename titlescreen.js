@@ -26,6 +26,7 @@ MyGame.titlescreenState.prototype = {
     exitButton.scale.setTo(1);
     exitButton.anchor.set(0.5);
     //music
+     music = game.add.audio('menu');
      music.play();
      music.loop = true;
   },
