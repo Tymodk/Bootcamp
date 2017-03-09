@@ -70,10 +70,10 @@ MyGame.playGameState.prototype = {
     game.time.now = 0;
     currentScore = 0;
     currentCoins = 0;
+    typeFire = 'normal';
     fireDelay = 400;
     fireballSpeed = 250;
     yoshiSpeed = 250;
-    typeFire = 'normal';
     //Enemies reset
     globalHealthMultiplier = 0;
     bossSpawnRound = 0;
@@ -128,11 +128,12 @@ MyGame.playGameState.prototype = {
     //muted or not
     if(soundEnabled){
       music.mute = false;
+      music.loop = true;
 
     }
     else{
       music.mute = true;
-      star.music = true;
+      starMusic.music = true;
     }
     if(!sfxEnabled){
       coinSound.mute = true;
@@ -169,6 +170,7 @@ MyGame.playGameState.prototype = {
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
 
     this.logRoundStats();
+    //    this.generateStar();
   }, //END OF CREATE FUNCTION
   addScore: function () {
     currentScore += scoreTick;
@@ -192,6 +194,8 @@ MyGame.playGameState.prototype = {
       if(soundEnabled){
       music.mute = false;}
       starMusic.stop();
+      this.yoshi.animations.play('ani', 6, true, false);
+
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
@@ -264,15 +268,16 @@ MyGame.playGameState.prototype = {
      //Waves
      this.waveManager();
   }, //END OF UPDATE FUNCTION
-
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
+    this.yoshi.animations.add('star', [4,5,6,7]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     this.yoshi.scale.setTo(1.75,1.75);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.width = 25;
     this.yoshi.body.height = 45;
+
     this.yoshi.animations.play('ani', 6, true, false);
     },
   fireSequence: function(){
@@ -330,15 +335,58 @@ MyGame.playGameState.prototype = {
         fireball2.angle -= 90;
         fireball2.animations.add('spin', [0,1,2,3]);
         fireball2.animations.play('spin', 8, true, false);
-        fireball.body.velocity.x = 25;
-        fireball2.body.velocity.x = -25;
+        fireball.body.velocity.x = 45;
+        fireball2.body.velocity.x = -45;
         fireball2.body.velocity.y = - fireballSpeed;
         fireball2.body.width = 25;
         fireball2.body.height = 25;
         fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball2.checkWorldBounds = true;
+
     }
-    else{
+    else if(typeFire == 'big-triple'){
+        var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball, Phaser.Physics.ARCADE);
+        playerDamage = 2;
+        fireball.animations.add('spin', [0,1]);
+        fireball.animations.play('spin', 4, true, false);
+        fireball.body.velocity.x = 70;
+        fireball.scale.setTo(2,2);
+        fireball.body.width = 30;
+        fireball.body.height = 30;
+        fireball.angle -= 90;
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.checkWorldBounds = true;
+        fireball.body.velocity.y = - fireballSpeed;
+        lastFireballFired = game.time.now;
+        fireSmallSound.play();
+        var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+        fireball2.scale.setTo(2,2);
+        fireball2.angle -= 90;
+        fireball2.animations.add('spin', [0,1,2,3]);
+        fireball2.animations.play('spin', 8, true, false);
+        fireball2.body.velocity.x = -70;
+        fireball2.body.velocity.y = - fireballSpeed;
+        fireball2.body.width = 25;
+        fireball2.body.height = 25;
+        fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball2.checkWorldBounds = true;
+        var fireball3 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+        fireball3.scale.setTo(2,2);
+        fireball3.angle -= 90;
+        fireball3.animations.add('spin', [0,1,2,3]);
+        fireball3.animations.play('spin', 8, true, false);
+        fireball3.body.velocity.x = 0;
+        fireball3.body.velocity.y = - fireballSpeed -65;
+        fireball3.body.width = 25;
+        fireball3.body.height = 25;
+        fireball3.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball3.checkWorldBounds = true;
+
+      }
+      else{
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
         if(typeFire == 'double'){
@@ -371,7 +419,10 @@ MyGame.playGameState.prototype = {
     star.kill();
     music.mute = true;
     if(soundEnabled){
-    starMusic.play();}
+    starMusic.play();
+    starMusic.loop = true;}
+    this.yoshi.animations.play('star', 10, true, false);
+
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
@@ -432,7 +483,6 @@ MyGame.playGameState.prototype = {
     this.explosion.anchor.setTo(0.5, 0.5);
     this.explosion.scale.setTo(1.5,1.5);
     deathSound.play();
-
   },
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
@@ -506,7 +556,6 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
     }
-
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
@@ -536,37 +585,46 @@ MyGame.playGameState.prototype = {
         typeFire = 'double';
         fireDelay = 700;
       }
-      else if(fireDelay <= fireDelayMin && typeFire != 'big'){
+      else if(fireDelay <= fireDelayMin && typeFire == 'double'){
         typeFire = 'big';
         fireDelay = 400;
         playerDamage = 2;
       }
+      else if(fireDelay <= fireDelayMin && typeFire == 'big'){
+        typeFire = 'big-double';
+        fireDelay = 600;
+        playerDamage = 2;
+
+      }
+      else if(fireDelay <= fireDelayMin && typeFire == 'big-double'){
+        typeFire = 'big-triple';
+        fireDelay = 750;
+        playerDamage = 2;
+      }
+
+
       if(random==3 && fireballSpeed < maxFireballSpeed){
         fireballSpeed += 25;
         pickUpNr = 1;
         tween = this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextFS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
-
-
       }
       if(random==4 && yoshiSpeed < maxYoshiSpeed){
         yoshiSpeed += 50;
         pickUpNr = 2;
         tween = this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
-
       }
-
-//      tween.onComplete.add(this.onComplete, this);
+  //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
-//    onComplete: function(text){
-//        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-//
-//
-//
-//
-//    },
+  //    onComplete: function(text){
+  //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+  //
+  //
+  //
+  //
+  //    },
   //WAVEMANAGER
   waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
