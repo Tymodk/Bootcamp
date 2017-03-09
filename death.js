@@ -9,10 +9,15 @@ MyGame.deathState.prototype = {
         this.background.tilePosition.y = backgroundPos;
         this.generatePlayer(yoshiPosX, yoshiPosY);
         gameover = game.add.audio('gameover');
+        deathSFX = game.add.audio('yoshi-wah');
         music.mute = true;
         if(soundEnabled){
             gameover.play();
         }
+        if(sfxEnabled){
+            deathSFX.play();     
+    }
+        
         j = 0;
     },
     update: function(){
