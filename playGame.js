@@ -33,8 +33,12 @@ var bossSpawnTimerStarted = false;
 //Boss
 var bosses;
 var bossSpawnRound = 1;
+var bossHealth = 50;
 var bossIsAlive = false;
 var bossSpawnWaitTime = 5;
+var throwTime = 0;
+var throwDelay = 2000;
+var bossThrowChance = 500;
 //Wave Manager
 var spawnDelay = 3000;
 var minSpawnDelay = 1500;
@@ -84,6 +88,7 @@ MyGame.playGameState.prototype = {
     bossIsAlive = false;
     bossSpawned = false;
     bossSpawnTimerStarted = false;
+    throwTime = 0;
 
     //WaveManager Resets
     wave1 = 0;
@@ -162,11 +167,6 @@ MyGame.playGameState.prototype = {
         deathSound.mute = false;
         boomSound.mute = false;
     }
-    //Fireball
-    //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
-    //      this.fireballbig.animations.add('woosh', [0,1]);
-    //      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
-    //      this.fireballbigger.animations.add('woosh2', [0,1]);
     // scoreTimer
     game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
     //pick up text
@@ -463,21 +463,63 @@ MyGame.playGameState.prototype = {
     enemy.body.height = 60;
   },
   generateBoss: function(){
-    var baseHealth = 10;
+    var baseHealth = bossHealth;
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
-    var boss = bosses.create(game.width/2, 50, 'bowser');
-    boss.health = health;
-    boss.animations.add('bowser-ani', [0,1,2,3]);
-    boss.animations.play('bowser-ani', 12, true, false);
-    game.physics.enable(boss, Phaser.Physics.ARCADE);
-    boss.anchor.setTo(0.5, 0.5);
-    boss.body.velocity.y = 20;
-    boss.body.velocity.x = 150;
-    boss.body.collideWorldBounds = true;
-    boss.body.bounce.set(1);
-    boss.scale.setTo(2);
-
+    var posX = game.width / 2;
+    var posY = 50;
+    this.boss = bosses.create(posX, posY, 'bowser');
+    this.boss.health = health;
+    this.boss.animations.add('bowser-ani', [0,1,2,3]);
+    this.boss.animations.play('bowser-ani', 12, true, false);
+    game.physics.enable(this.boss, Phaser.Physics.ARCADE);
+    this.boss.anchor.setTo(0.5, 0.5);
+    this.boss.body.velocity.y = 20;
+    this.boss.body.velocity.x = 150;
+    this.boss.body.collideWorldBounds = true;
+    this.boss.body.bounce.set(1);
+    this.boss.scale.setTo(2);
     bossSpawned = true;
+  },
+  bossMovement: function(){
+    if (this.boss.world.y < (game.height / 4)) {
+      this.boss.body.velocity.y = 20;
+    }else {
+      this.boss.body.velocity.y = -20;
+    }
+  },
+  bowserThrow: function(alive){
+    if (alive && throwTime < game.time.now) {
+      var throwObject = this.getRndInteger(1,1000);
+      if (throwObject < bossThrowChance) {
+        this.generateThrow();
+      }
+      throwTime = game.time.now + throwDelay;
+    }
+
+  },
+  generateThrow: function(){
+    var posX = this.boss.world.x;
+    var posY = this.boss.world.y;
+    var object = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
+
+    game.physics.enable(object, Phaser.Physics.ARCADE);
+    object.body.collideWorldBounds = false;
+    object.allowGravity = true;
+    object.body.gravity.y = 400;
+    if(object.centerX < 240){
+      object.body.velocity.x = 50;
+    }
+    else{
+      object.body.velocity.x = -50;
+    }
+    object.body.velocity.y = 50;
+    object.body.checkCollision.up = false;
+    object.body.checkCollision.down = false;
+    object.body.checkCollision.left = false;
+    object.body.checkCollision.right = false;
+    object.events.onOutOfBounds.add( function(){ object.kill(); } );
+    object.scale.setTo(0.4);
+
   },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
@@ -599,13 +641,14 @@ MyGame.playGameState.prototype = {
     if (boss.health <= 0) {
       boss.animations.add('bowser-kill', [4,5]);
       boss.animations.play('bowser-kill', 8, true, false);
+      bossSpawned = false;
+      this.bowserThrow(bossSpawned);
       game.time.events.add(Phaser.Timer.SECOND * bossSpawnWaitTime, this.resetBoss, this);
     }
   },
   resetBoss: function(){
     bossSpawnTimerStarted = false;
     bossIsAlive = false;
-    bossSpawned = false;
   },
   starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
     currentScore += 1000;
@@ -756,6 +799,8 @@ MyGame.playGameState.prototype = {
         bossSpawnTimerStarted = true;
         console.log("Boss Spawns in " + bossSpawnWaitTime + "s");
       }
+      this.bowserThrow(bossSpawned);
+      this.bossMovement();
     }
     //When both waves are completed, repeat but more difficult
     //Scaling
