@@ -196,7 +196,7 @@ MyGame.playGameState.prototype = {
       swipeBottom.scale.setTo(1, 0.75);
     }
     this.logRoundStats();
-    //    this.generateStar();
+    this.generateStar();
   }, //END OF CREATE FUNCTION
   addScore: function () {
     currentScore += scoreTick;
@@ -686,11 +686,33 @@ MyGame.playGameState.prototype = {
     fireball.kill();
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      
   },
   starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet
-    enemy.kill();
+    
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+    currentScore += 1000;
+      
+      enemy.body.collideWorldBounds = false;
+      this.generateExplosion(enemy.centerX, enemy.centerY, true);
+      this.generatePickUp(enemy.centerX, enemy.centerY);
+      enemy.allowGravity = true;
+      enemy.body.gravity.y = 400;
+      if(enemy.centerX < 240){
+        enemy.body.velocity.x = -200;
+      }
+      else{
+        enemy.body.velocity.x = 200;
+      }
+      enemy.body.velocity.y = 25;
+      enemy.body.checkCollision.up = false;
+      enemy.body.checkCollision.down = false;
+      enemy.body.checkCollision.left = false;
+      enemy.body.checkCollision.right = false;
+      
+
+      enemy.angle += 180;  
   },
   getCoin: function(yoshi, coin) {
     coin.destroy();
