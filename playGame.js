@@ -133,6 +133,9 @@ MyGame.playGameState.prototype = {
     blocks.enableBody = true;
     coins = game.add.group();
     coins.enableBody = true;
+    //Explosions
+    explosions = game.add.group();
+    explosions.enableBody = false;  
     //SFX
     coinSound = game.add.audio('coinSound');
     blockSound = game.add.audio('blockSound');
@@ -567,18 +570,23 @@ MyGame.playGameState.prototype = {
     }
   },
   generateExplosion: function(x, y, sound) {
-    this.explosion = this.add.sprite(x, y, 'explosion');
-    this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
-    this.explosion.animations.play('explosion-boom', 9, false, true);
-    this.explosion.anchor.setTo(0.5, 0.5);
-    this.explosion.scale.setTo(1.5,1.5);
+    var explosion = explosions.create(x, y, 'explosion');
+    explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
+    explosion.animations.play('explosion-boom', 9, false, true);
+    explosion.anchor.setTo(0.5, 0.5);
+    explosion.scale.setTo(1.5,1.5);
+//    game.time.events.add(Phaser.Timer.SECOND * 2, this.destroyExplosion(explosion), this);
+
     if(sound){
         deathSound.play();}
       else{
           boomSound.play();
       }
 
-  },
+  },  
+  /*destroyExplosion: function(explosion){
+    explosion.kill();   
+  },*/
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
     var random =  game.rnd.integerInRange(0,100);
