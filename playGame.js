@@ -451,6 +451,8 @@ MyGame.playGameState.prototype = {
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
     enemy.body.velocity.y = velY;
     enemy.body.velocity.x = velX;
+    enemy.body.width = 60;
+    enemy.body.height = 60;
   },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
