@@ -36,6 +36,7 @@ MyGame.preloadState.prototype = {
         this.load.image('store', 'assets/button_store.png');
         this.load.image('options', 'assets/button_options.png');
         this.load.image('exit', 'assets/button_exit.png');
+        this.load.image('exitOptions', 'assets/button_exit_options.png');
         this.load.image('retry', 'assets/button_retry.png');
         this.load.image('buttonYes', 'assets/button_yes.png');
         this.load.image('buttonNo', 'assets/button_no.png');
