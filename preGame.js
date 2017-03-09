@@ -103,9 +103,7 @@ MyGame.preGameState.prototype = {
             yoshiPosY = this.yoshi.world.y;
             backgroundPos = this.background.tilePosition.y;
             music.volume = 1;
-
             game.state.start('playGame', true, false, yoshiPosX, yoshiPosY);
-            
         }
     },
     generatePlayer: function(x, y) {
@@ -117,7 +115,6 @@ MyGame.preGameState.prototype = {
     this.yoshi.animations.play('ani', 6, true, false);
     },
     countDown: function(z) {
-        
         switch (z){
             case 0:
                 this.countDownSprite = game.add.sprite(240, 400, 'ready');
