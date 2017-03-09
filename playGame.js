@@ -37,7 +37,6 @@ var permanentSpawn = 0;
 var permanentSpawnDelay = 2000; // ms delay between perm. spawn
 var spawnBooChance = 150; // chance on 1000 every spawn
 var bulletChance = 100; // chance on 1000 every spawn
-
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
 var wave1;
@@ -53,10 +52,8 @@ var minAmount = 1;
 var maxAmount = 5;
 var maxMinAmount = 4;
 var velYMultiplier;
-
 //tween
 var tween;
-
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -333,19 +330,17 @@ MyGame.playGameState.prototype = {
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
         if(typeFire == 'double'){
-            var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
-            game.physics.enable(fireball2, Phaser.Physics.ARCADE);
-            fireball2.animations.add('spin', [0,1,2,3]);
-            fireball2.animations.play('spin', 8, true, false);
-            fireball.body.velocity.x = 25;
-            fireball2.body.velocity.x = -25;
-
-            fireball2.body.velocity.y = - fireballSpeed;
-
-            fireball2.body.width = 25;
-            fireball2.body.height = 25;
-            fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
-            fireball2.checkWorldBounds = true;
+          var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
+          game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+          fireball2.animations.add('spin', [0,1,2,3]);
+          fireball2.animations.play('spin', 8, true, false);
+          fireball.body.velocity.x = 25;
+          fireball2.body.velocity.x = -25;
+          fireball2.body.velocity.y = - fireballSpeed;
+          fireball2.body.width = 25;
+          fireball2.body.height = 25;
+          fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+          fireball2.checkWorldBounds = true;
         }
         fireball.animations.add('spin', [0,1,2,3]);
         fireball.animations.play('spin', 8, true, false);

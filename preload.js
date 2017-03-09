@@ -36,9 +36,6 @@ MyGame.preloadState.prototype = {
         this.load.image('retry', 'assets/button_retry.png');
         this.load.image('buttonYes', 'assets/button_yes.png');
         this.load.image('buttonNo', 'assets/button_no.png');
-        this.load.image('buttonEasy', 'assets/button_easy.png');
-        this.load.image('buttonMedium', 'assets/button_medium.png');
-        this.load.image('buttonHard', 'assets/button_hard.png');
         //loading sound assets
         this.load.audio('water', 'assets/underwater.mp3');
         this.load.audio('coinSound', 'assets/smw_coin.wav');
