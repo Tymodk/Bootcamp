@@ -22,8 +22,11 @@ MyGame.preGameState.prototype = {
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         //counter variable
         i = 0;
+        
+        game.input.isDown = false;
     },
     update: function(){
+        
         i += 1;
         this.background.tilePosition.y += 2;
         
