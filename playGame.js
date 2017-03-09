@@ -454,7 +454,7 @@ MyGame.playGameState.prototype = {
   },
   generateBoss: function(){
     var baseHealth = bossHealth;
-    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
+    var health = baseHealth + ((baseHealth / 2.5) * globalHealthMultiplier);
     var posX = game.width / 2;
     var posY = 50;
     this.boss = bosses.create(posX, posY, 'bowser');
