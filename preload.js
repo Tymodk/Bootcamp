@@ -52,6 +52,7 @@ MyGame.preloadState.prototype = {
         this.load.audio('star', 'assets/smw_star.mp3');
         this.load.audio('yoshi-wah', 'assets/mlpit_yoshi_death.wav');
         this.load.audio('countdown', 'assets/mk64_countdown.wav');
+        this.load.audio('boom', 'assets/smw_blarg.wav');
     },
     create: function() {
         game.scale.pageAlignHorizontally = true;

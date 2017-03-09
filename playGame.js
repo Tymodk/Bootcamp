@@ -133,28 +133,33 @@ MyGame.playGameState.prototype = {
     blockSound = game.add.audio('blockSound');
     fireSmallSound = game.add.audio('fireSmallSound');
     deathSound = game.add.audio('deathSound');
+    boomSound = game.add.audio('boom');
+  
     starMusic = game.add.audio('star');
+    
     //muted or not
     if(soundEnabled){
       music.mute = false;
       music.loop = true;
-
     }
     else{
       music.mute = true;
-      starMusic.music = true;
     }
     if(!sfxEnabled){
+      starMusic.mute = true;
       coinSound.mute = true;
       blockSound.mute = true;
       fireSmallSound.mute = true;
       deathSound.mute = true;
+      boomSound.mute = true;     
     }
     else{
-      coinSound.mute = false;
-      blockSound.mute = false;
-      fireSmallSound.mute = false;
-      deathSound.mute = false;
+        starMusic.mute = false;
+        coinSound.mute = false;
+        blockSound.mute = false;
+        fireSmallSound.mute = false;
+        deathSound.mute = false;
+        boomSound.mute = false;
     }
     //Fireball
     //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -191,7 +196,7 @@ MyGame.playGameState.prototype = {
     currentScore += scoreTick;
   },
   update: function(){
-    var starChance =  game.rnd.integerInRange(0,10000);
+    var starChance =  game.rnd.integerInRange(0, 10000);
     if(starChance ==  10000){this.generateStar()};
     //Move Background
     this.background.tilePosition.y += 2;
@@ -507,36 +512,38 @@ MyGame.playGameState.prototype = {
     // enemy.body.velocity.x =  velX;
     enemy.scale.setTo(0.5);
   },
-    generateWarning: function(posX){
+  generateWarning: function(posX){
         this.warning = this.add.sprite(posX, 35, 'warning');
         this.warning.scale.setTo(0.4);
         this.warning.animations.add('warning-ani', [0,1]);
         this.warning.animations.play('warning-ani', 10, true, false);
         
         game.time.events.add(Phaser.Timer.SECOND * 0.8, this.warningKill, this);
-    },
-    
-    warningKill: function()
-    {
-        this.warning.kill();
-    },
-    
+  },
+  warningKill: function()
+  {
+    this.warning.kill();
+  },
   spawnBulletEnemy: function(){
     var shootBullet = this.getRndInteger(1,1000);
     if(shootBullet < bulletChance){
-        var posX = this.getRndInteger(1, game.width);
-        this.generateWarning(posX);
-        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.generateBulletEnemy, this, posX);
-        
+      var posX = this.getRndInteger(1, game.width);
+      this.generateWarning(posX);
+      game.time.events.add(Phaser.Timer.SECOND * 0.8, this.generateBulletEnemy, this, posX);
     }
   },
-  generateExplosion: function(x, y) {
+  generateExplosion: function(x, y, sound) {
     this.explosion = this.add.sprite(x, y, 'explosion');
     this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
     this.explosion.animations.play('explosion-boom', 9, false, true);
     this.explosion.anchor.setTo(0.5, 0.5);
     this.explosion.scale.setTo(1.5,1.5);
-    deathSound.play();
+    if(sound){
+        deathSound.play();}
+      else{
+          boomSound.play();
+      }
+    
   },
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
@@ -561,12 +568,13 @@ MyGame.playGameState.prototype = {
   },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
     fireball.kill();
+    
     enemy.health -= playerDamage;
     if(enemy.health <= 0){
       currentScore += 1000;
       game.physics.enable(enemy, Phaser.Physics.ARCADE);
       enemy.body.collideWorldBounds = false;
-      this.generateExplosion(enemy.centerX, enemy.centerY);
+      this.generateExplosion(enemy.centerX, enemy.centerY, true);
       this.generatePickUp(enemy.centerX, enemy.centerY);
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
@@ -585,6 +593,7 @@ MyGame.playGameState.prototype = {
 
       enemy.angle += 180;
       }
+      else{this.generateExplosion(enemy.centerX, enemy.centerY, false);  }
   },
 
   destroyBoss: function(fireball, boss){
