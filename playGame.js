@@ -249,15 +249,6 @@ MyGame.playGameState.prototype = {
     	else if(game.input.mousePointer.y < 720){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
-      /*
-    	else{
-    		this.yoshi.body.velocity.y = 0;
-    		var horizontalTween = game.add.tween(this.yoshi).to({
-                    x: game.input.mousePointer.x
-               }, yoshiSpeed, Phaser.Easing.Linear.None, true);
-    	}
-    }
-      */
       }
     // vertical borders
     if(this.yoshi.y <= 52){

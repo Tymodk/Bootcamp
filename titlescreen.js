@@ -17,13 +17,13 @@ MyGame.titlescreenState.prototype = {
     startGameButton.scale.setTo(1);
     startGameButton.anchor.set(0.5);
     var storeButton = game.add.button(game.width / 2, game.height - 300, 'store');
-    storeButton.scale.setTo(1);
+    storeButton.scale.setTo(1.4);
     storeButton.anchor.set(0.5);
     var optionsButton = game.add.button(game.width / 2, game.height - 200, 'options', this.goToOptions);
     optionsButton.scale.setTo(1);
     optionsButton.anchor.set(0.5);
     var exitButton = game.add.button(game.width / 2, game.height - 100, 'exit', this.exitApp);
-    exitButton.scale.setTo(1);
+    exitButton.scale.setTo(1.4);
     exitButton.anchor.set(0.5);
     //music
      if(!isPlaying){
