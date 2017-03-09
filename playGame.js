@@ -64,7 +64,6 @@ var tween;
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
   create: function(){
-    this.generateBoss();
     //initiating physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
     //Reset Variables on New Game
@@ -79,6 +78,9 @@ MyGame.playGameState.prototype = {
     globalHealthMultiplier = 0;
     bossSpawnRound = 0;
     bossIsAlive = false;
+    bossSpawned = false;
+    bossSpawnTimerStarted = false;
+
     //WaveManager Resets
     wave1 = 0;
     wave2 = 0;
@@ -207,6 +209,7 @@ MyGame.playGameState.prototype = {
     }
     else{
       game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
+      game.physics.arcade.overlap(this.yoshi, bosses, this.gameOverScreen, null, this);
       game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
     }
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
@@ -447,17 +450,17 @@ MyGame.playGameState.prototype = {
     console.log('generateBoss');
     var baseHealth = 10;
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
-    var enemy = bosses.create(game.width/2, 50, 'boo');
-    enemy.health = health;
-    enemy.animations.add('boo-ani', [0,1]);
-    enemy.animations.play('boo-ani', 3, true, false);
-    game.physics.enable(enemy, Phaser.Physics.ARCADE);
-    enemy.anchor.setTo(0.5, 0.5);
-    enemy.body.velocity.y = 20;
-    enemy.body.velocity.x = 150;
-    enemy.body.collideWorldBounds = true;
-    enemy.body.bounce.set(1);
-    enemy.scale.setTo(0.50);
+    var boss = bosses.create(game.width/2, 50, 'boo');
+    boss.health = health;
+    boss.animations.add('boo-ani', [0,1]);
+    boss.animations.play('boo-ani', 3, true, false);
+    game.physics.enable(boss, Phaser.Physics.ARCADE);
+    boss.anchor.setTo(0.5, 0.5);
+    boss.body.velocity.y = 20;
+    boss.body.velocity.x = 150;
+    boss.body.collideWorldBounds = true;
+    boss.body.bounce.set(1);
+    boss.scale.setTo(0.50);
 
     bossSpawned = true;
   },
@@ -555,10 +558,13 @@ MyGame.playGameState.prototype = {
   destroyBoss: function(fireball, boss){
     this.destroyEnemy(fireball, boss);
     if (boss.health <= 0) {
-      bossIsAlive = false;
-      bossSpawned = false;
-      bossSpawnTimerStarted = false;
+      game.time.events.add(Phaser.Timer.SECOND * 7, this.resetBoss, this);
     }
+  },
+  resetBoss: function(){
+    bossSpawnTimerStarted = false;
+    bossIsAlive = false;
+    bossSpawned = false;
   },
   starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
     currentScore += 1000;
