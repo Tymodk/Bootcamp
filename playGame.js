@@ -418,7 +418,7 @@ MyGame.playGameState.prototype = {
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
     var random =  game.rnd.integerInRange(0,100);
-    if(random > 0){
+    if(random < 15){
       var block = blocks.create(x,y,'questionblock');
       block.animations.add('block-spin', [0,1,2,3]);
       block.animations.play('block-spin', 5, true, false);
