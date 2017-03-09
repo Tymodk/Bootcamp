@@ -512,7 +512,7 @@ MyGame.playGameState.prototype = {
     }
     object.body.velocity.y = -400;
     object.events.onOutOfBounds.add( function(){ object.kill(); } );
-    object.scale.setTo(2);
+    object.scale.setTo(3);
 
   },
   generateKoopa: function(posX, posY, velX, velY){
