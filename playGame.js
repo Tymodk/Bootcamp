@@ -121,7 +121,7 @@ MyGame.playGameState.prototype = {
     }
     else{
       music.mute = true;
-      star.music = true;
+      starMusic.music = true;
     }
     if(!sfxEnabled){
       coinSound.mute = true;
