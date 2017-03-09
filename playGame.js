@@ -37,7 +37,7 @@ var bossHealth = 50;
 var bossIsAlive = false;
 var bossSpawnWaitTime = 5;
 var throwTime = 0;
-var throwDelay = 2000;
+var throwDelay = 500;
 var bossThrowChance = 500;
 //Wave Manager
 var spawnDelay = 3000;
@@ -479,10 +479,12 @@ MyGame.playGameState.prototype = {
 
   },
   bossMovement: function(){
-    if (this.boss.world.y < (game.height / 4)) {
-      this.boss.body.velocity.y = 20;
-    }else {
-      this.boss.body.velocity.y = -20;
+    if (bossSpawned) {
+      if (this.boss.world.y < (game.height / 4)) {
+        this.boss.body.velocity.y = 20;
+      }else {
+        this.boss.body.velocity.y = -20;
+      }
     }
   },
   bowserThrow: function(alive){
@@ -499,18 +501,18 @@ MyGame.playGameState.prototype = {
     var posX = this.boss.world.x;
     var posY = this.boss.world.y;
     var object = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
-
+    var velX = this.getRndInteger(25, 150);
     game.physics.enable(object, Phaser.Physics.ARCADE);
     object.body.collideWorldBounds = false;
     object.allowGravity = true;
-    object.body.gravity.y = 400;
+    object.body.gravity.y = 800;
     if(object.centerX < 240){
-      object.body.velocity.x = 50;
+      object.body.velocity.x = velX;
     }
     else{
-      object.body.velocity.x = -50;
+      object.body.velocity.x = -velX;
     }
-    object.body.velocity.y = 50;
+    object.body.velocity.y = -400;
     object.body.checkCollision.up = false;
     object.body.checkCollision.down = false;
     object.body.checkCollision.left = false;
