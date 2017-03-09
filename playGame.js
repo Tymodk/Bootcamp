@@ -62,7 +62,6 @@ var velYMultiplier;
 var tween;
 
 var warning;
-var boss;
 
 //initiating state
 MyGame.playGameState = function (game) {};
