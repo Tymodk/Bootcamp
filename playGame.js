@@ -587,7 +587,7 @@ generateEnemy: function(posX, posY, velX, velY, enemyName, health)
             this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
 
         }
-        else if(fireDelay <= fireDelayMin && typeFire != 'double'){
+        else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
             typeFire = 'double';
             fireDelay = 400;
         }
