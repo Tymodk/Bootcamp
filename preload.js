@@ -13,7 +13,7 @@ MyGame.preloadState.prototype = {
         this.load.image('set', 'assets/preGame_set.png');
         this.load.image('go', 'assets/preGame_go.png');
         //loading game assets
-        this.load.spritesheet('yoshi', 'assets/yoshi.png', 27, 50, 4);
+        this.load.spritesheet('yoshi', 'assets/yoshi2.png', 27, 45, 8);
         this.load.spritesheet('fireball', 'assets/mario_fireball.png', 27, 50, 4);
         this.load.spritesheet('fireball-mini', 'assets/fireballs2.png', 28, 29, 4);
         this.load.spritesheet('fireball-big', 'assets/bigfireballs.png', 16, 16, 2);

@@ -118,6 +118,7 @@ MyGame.playGameState.prototype = {
     //muted or not
     if(soundEnabled){
       music.mute = false;
+      music.loop = true;
 
     }
     else{
@@ -157,6 +158,7 @@ MyGame.playGameState.prototype = {
     var scoreBack = game.add.image(0, 0, 'scoreBackground');
     scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
+//    this.generateStar();
   },
   addScore: function () {
     currentScore += scoreTick;
@@ -180,6 +182,8 @@ MyGame.playGameState.prototype = {
       if(soundEnabled){
       music.mute = false;}
       starMusic.stop();
+      this.yoshi.animations.play('ani', 6, true, false);
+
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
@@ -255,11 +259,13 @@ MyGame.playGameState.prototype = {
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
+    this.yoshi.animations.add('star', [4,5,6,7]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     this.yoshi.scale.setTo(1.75,1.75);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.width = 25;
     this.yoshi.body.height = 45;
+  
     this.yoshi.animations.play('ani', 6, true, false);
     },
   fireSequence: function(){
@@ -401,7 +407,10 @@ MyGame.playGameState.prototype = {
     star.kill();
     music.mute = true;
     if(soundEnabled){
-    starMusic.play();}
+    starMusic.play();
+    starMusic.loop = true;}
+    this.yoshi.animations.play('star', 10, true, false);
+  
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
