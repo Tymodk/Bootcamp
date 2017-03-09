@@ -33,7 +33,7 @@ var bossSpawnTimerStarted = false;
 //Boss
 var bosses;
 var bossSpawnRound = 1;
-var bossHealth = 50;
+var bossHealth = 30;
 var bossIsAlive = false;
 var bossSpawnWaitTime = 5;
 var throwTime = 0;
