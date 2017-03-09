@@ -8,6 +8,7 @@ MyGame.preloadState.prototype = {
         this.load.image('sky', 'assets/background-tile.jpg');
         this.load.image('scoreBackground','assets/scoreBackground.jpg');
         this.load.image('sky-boss', 'assets/background-tile-boss.png');
+        this.load.image('bottomSwipe', 'assets/bottomSwipe.png');
         //loading countdown
         this.load.image('ready', 'assets/preGame_ready.png');
         this.load.image('set', 'assets/preGame_set.png');

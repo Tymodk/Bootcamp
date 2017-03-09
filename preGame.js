@@ -23,7 +23,10 @@ MyGame.preGameState.prototype = {
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         //counter variable
         i = 0;
-        
+        //bottom swipe 
+        var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+        swipeBottom.anchor.set(1);
+        swipeBottom.scale.setTo(1, 0.75);
         countdown.play();
 
     },
