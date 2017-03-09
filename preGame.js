@@ -32,9 +32,11 @@ MyGame.preGameState.prototype = {
         //music
         music.stop();
         music = game.add.audio('water');
-        music.play();
-        music.loop = true;
-        countdown.play();
+        if(soundEnabled){
+            music.play();
+            music.loop = true;
+            countdown.play();
+        }
     },
     update: function(){
         i += 1;

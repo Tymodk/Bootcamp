@@ -138,23 +138,23 @@ MyGame.playGameState.prototype = {
     if(soundEnabled){
       music.mute = false;
       music.loop = true;
-
     }
     else{
       music.mute = true;
-      starMusic.music = true;
     }
     if(!sfxEnabled){
+      starMusic.mute = true;
       coinSound.mute = true;
       blockSound.mute = true;
       fireSmallSound.mute = true;
       deathSound.mute = true;
     }
     else{
-      coinSound.mute = false;
-      blockSound.mute = false;
-      fireSmallSound.mute = false;
-      deathSound.mute = false;
+        starMusic.mute = false;
+        coinSound.mute = false;
+        blockSound.mute = false;
+        fireSmallSound.mute = false;
+        deathSound.mute = false;
     }
     //Fireball
     //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -195,8 +195,8 @@ MyGame.playGameState.prototype = {
     currentScore += scoreTick;
   },
   update: function(){
-    var starChance =  game.rnd.integerInRange(0,10000);
-    if(starChance ==  10000){this.generateStar()};
+    var starChance =  game.rnd.integerInRange(0,5);
+    if(starChance ==  5){this.generateStar()};
     //Move Background
     this.background.tilePosition.y += 2;
     // this.skyboss.tilePosition.y += 2;
