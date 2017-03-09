@@ -601,7 +601,7 @@ MyGame.playGameState.prototype = {
 
     //When both waves are completed, repeat but more difficult
     //Scaling
-    if (wave3 == wave3Max) {
+    if (wave2 == wave2Max) {
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
