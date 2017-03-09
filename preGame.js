@@ -23,15 +23,20 @@ MyGame.preGameState.prototype = {
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         //counter variable
         i = 0;
-        
+        //bottom swipe 
+        var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+        swipeBottom.anchor.set(1);
+        swipeBottom.scale.setTo(1, 0.75);
+        //music
+        music.stop();
+        music = game.add.audio('water');
+        music.play();
+        music.loop = true;
         countdown.play();
-
     },
     update: function(){
-        
         i += 1;
         this.background.tilePosition.y += 2;
-        
         //movement
         if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {

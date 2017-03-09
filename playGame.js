@@ -99,6 +99,7 @@ MyGame.playGameState.prototype = {
     // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
+
     // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     // this.skyboss.alpha = 0;
     // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
@@ -172,7 +173,10 @@ MyGame.playGameState.prototype = {
     var scoreBack = game.add.image(0, 0, 'scoreBackground');
     scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-
+    //bottom swipe 
+    var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+    swipeBottom.anchor.set(1);
+    swipeBottom.scale.setTo(1, 0.75);
     this.logRoundStats();
     //    this.generateStar();
       

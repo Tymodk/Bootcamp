@@ -26,8 +26,11 @@ MyGame.titlescreenState.prototype = {
     exitButton.scale.setTo(1);
     exitButton.anchor.set(0.5);
     //music
-     music.play();
-     music.loop = true;
+     if(!isPlaying){
+         music.play();
+         music.loop = true;
+         isPlaying = true;
+     }
   },
   update: function(){
     this.background.tilePosition.y += 2;

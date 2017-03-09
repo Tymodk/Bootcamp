@@ -8,6 +8,7 @@ MyGame.preloadState.prototype = {
         this.load.image('sky', 'assets/background-tile.jpg');
         this.load.image('scoreBackground','assets/scoreBackground.jpg');
         this.load.image('sky-boss', 'assets/background-tile-boss.png');
+        this.load.image('bottomSwipe', 'assets/bottomSwipe.png');
         //loading countdown
         this.load.image('ready', 'assets/preGame_ready.png');
         this.load.image('set', 'assets/preGame_set.png');
@@ -40,6 +41,8 @@ MyGame.preloadState.prototype = {
         this.load.image('buttonNo', 'assets/button_no.png');
         //loading sound assets
         this.load.audio('water', 'assets/underwater.mp3');
+        this.load.audio('menu', 'assets/menu.mp3');
+
         this.load.audio('coinSound', 'assets/smw_coin.wav');
         this.load.audio('blockSound', 'assets/smw_message_block.wav');
         this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');
@@ -53,7 +56,7 @@ MyGame.preloadState.prototype = {
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        music = game.add.audio('water');
+        music = game.add.audio('menu');
         this.state.start('titlescreen');
     }
 }
