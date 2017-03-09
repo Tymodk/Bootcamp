@@ -24,9 +24,11 @@ MyGame.preGameState.prototype = {
         //counter variable
         i = 0;
         //bottom swipe 
-        var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
-        swipeBottom.anchor.set(1);
-        swipeBottom.scale.setTo(1, 0.75);
+        if(swipeEnabled){
+            var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+            swipeBottom.anchor.set(1);
+            swipeBottom.scale.setTo(1, 0.75);
+        }
         //music
         music.stop();
         music = game.add.audio('water');

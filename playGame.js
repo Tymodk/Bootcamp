@@ -173,22 +173,19 @@ MyGame.playGameState.prototype = {
     var scoreBack = game.add.image(0, 0, 'scoreBackground');
     scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-    //bottom swipe 
-    var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
-    swipeBottom.anchor.set(1);
-    swipeBottom.scale.setTo(1, 0.75);
+    //bottom swipe
+    if(swipeEnabled){
+      var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+      swipeBottom.anchor.set(1);
+      swipeBottom.scale.setTo(1, 0.75);
+    } 
     this.logRoundStats();
     //    this.generateStar();
-      
-      
-      
-        this.boss = this.add.sprite(0, 0, 'bowser');
-        this.boss.scale.setTo(2);
-        this.boss.animations.add('bowser-ani', [0, 1, 2, 3]);
-        this.boss.animations.play('bowser-ani', 12, true, false);
-      
+    this.boss = this.add.sprite(0, 0, 'bowser');
+    this.boss.scale.setTo(2);
+    this.boss.animations.add('bowser-ani', [0, 1, 2, 3]);
+    this.boss.animations.play('bowser-ani', 12, true, false);
   }, //END OF CREATE FUNCTION
-
   addScore: function () {
     currentScore += scoreTick;
   },
