@@ -377,11 +377,13 @@ MyGame.playGameState.prototype = {
     enemy.body.velocity.x = velX;
   },
   generateKoopa: function(posX, posY, velX, velY){
-      var health = 2;
+      var baseHealth = 2;
+      var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
       this.generateEnemy(posX, posY, velX, velY, 'koopa', health)
   },
   generateBoo: function(posX, posY, velX, velY){
-    var health = 3;
+    var baseHealth = 3;
+    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     var enemy = enemies.create(posX, posY, 'boo'); //position, sprite
     enemy.health = health;
     enemy.animations.add('boo-ani', [0,1]); //Animation frames still hardcoded
@@ -598,6 +600,7 @@ MyGame.playGameState.prototype = {
       wave3++;
     }
     //When both waves are completed, repeat but more difficult
+    //Scaling
     if (wave3 == wave3Max) {
       wave1 = 0;
       wave2 = 0;
@@ -605,6 +608,7 @@ MyGame.playGameState.prototype = {
       spacingYMultiplier += 5;
       velYMultiplier += 50;
       velX += 50;
+      globalHealthMultiplier += 0.5;
       if (spawnDelay > minSpawnDelay) { //Increase spawn rate till limit
         spawnDelay /= 1.2;
       }
@@ -616,6 +620,7 @@ MyGame.playGameState.prototype = {
       console.log('spawn delay: ' + spawnDelay);
       console.log('spacing Y multiplier: ' + spacingYMultiplier);
       console.log('velocity Y multiplier: ' + velYMultiplier);
+      console.log('health multiplier: ' + globalHealthMultiplier);
       console.log('min amount: ' + minAmount);
       console.log('max amount: ' + maxAmount);
       console.log('fire Delay: ' + fireDelay);
@@ -635,8 +640,10 @@ MyGame.playGameState.prototype = {
   spawnGoombaWave: function(amount, startX, startY, velX, velY){
     spacingX = 70;
     spacingY = 0;
+    var baseHealth = 1;
+    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     for (var i = 0; i < amount ; i ++) {
-      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, 'goomba', 1);
+      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, 'goomba', health);
     }
   },
   spawnKoopaWave: function(amount, startX, startY, velX, velY){
