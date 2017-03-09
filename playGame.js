@@ -219,10 +219,9 @@ MyGame.playGameState.prototype = {
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
-      game.physics.arcade.overlap(this.yoshi, bosses, this.starDestroyEnemy, null, this);
       game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.starDestroyUnkillableEnemy, null, this);
     }
-    else{
+    else{ //Yoshi dies
       game.physics.arcade.overlap(this.yoshi, enemies, this.gameOverScreen, null, this);
       game.physics.arcade.overlap(this.yoshi, bosses, this.gameOverScreen, null, this);
       game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
@@ -798,7 +797,7 @@ MyGame.playGameState.prototype = {
       console.log('yoshi Speed: ' + yoshiSpeed);
       console.log('\n');
     }else {
-      console.log('BossFight!!!!');
+
     }
 
   },
