@@ -251,7 +251,6 @@ MyGame.playGameState.prototype = {
      //Waves
      this.waveManager();
   }, //END OF UPDATE FUNCTION
-
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
@@ -462,7 +461,6 @@ MyGame.playGameState.prototype = {
     this.explosion.anchor.setTo(0.5, 0.5);
     this.explosion.scale.setTo(1.5,1.5);
     deathSound.play();
-
   },
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
@@ -531,7 +529,6 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
     }
-
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
@@ -584,27 +581,23 @@ MyGame.playGameState.prototype = {
         pickUpNr = 1;
         tween = this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextFS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
-
-
       }
       if(random==4 && yoshiSpeed < maxYoshiSpeed){
         yoshiSpeed += 50;
         pickUpNr = 2;
         tween = this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
-
       }
-
-//      tween.onComplete.add(this.onComplete, this);
+  //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
-//    onComplete: function(text){
-//        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-//
-//
-//
-//
-//    },
+  //    onComplete: function(text){
+  //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+  //
+  //
+  //
+  //  
+  //    },
   //WAVEMANAGER
   waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
