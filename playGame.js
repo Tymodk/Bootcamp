@@ -235,10 +235,6 @@ MyGame.playGameState.prototype = {
     game.physics.arcade.overlap(this.yoshi, stars, this.getStar, null, this);
     game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
     game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
-    // if(game.time.now > 21000)
-    //     {
-    //         this.background.alpha = 0;
-    //     }
     //movement
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -736,17 +732,9 @@ MyGame.playGameState.prototype = {
         tween = this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
       }
-  //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
-  //    onComplete: function(text){
-  //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-  //
-  //
-  //
-  //
-  //    },
-  //WAVEMANAGER
+   //WAVEMANAGER
   waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
     var amount = this.getRndInteger(minAmount, maxAmount); //1 to 5
