@@ -28,15 +28,15 @@ var starLength = 0;
 //Enemies
 var enemies;
 var globalHealthMultiplier = 0;
-var bossTimer = 0;
-var bossTime = 10000; // 10s
 var bossSpawned = false;
+var bossSpawnTimerStarted = false;
 //Boss
+var bosses;
 var bossSpawnRound = 0;
 var bossIsAlive = false;
 //Wave Manager
 var spawnDelay = 3000;
-var minSpawnDelay = 1000;
+var minSpawnDelay = 1500;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
 var permanentSpawn = 0;
 //Spawn Chances
@@ -49,8 +49,8 @@ var wave1;
 var wave2;
 var wave3;
 var wave4;
-var wave1Max = 5;
-var wave2Max = 5;
+var wave1Max = 1;
+var wave2Max = 1;
 var wave3Max = 5;
 var wave4Max = 5;
 var round;
@@ -64,6 +64,7 @@ var tween;
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
   create: function(){
+    this.generateBoss();
     //initiating physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
     //Reset Variables on New Game
@@ -78,7 +79,6 @@ MyGame.playGameState.prototype = {
     globalHealthMultiplier = 0;
     bossSpawnRound = 0;
     bossIsAlive = false;
-    bossTime = 10000; // 10s
     //WaveManager Resets
     wave1 = 0;
     wave2 = 0;
@@ -105,6 +105,9 @@ MyGame.playGameState.prototype = {
     //Enemies
     enemies = game.add.group();
     enemies.enableBody = true;
+    //Bosses
+    bosses = game.add.group();
+    bosses.enableBody = true;
     //Unkillable Enemies
     unkillableEnemies = game.add.group();
     unkillableEnemies.enableBody = true;
@@ -199,6 +202,7 @@ MyGame.playGameState.prototype = {
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
+      game.physics.arcade.overlap(this.yoshi, bosses, this.starDestroyEnemy, null, this);
       game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.starDestroyUnkillableEnemy, null, this);
     }
     else{
@@ -206,6 +210,7 @@ MyGame.playGameState.prototype = {
       game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.gameOverScreen, null, this);
     }
     game.physics.arcade.overlap(fireballs, enemies, this.destroyEnemy, null, this);
+    game.physics.arcade.overlap(fireballs, bosses, this.destroyBoss, null, this);
     game.physics.arcade.overlap(fireballs, unkillableEnemies, this.destroyUnkillableEnemy, null, this);
     game.physics.arcade.overlap(this.yoshi, stars, this.getStar, null, this);
     game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
@@ -438,6 +443,24 @@ MyGame.playGameState.prototype = {
     enemy.body.velocity.y = velY;
     enemy.body.velocity.x = velX;
   },
+  generateBoss: function(){
+    console.log('generateBoss');
+    var baseHealth = 10;
+    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
+    var enemy = bosses.create(game.width/2, 50, 'boo');
+    enemy.health = health;
+    enemy.animations.add('boo-ani', [0,1]);
+    enemy.animations.play('boo-ani', 3, true, false);
+    game.physics.enable(enemy, Phaser.Physics.ARCADE);
+    enemy.anchor.setTo(0.5, 0.5);
+    enemy.body.velocity.y = 20;
+    enemy.body.velocity.x = 150;
+    enemy.body.collideWorldBounds = true;
+    enemy.body.bounce.set(1);
+    enemy.scale.setTo(0.50);
+
+    bossSpawned = true;
+  },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
       var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
@@ -446,9 +469,9 @@ MyGame.playGameState.prototype = {
   generateBoo: function(posX, posY, velX, velY){
     var baseHealth = 3;
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
-    var enemy = enemies.create(posX, posY, 'boo'); //position, sprite
+    var enemy = enemies.create(posX, posY, 'boo');
     enemy.health = health;
-    enemy.animations.add('boo-ani', [0,1]); //Animation frames still hardcoded
+    enemy.animations.add('boo-ani', [0,1]);
     enemy.animations.play('boo-ani', 3, true, false);
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.anchor.setTo(0.5, 0.5);
@@ -529,9 +552,13 @@ MyGame.playGameState.prototype = {
       }
   },
 
-  destroyBoss: function(){
-    bossIsAlive = false;
-    bossSpawned = false;
+  destroyBoss: function(fireball, boss){
+    this.destroyEnemy(fireball, boss);
+    if (boss.health <= 0) {
+      bossIsAlive = false;
+      bossSpawned = false;
+      bossSpawnTimerStarted = false;
+    }
   },
   starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
     currentScore += 1000;
@@ -676,12 +703,11 @@ MyGame.playGameState.prototype = {
 
     //BossFight
     if (bossIsAlive) {
-      if (!bossSpawned) {
-        //Generate Boss
-        bossSpawned = true;
-      }
-      if (bossTimer < game.time.now) {
-        bossIsAlive = false;
+      console.log('Boss still alive');
+      if (!bossSpawned && !bossSpawnTimerStarted) {
+        game.time.events.add(Phaser.Timer.SECOND * 7, this.generateBoss, this);
+        bossSpawnTimerStarted = true;
+        console.log("Boss Spawned");
       }
     }
     //When both waves are completed, repeat but more difficult
@@ -693,7 +719,7 @@ MyGame.playGameState.prototype = {
       velX += 50;
       globalHealthMultiplier += 0.5;
       if (spawnDelay > minSpawnDelay) { //Increase spawn rate till limit
-        spawnDelay /= 1.2;
+        spawnDelay -= 125;
       }
       if( minAmount <= maxMinAmount) { //Increase Amounts till limit
         minAmount += 0.5; maxAmount += 0.25;
@@ -702,9 +728,7 @@ MyGame.playGameState.prototype = {
       //Spawn Boss
       bossSpawnRound++;
       if (bossSpawnRound == 2) {
-        bossIsAlive = true;
-        bossSpawnRound = 0;
-        bossTimer = game.time.now + bossTime;
+        this.spawnBoss();
       }else{
         this.nextRound();
       }
@@ -743,6 +767,10 @@ MyGame.playGameState.prototype = {
     for (var i = 0; i < amount ; i ++) {
       this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, enemyName, health); //posX, posY, velX, velY, enemyName
     }
+  },
+  spawnBoss: function(){
+    bossIsAlive = true;
+    bossSpawnRound = 0;
   },
   spawnGoombaWave: function(amount, startX, startY, velX, velY){
     spacingX = 70;
