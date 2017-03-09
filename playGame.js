@@ -37,7 +37,6 @@ var permanentSpawn = 0;
 var permanentSpawnDelay = 2000; // ms delay between perm. spawn
 var spawnBooChance = 150; // chance on 1000 every spawn
 var bulletChance = 100; // chance on 1000 every spawn
-
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
 var wave1;
@@ -53,10 +52,8 @@ var minAmount = 1;
 var maxAmount = 5;
 var maxMinAmount = 4;
 var velYMultiplier;
-
 //tween
 var tween;
-
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -120,7 +117,7 @@ MyGame.playGameState.prototype = {
     //muted or not
     if(soundEnabled){
       music.mute = false;
-              
+
     }
     else{
       music.mute = true;
@@ -179,7 +176,7 @@ MyGame.playGameState.prototype = {
     //Interactions
     if(starLength <= game.time.now){
       hasStar = false;
-      if(soundEnabled){ 
+      if(soundEnabled){
       music.mute = false;}
       starMusic.stop();
     }
@@ -375,19 +372,17 @@ MyGame.playGameState.prototype = {
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
         if(typeFire == 'double'){
-            var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
-            game.physics.enable(fireball2, Phaser.Physics.ARCADE);
-            fireball2.animations.add('spin', [0,1,2,3]);
-            fireball2.animations.play('spin', 8, true, false);
-            fireball.body.velocity.x = 25;
-            fireball2.body.velocity.x = -25;
-
-            fireball2.body.velocity.y = - fireballSpeed;
-
-            fireball2.body.width = 25;
-            fireball2.body.height = 25;
-            fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
-            fireball2.checkWorldBounds = true;
+          var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
+          game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+          fireball2.animations.add('spin', [0,1,2,3]);
+          fireball2.animations.play('spin', 8, true, false);
+          fireball.body.velocity.x = 25;
+          fireball2.body.velocity.x = -25;
+          fireball2.body.velocity.y = - fireballSpeed;
+          fireball2.body.width = 25;
+          fireball2.body.height = 25;
+          fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+          fireball2.checkWorldBounds = true;
         }
         fireball.animations.add('spin', [0,1,2,3]);
         fireball.animations.play('spin', 8, true, false);
@@ -405,7 +400,7 @@ MyGame.playGameState.prototype = {
     starLength = game.time.now + 15000;
     star.kill();
     music.mute = true;
-    if(soundEnabled){  
+    if(soundEnabled){
     starMusic.play();}
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
@@ -423,11 +418,13 @@ MyGame.playGameState.prototype = {
     enemy.body.velocity.x = velX;
   },
   generateKoopa: function(posX, posY, velX, velY){
-      var health = 2;
+      var baseHealth = 2;
+      var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
       this.generateEnemy(posX, posY, velX, velY, 'koopa', health)
   },
   generateBoo: function(posX, posY, velX, velY){
-    var health = 3;
+    var baseHealth = 3;
+    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     var enemy = enemies.create(posX, posY, 'boo'); //position, sprite
     enemy.health = health;
     enemy.animations.add('boo-ani', [0,1]); //Animation frames still hardcoded
@@ -644,26 +641,29 @@ MyGame.playGameState.prototype = {
       wave2++;
     }
     //Wave 3
-    if(wave2 == wave2Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave3 < wave3Max){
-      amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
-      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba', 1);
-      amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
-      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba', 1);
-      amount = this.getRndInteger(minAmount, maxAmount);
-      startX = this.getRndInteger(150, 300);
-      velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
-      this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
-      lastWaveSpawned = game.time.now;
-      wave3++;
-    }
+    // if(wave2 == wave2Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave3 < wave3Max){
+    //   amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+    //   this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba', 1);
+    //   amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+    //   this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba', 1);
+    //   amount = this.getRndInteger(minAmount, maxAmount);
+    //   startX = this.getRndInteger(150, 300);
+    //   velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
+    //   this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
+    //   lastWaveSpawned = game.time.now;
+    //   wave3++;
+    // }
+
     //When both waves are completed, repeat but more difficult
-    if (wave3 == wave3Max) {
+    //Scaling
+    if (wave2 == wave2Max) {
       wave1 = 0;
       wave2 = 0;
       wave3 = 0;
       spacingYMultiplier += 5;
       velYMultiplier += 50;
       velX += 50;
+      globalHealthMultiplier += 0.5;
       if (spawnDelay > minSpawnDelay) { //Increase spawn rate till limit
         spawnDelay /= 1.2;
       }
@@ -675,6 +675,7 @@ MyGame.playGameState.prototype = {
       console.log('spawn delay: ' + spawnDelay);
       console.log('spacing Y multiplier: ' + spacingYMultiplier);
       console.log('velocity Y multiplier: ' + velYMultiplier);
+      console.log('health multiplier: ' + globalHealthMultiplier);
       console.log('min amount: ' + minAmount);
       console.log('max amount: ' + maxAmount);
       console.log('fire Delay: ' + fireDelay);
@@ -694,8 +695,10 @@ MyGame.playGameState.prototype = {
   spawnGoombaWave: function(amount, startX, startY, velX, velY){
     spacingX = 70;
     spacingY = 0;
+    var baseHealth = 1;
+    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     for (var i = 0; i < amount ; i ++) {
-      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, 'goomba', 1);
+      this.generateEnemy(startX + (spacingX * i), startY - (spacingY * i), velX, velY, 'goomba', health);
     }
   },
   spawnKoopaWave: function(amount, startX, startY, velX, velY){
