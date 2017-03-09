@@ -121,7 +121,7 @@ MyGame.playGameState.prototype = {
     //muted or not
     if(soundEnabled){
       music.mute = false;
-              
+
     }
     else{
       music.mute = true;
@@ -180,7 +180,7 @@ MyGame.playGameState.prototype = {
     //Interactions
     if(starLength <= game.time.now){
       hasStar = false;
-      if(soundEnabled){ 
+      if(soundEnabled){
       music.mute = false;}
       starMusic.stop();
     }
@@ -363,7 +363,7 @@ MyGame.playGameState.prototype = {
     starLength = game.time.now + 15000;
     star.kill();
     music.mute = true;
-    if(soundEnabled){  
+    if(soundEnabled){
     starMusic.play();}
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
@@ -591,18 +591,19 @@ MyGame.playGameState.prototype = {
       wave2++;
     }
     //Wave 3
-    if(wave2 == wave2Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave3 < wave3Max){
-      amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
-      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba', 1);
-      amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
-      this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba', 1);
-      amount = this.getRndInteger(minAmount, maxAmount);
-      startX = this.getRndInteger(150, 300);
-      velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
-      this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
-      lastWaveSpawned = game.time.now;
-      wave3++;
-    }
+    // if(wave2 == wave2Max && game.time.now > (lastWaveSpawned + spawnDelay) && wave3 < wave3Max){
+    //   amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+    //   this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier, 20, 30, velX, velY, 'goomba', 1);
+    //   amount = this.getRndInteger(minAmount - 2, maxAmount - 2);
+    //   this.spawnWave(amount, spacingXGoomba, spacingY + spacingYMultiplier + 10, 40, 30, velX, velY, 'goomba', 1);
+    //   amount = this.getRndInteger(minAmount, maxAmount);
+    //   startX = this.getRndInteger(150, 300);
+    //   velY = this.getRndInteger((150 + velYMultiplier), (350 + velYMultiplier));
+    //   this.spawnWave(amount, spacingX, spacingY, startX, 30, -50, velY, 'koopa', 2);
+    //   lastWaveSpawned = game.time.now;
+    //   wave3++;
+    // }
+
     //When both waves are completed, repeat but more difficult
     //Scaling
     if (wave3 == wave3Max) {
