@@ -70,7 +70,6 @@ MyGame.playGameState.prototype = {
     fireDelay = 400;
     fireballSpeed = 250;
     yoshiSpeed = 250;
-    typeFire = 'normal';
     globalHealthMultiplier = 0;
     //WaveManager Resets
     wave1 = 0;
@@ -321,15 +320,58 @@ MyGame.playGameState.prototype = {
         fireball2.angle -= 90;
         fireball2.animations.add('spin', [0,1,2,3]);
         fireball2.animations.play('spin', 8, true, false);
-        fireball.body.velocity.x = 25;
-        fireball2.body.velocity.x = -25;
+        fireball.body.velocity.x = 45;
+        fireball2.body.velocity.x = -45;
         fireball2.body.velocity.y = - fireballSpeed;
         fireball2.body.width = 25;
         fireball2.body.height = 25;
         fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball2.checkWorldBounds = true;
+    
     }
-    else{
+    else if(typeFire == 'big-triple'){
+        var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball, Phaser.Physics.ARCADE);
+        playerDamage = 2;
+        fireball.animations.add('spin', [0,1]);
+        fireball.animations.play('spin', 4, true, false);
+        fireball.body.velocity.x = 70;
+        fireball.scale.setTo(2,2);
+        fireball.body.width = 30;
+        fireball.body.height = 30;
+        fireball.angle -= 90;
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.checkWorldBounds = true;
+        fireball.body.velocity.y = - fireballSpeed;
+        lastFireballFired = game.time.now;
+        fireSmallSound.play();
+        var fireball2 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+        fireball2.scale.setTo(2,2);
+        fireball2.angle -= 90;
+        fireball2.animations.add('spin', [0,1,2,3]);
+        fireball2.animations.play('spin', 8, true, false);
+        fireball2.body.velocity.x = -70;
+        fireball2.body.velocity.y = - fireballSpeed;
+        fireball2.body.width = 25;
+        fireball2.body.height = 25;
+        fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball2.checkWorldBounds = true;
+        var fireball3 = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-big');
+        game.physics.enable(fireball2, Phaser.Physics.ARCADE);
+        fireball3.scale.setTo(2,2);
+        fireball3.angle -= 90;
+        fireball3.animations.add('spin', [0,1,2,3]);
+        fireball3.animations.play('spin', 8, true, false);
+        fireball3.body.velocity.x = 0;
+        fireball3.body.velocity.y = - fireballSpeed -65;
+        fireball3.body.width = 25;
+        fireball3.body.height = 25;
+        fireball3.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball3.checkWorldBounds = true;
+            
+      }
+      else{
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
         if(typeFire == 'double'){
@@ -522,11 +564,24 @@ MyGame.playGameState.prototype = {
         typeFire = 'double';
         fireDelay = 700;
       }
-      else if(fireDelay <= fireDelayMin && typeFire != 'big'){
+      else if(fireDelay <= fireDelayMin && typeFire == 'double'){
         typeFire = 'big';
         fireDelay = 400;
         playerDamage = 2;
       }
+      else if(fireDelay <= fireDelayMin && typeFire == 'big'){
+        typeFire = 'big-double';
+        fireDelay = 600;
+        playerDamage = 2;
+  
+      }
+      else if(fireDelay <= fireDelayMin && typeFire == 'big-double'){
+        typeFire = 'big-triple';
+        fireDelay = 750;
+        playerDamage = 2;
+      }
+      
+      
       if(random==3 && fireballSpeed < maxFireballSpeed){
         fireballSpeed += 25;
         pickUpNr = 1;
