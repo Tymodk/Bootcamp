@@ -46,6 +46,10 @@ var minAmount = 1;
 var maxAmount = 5;
 var maxMinAmount = 4;
 var velYMultiplier;
+
+//tween
+var tween;
+
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -405,7 +409,7 @@ MyGame.playGameState.prototype = {
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
     var random =  game.rnd.integerInRange(0,100);
-    if(random < 15){
+    if(random > 0){
       var block = blocks.create(x,y,'questionblock');
       block.animations.add('block-spin', [0,1,2,3]);
       block.animations.play('block-spin', 5, true, false);
@@ -492,7 +496,8 @@ MyGame.playGameState.prototype = {
       if(random < 3 && fireDelay > fireDelayMin){
         fireDelay -= 50;
         pickUpNr = 0;
-        this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
+        tween = this.add.tween(pickUpTextFD).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+        tween.onComplete.add(function(){ this.add.tween(pickUpTextFD).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
         typeFire = 'double';
@@ -506,15 +511,29 @@ MyGame.playGameState.prototype = {
       if(random==3 && fireballSpeed < maxFireballSpeed){
         fireballSpeed += 25;
         pickUpNr = 1;
-        this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
+        tween = this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+        tween.onComplete.add(function(){ this.add.tween(pickUpTextFS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
+
+
       }
       if(random==4 && yoshiSpeed < maxYoshiSpeed){
         yoshiSpeed += 50;
         pickUpNr = 2;
-        this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, true);
+        tween = this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+        tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
+
       }
+      
+//      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
+//    onComplete: function(text){
+//        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+//        
+//
+//
+//
+//    },
   //WAVEMANAGER
   waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
