@@ -46,7 +46,7 @@ MyGame.preloadState.prototype = {
         this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');
         this.load.audio('deathSound', 'assets/smw_stomp.wav');
         this.load.audio('gameover', 'assets/smw_game_over.wav');
-        this.load.audio('star', 'assets/smw_game_over.wav');
+        this.load.audio('star', 'assets/smw_star.mp3');
         this.load.audio('yoshi-wah', 'assets/mlpit_yoshi_death.wav');
 
         

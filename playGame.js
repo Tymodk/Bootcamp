@@ -32,10 +32,11 @@ var globalHealthMultiplier = 0;
 var spawnDelay = 3000;
 var minSpawnDelay = 1000;
 var lastWaveSpawned = gameDelay * 1.2 - spawnDelay;
+var permanentSpawn = 0;
 //Spawn Chances
-var permanentSpawn = 0; // 1000 ms delay between perm. spawn
-var spawnBooChance = 150; //15% every 10s
-var bulletChance = 100; // 10% every 10s
+var permanentSpawnDelay = 2000; // ms delay between perm. spawn
+var spawnBooChance = 150; // chance on 1000 every spawn
+var bulletChance = 100; // chance on 1000 every spawn
 
 var velYMultiplier = 0;
 var spacingYMultiplier = 1;
@@ -82,7 +83,7 @@ MyGame.playGameState.prototype = {
     velYMultiplier = 0;
     spawnDelay = 3000;
     spacingYMultiplier = 1;
-    permanentSpawn = 2000;
+    permanentSpawnDelay = 2000;
     //Backgrounds
     // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
@@ -116,13 +117,15 @@ MyGame.playGameState.prototype = {
     blockSound = game.add.audio('blockSound');
     fireSmallSound = game.add.audio('fireSmallSound');
     deathSound = game.add.audio('deathSound');
-    star = game.add.audio('star');
+    starMusic = game.add.audio('star');
     //muted or not
     if(soundEnabled){
       music.mute = false;
+              
     }
     else{
       music.mute = true;
+      star.music = true;
     }
     if(!sfxEnabled){
       coinSound.mute = true;
@@ -177,8 +180,9 @@ MyGame.playGameState.prototype = {
     //Interactions
     if(starLength <= game.time.now){
       hasStar = false;
-      music.mute = false;
-      star.stop();
+      if(soundEnabled){ 
+      music.mute = false;}
+      starMusic.stop();
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
@@ -212,10 +216,11 @@ MyGame.playGameState.prototype = {
       /*
     	else{
     		this.yoshi.body.velocity.y = 0;
-    		var horizontalTween = game.add.tween(this.yoshi).to({ 
+    		var horizontalTween = game.add.tween(this.yoshi).to({
                     x: game.input.mousePointer.x
                }, yoshiSpeed, Phaser.Easing.Linear.None, true);
     	}
+    }
       */
       }
     // vertical borders
@@ -232,7 +237,7 @@ MyGame.playGameState.prototype = {
     if(this.yoshi.y > game.height - 120){
       this.yoshi.body.velocity.y = 0;
     }
-      
+
     // horizontal borders
     if(this.yoshi.x <= 20){
     	this.yoshi.x = 20;
@@ -358,7 +363,8 @@ MyGame.playGameState.prototype = {
     starLength = game.time.now + 15000;
     star.kill();
     music.mute = true;
-    star.play();
+    if(soundEnabled){  
+    starMusic.play();}
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
@@ -514,7 +520,7 @@ MyGame.playGameState.prototype = {
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
         typeFire = 'double';
-        fireDelay = 400;
+        fireDelay = 700;
       }
       else if(fireDelay <= fireDelayMin && typeFire != 'big'){
         typeFire = 'big';
@@ -536,13 +542,13 @@ MyGame.playGameState.prototype = {
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
 
       }
-      
+
 //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
 //    onComplete: function(text){
 //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-//        
+//
 //
 //
 //
@@ -561,7 +567,7 @@ MyGame.playGameState.prototype = {
     if (game.time.now > permanentSpawn) {
       this.spawnBooWave();
       this.spawnBulletEnemy();
-      permanentSpawn = game.time.now + 1000;
+      permanentSpawn = game.time.now + permanentSpawnDelay;
     }
     //Wave 1
     if(game.time.now > (lastWaveSpawned + spawnDelay) && wave1 < wave1Max){
@@ -647,13 +653,14 @@ MyGame.playGameState.prototype = {
   spawnBooWave: function(){
     spawnPoint = this.getRndInteger(1, 3);
     spawnBoo = this.getRndInteger(1, 1000);
+    var velX = 500;
+    var velY = 150;
     if (spawnBoo < spawnBooChance) {
-      console.log(spawnPoint);
       if(spawnPoint == 1){
-        this.generateBoo(20, 50, 500, 50); //Spawn Left
+        this.generateBoo(20, 50, velX, velY); //Spawn Left
       }
       else {
-        this.generateBoo(game.width - 50, 50, -500, 50); //Spawn Right
+        this.generateBoo(game.width - 50, 50, -velX, velY); //Spawn Right
       }
     }
   },
