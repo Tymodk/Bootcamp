@@ -26,16 +26,26 @@ MyGame.preGameState.prototype = {
     update: function(){
         i += 1;
         this.background.tilePosition.y += 2;
-        // vertical movement
-        if(game.input.mousePointer.y + 10 < this.yoshi.y){
-          game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-        }
-        else if(game.input.mousePointer.y - 10 > this.yoshi.y){
-          game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-        }
-        else{
-          this.yoshi.body.velocity.y = 0;
-        }
+        
+        //movement
+        if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
+      {
+        this.yoshi.body.velocity.setTo(0, 0);
+      }
+    else{
+    	if(this.yoshi.y < 700){
+    		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+    	}
+    	else if(game.input.mousePointer.y < 700){
+    		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+    	}
+    	else{
+    		this.yoshi.body.velocity.y = 0;
+    		var horizontalTween = game.add.tween(this.yoshi).to({ 
+                    x: game.input.mousePointer.x
+               }, yoshiSpeed, Phaser.Easing.Linear.None, true);
+    	}
+    }
         // vertical borders
         if(this.yoshi.y <= 52){
           this.yoshi.y = 52;
@@ -48,16 +58,6 @@ MyGame.preGameState.prototype = {
         }
         if(this.yoshi.y > game.height - 120){
           this.yoshi.body.velocity.y = 0;
-        }
-        // horizontal movement
-        if(game.input.mousePointer.x + 10 < this.yoshi.x){
-          game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-        }
-        else if(game.input.mousePointer.x - 10 > this.yoshi.x){
-          game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
-        }
-        else{
-          this.yoshi.body.velocity.x = 0;
         }
         // horizontal borders
         if(this.yoshi.x <= 20){
