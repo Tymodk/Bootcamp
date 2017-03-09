@@ -28,6 +28,12 @@ var starLength = 0;
 //Enemies
 var enemies;
 var globalHealthMultiplier = 0;
+var bossTimer = 0;
+var bossTime = 10000; // 10s
+var bossSpawned = false;
+//Boss
+var bossSpawnRound = 0;
+var bossIsAlive = false;
 //Wave Manager
 var spawnDelay = 3000;
 var minSpawnDelay = 1000;
@@ -47,7 +53,7 @@ var wave1Max = 5;
 var wave2Max = 5;
 var wave3Max = 5;
 var wave4Max = 5;
-var stage;
+var round;
 var minAmount = 1;
 var maxAmount = 5;
 var maxMinAmount = 4;
@@ -66,16 +72,21 @@ MyGame.playGameState.prototype = {
     game.time.now = 0;
     currentScore = 0;
     currentCoins = 0;
+    typeFire = 'normal';
     fireDelay = 400;
     fireballSpeed = 250;
     yoshiSpeed = 250;
+    //Enemies reset
     globalHealthMultiplier = 0;
+    bossSpawnRound = 0;
+    bossIsAlive = false;
+    bossTime = 10000; // 10s
     //WaveManager Resets
     wave1 = 0;
     wave2 = 0;
     wave3 = 0;
     wave4 = 0;
-    stage = 1;
+    round = 1;
     minAmount = 1;
     maxAmount = 3;
     velYMultiplier = 0;
@@ -119,11 +130,12 @@ MyGame.playGameState.prototype = {
     //muted or not
     if(soundEnabled){
       music.mute = false;
+      music.loop = true;
 
     }
     else{
       music.mute = true;
-      star.music = true;
+      starMusic.music = true;
     }
     if(!sfxEnabled){
       coinSound.mute = true;
@@ -158,8 +170,11 @@ MyGame.playGameState.prototype = {
     var scoreBack = game.add.image(0, 0, 'scoreBackground');
     scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-      
-  },
+
+    this.logRoundStats();
+    //    this.generateStar();
+  }, //END OF CREATE FUNCTION
+
   addScore: function () {
     currentScore += scoreTick;
   },
@@ -182,6 +197,8 @@ MyGame.playGameState.prototype = {
       if(soundEnabled){
       music.mute = false;}
       starMusic.stop();
+      this.yoshi.animations.play('ani', 6, true, false);
+
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
@@ -254,15 +271,16 @@ MyGame.playGameState.prototype = {
      //Waves
      this.waveManager();
   }, //END OF UPDATE FUNCTION
-
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
     this.yoshi.animations.add('ani', [0,1,2,3]);
+    this.yoshi.animations.add('star', [4,5,6,7]);
     this.yoshi.anchor.setTo(0.5, 0.5);
     this.yoshi.scale.setTo(1.75,1.75);
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.width = 25;
     this.yoshi.body.height = 45;
+
     this.yoshi.animations.play('ani', 6, true, false);
     },
   fireSequence: function(){
@@ -327,7 +345,7 @@ MyGame.playGameState.prototype = {
         fireball2.body.height = 25;
         fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball2.checkWorldBounds = true;
-    
+
     }
     else if(typeFire == 'big-triple'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
@@ -369,7 +387,7 @@ MyGame.playGameState.prototype = {
         fireball3.body.height = 25;
         fireball3.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball3.checkWorldBounds = true;
-            
+
       }
       else{
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
@@ -404,7 +422,10 @@ MyGame.playGameState.prototype = {
     star.kill();
     music.mute = true;
     if(soundEnabled){
-    starMusic.play();}
+    starMusic.play();
+    starMusic.loop = true;}
+    this.yoshi.animations.play('star', 10, true, false);
+
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
@@ -457,7 +478,7 @@ MyGame.playGameState.prototype = {
         this.warning.animations.add('warning-ani', [0,1]);
         this.warning.animations.play('warning-ani', 10, true, false);
         
-        game.time.events.add(Phaser.Timer.SECOND * 1, this.warningKill, this);
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.warningKill, this);
     },
     
     warningKill: function()
@@ -470,7 +491,7 @@ MyGame.playGameState.prototype = {
     if(shootBullet < bulletChance){
         var posX = this.getRndInteger(1, game.width);
         this.generateWarning(posX);
-        game.time.events.add(Phaser.Timer.SECOND * 1, this.generateBulletEnemy, this, posX);
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.generateBulletEnemy, this, posX);
         
     }
   },
@@ -481,7 +502,6 @@ MyGame.playGameState.prototype = {
     this.explosion.anchor.setTo(0.5, 0.5);
     this.explosion.scale.setTo(1.5,1.5);
     deathSound.play();
-
   },
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
@@ -527,6 +547,11 @@ MyGame.playGameState.prototype = {
       enemy.angle += 180;
       }
   },
+
+  destroyBoss: function(){
+    bossIsAlive = false;
+    bossSpawned = false;
+  },
   starDestroyEnemy: function(yoshi, enemy) { //fireballs, koopa
     currentScore += 1000;
     enemy.health -= 90000;
@@ -550,7 +575,6 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
     }
-
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
@@ -589,41 +613,37 @@ MyGame.playGameState.prototype = {
         typeFire = 'big-double';
         fireDelay = 600;
         playerDamage = 2;
-  
+
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'big-double'){
         typeFire = 'big-triple';
         fireDelay = 750;
         playerDamage = 2;
       }
-      
-      
+
+
       if(random==3 && fireballSpeed < maxFireballSpeed){
         fireballSpeed += 25;
         pickUpNr = 1;
         tween = this.add.tween(pickUpTextFS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextFS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
-
-
       }
       if(random==4 && yoshiSpeed < maxYoshiSpeed){
         yoshiSpeed += 50;
         pickUpNr = 2;
         tween = this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
-
       }
-
-//      tween.onComplete.add(this.onComplete, this);
+  //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
-//    onComplete: function(text){
-//        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-//
-//
-//
-//
-//    },
+  //    onComplete: function(text){
+  //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
+  //
+  //
+  //
+  //
+  //    },
   //WAVEMANAGER
   waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
@@ -635,7 +655,7 @@ MyGame.playGameState.prototype = {
     var spacingY = 0;
     velY = this.getRndInteger((100 + velYMultiplier), (300 + velYMultiplier));
     //Permanent Wave
-    if (game.time.now > permanentSpawn) {
+    if (game.time.now > permanentSpawn && !bossIsAlive) {
       this.spawnBooWave();
       this.spawnBulletEnemy();
       permanentSpawn = game.time.now + permanentSpawnDelay;
@@ -673,12 +693,20 @@ MyGame.playGameState.prototype = {
     //   wave3++;
     // }
 
+    //BossFight
+    if (bossIsAlive) {
+      if (!bossSpawned) {
+        //Generate Boss
+        bossSpawned = true;
+      }
+      if (bossTimer < game.time.now) {
+        bossIsAlive = false;
+      }
+    }
     //When both waves are completed, repeat but more difficult
     //Scaling
-    if (wave2 == wave2Max) {
-      wave1 = 0;
-      wave2 = 0;
-      wave3 = 0;
+    if (wave2 == wave2Max && !bossIsAlive) {
+      //Increases
       spacingYMultiplier += 5;
       velYMultiplier += 50;
       velX += 50;
@@ -689,8 +717,32 @@ MyGame.playGameState.prototype = {
       if( minAmount <= maxMinAmount) { //Increase Amounts till limit
         minAmount += 0.5; maxAmount += 0.25;
       }
-      stage++;
-      console.log('round: ' + stage);
+
+      //Spawn Boss
+      bossSpawnRound++;
+      if (bossSpawnRound == 2) {
+        bossIsAlive = true;
+        bossSpawnRound = 0;
+        bossTimer = game.time.now + bossTime;
+      }else{
+        this.nextRound();
+      }
+      this.logRoundStats();
+    }
+  },
+  getRndInteger: function(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  },
+  nextRound: function(){
+    wave1 = 0;
+    wave2 = 0;
+    wave3 = 0;
+    round++;
+  },
+  logRoundStats: function(){
+    if (!bossIsAlive) {
+      console.log('\n');
+      console.log('round: ' + round);
       console.log('spawn delay: ' + spawnDelay);
       console.log('spacing Y multiplier: ' + spacingYMultiplier);
       console.log('velocity Y multiplier: ' + velYMultiplier);
@@ -701,10 +753,10 @@ MyGame.playGameState.prototype = {
       console.log('fire ball speed: ' + fireballSpeed);
       console.log('yoshi Speed: ' + yoshiSpeed);
       console.log('\n');
+    }else {
+      console.log('BossFight!!!!');
     }
-  },
-  getRndInteger: function(min, max) {
-    return Math.floor(Math.random() * (max - min) ) + min;
+
   },
   spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health, enemyScore){
     for (var i = 0; i < amount ; i ++) {
