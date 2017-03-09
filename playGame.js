@@ -101,7 +101,7 @@ MyGame.playGameState.prototype = {
     
     this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
-    this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
+    this.skyboss = this.add.tileSprite(0, 0, 600, 820, 'sky-boss');
     this.skyboss.tilePosition.y = backgroundPos;
     this.skyboss.alpha = 0;
     
