@@ -341,7 +341,7 @@ MyGame.playGameState.prototype = {
         fireball.body.width = 30;
         fireball.body.height = 30;
         fireball.angle -= 90;
-        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.events.onOutOfBounds.add( function(){ fireball.destory(); } );
         fireball.checkWorldBounds = true;
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
@@ -526,6 +526,8 @@ MyGame.playGameState.prototype = {
       block.animations.play('block-spin', 5, true, false);
       game.physics.enable(block, Phaser.Physics.ARCADE);
       block.body.velocity.y = 100;
+      block.events.onOutOfBounds.add( function(){ block.destroy(); } );
+
     }
     else{
       var coin = coins.create(x,y,'coin');
@@ -533,6 +535,7 @@ MyGame.playGameState.prototype = {
       coin.animations.play('coin-spin', 5, true, false);
       game.physics.enable(coin, Phaser.Physics.ARCADE);
       coin.body.velocity.y = 100;
+      coin.events.onOutOfBounds.add( function(){ coin.destroy(); } );
     }
   },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
@@ -544,7 +547,6 @@ MyGame.playGameState.prototype = {
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
-      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
@@ -558,6 +560,8 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.down = false;
       enemy.body.checkCollision.left = false;
       enemy.body.checkCollision.right = false;
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+
       enemy.angle += 180;
       }
   },
@@ -574,7 +578,7 @@ MyGame.playGameState.prototype = {
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
-      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
@@ -588,6 +592,7 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.left = false;
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );    
     }
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
@@ -601,12 +606,12 @@ MyGame.playGameState.prototype = {
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
   },
   getCoin: function(yoshi, coin) {
-    coin.kill();
+    coin.destroy();
     currentCoins += 1;
     coinSound.play();
   },
   getBlock: function(yoshi, block) {
-    block.kill();
+    block.destroy();
     var random =  game.rnd.integerInRange(0,4);
       if(random < 3 && fireDelay > fireDelayMin){
         fireDelay -= 50;
