@@ -520,7 +520,7 @@ MyGame.playGameState.prototype = {
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
         typeFire = 'double';
-        fireDelay = 600;
+        fireDelay = 700;
       }
       else if(fireDelay <= fireDelayMin && typeFire != 'big'){
         typeFire = 'big';
