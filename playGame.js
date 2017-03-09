@@ -468,8 +468,8 @@ MyGame.playGameState.prototype = {
     var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
     var boss = bosses.create(game.width/2, 50, 'bowser');
     boss.health = health;
-    boss.animations.add('bowser-ani', [0,1,2,3]);
-    boss.animations.play('bowser-ani', 12, true, false);
+    boss.animations.add('bowser-ani', [0,1,6,7]);
+    boss.animations.play('bowser-ani', 8, true, false);
     game.physics.enable(boss, Phaser.Physics.ARCADE);
     boss.anchor.setTo(0.5, 0.5);
     boss.body.velocity.y = 20;
