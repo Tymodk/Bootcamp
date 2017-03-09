@@ -165,11 +165,6 @@ MyGame.playGameState.prototype = {
         deathSound.mute = false;
         boomSound.mute = false;
     }
-    //Fireball
-    //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
-    //      this.fireballbig.animations.add('woosh', [0,1]);
-    //      this.fireballbigger = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +200, 'fireball-bigger');
-    //      this.fireballbigger.animations.add('woosh2', [0,1]);
     // scoreTimer
     game.time.events.loop(Phaser.Timer.SECOND / 1000 , this.addScore);
     //pick up text
@@ -235,10 +230,6 @@ MyGame.playGameState.prototype = {
     game.physics.arcade.overlap(this.yoshi, stars, this.getStar, null, this);
     game.physics.arcade.overlap(this.yoshi, coins, this.getCoin, null, this);
     game.physics.arcade.overlap(this.yoshi, blocks, this.getBlock, null, this);
-    // if(game.time.now > 21000)
-    //     {
-    //         this.background.alpha = 0;
-    //     }
     //movement
     if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -694,17 +685,9 @@ MyGame.playGameState.prototype = {
         tween = this.add.tween(pickUpTextYS).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
         tween.onComplete.add(function(){ this.add.tween(pickUpTextYS).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);}, this);
       }
-  //      tween.onComplete.add(this.onComplete, this);
       blockSound.play();
     },
-  //    onComplete: function(text){
-  //        tween = this.add.tween(toFade).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true,  0, 0, false);
-  //
-  //
-  //
-  //
-  //    },
-  //WAVEMANAGER
+   //WAVEMANAGER
   waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
     var amount = this.getRndInteger(minAmount, maxAmount); //1 to 5
