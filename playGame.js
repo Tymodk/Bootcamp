@@ -190,7 +190,7 @@ MyGame.playGameState.prototype = {
     //         this.background.alpha = 0;
     //     }
     // vertical movement
-    if(game.input.mousePointer.y + 20 < this.yoshi.y){
+    if(game.input.mousePointer.y + 10 < this.yoshi.y){
       game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     }
     else if(game.input.mousePointer.y - 20 > this.yoshi.y){
