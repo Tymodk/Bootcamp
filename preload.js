@@ -25,6 +25,7 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('goomba', 'assets/Goomba2.png', 67 ,44,3);
         this.load.spritesheet('star', 'assets/star.png', 16, 16, 3);
         this.load.spritesheet('boo', 'assets/boo.png', 300, 300, 2);
+        this.load.spritesheet('warning', 'assets/warning.png', 98, 178, 2);
         this.load.image('bullet', 'assets/bullet_bill.png');
         // loading options assets
         this.load.image('title', 'assets/titlescreen_title.jpg');

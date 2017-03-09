@@ -60,6 +60,8 @@ var maxMinAmount = 4;
 var velYMultiplier;
 //tween
 var tween;
+
+var warning;
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -172,6 +174,7 @@ MyGame.playGameState.prototype = {
     this.logRoundStats();
     //    this.generateStar();
   }, //END OF CREATE FUNCTION
+
   addScore: function () {
     currentScore += scoreTick;
   },
@@ -458,8 +461,7 @@ MyGame.playGameState.prototype = {
     enemy.body.bounce.set(1);
     enemy.scale.setTo(0.15);
   },
-  generateBulletEnemy: function(){
-    var posX = this.getRndInteger(1, game.width);
+  generateBulletEnemy: function(posX){
     var posY = 0;
     var velY = 1000;
     var enemy = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
@@ -470,10 +472,27 @@ MyGame.playGameState.prototype = {
     // enemy.body.velocity.x =  velX;
     enemy.scale.setTo(0.5);
   },
+    generateWarning: function(posX){
+        this.warning = this.add.sprite(posX, 35, 'warning');
+        this.warning.scale.setTo(0.4);
+        this.warning.animations.add('warning-ani', [0,1]);
+        this.warning.animations.play('warning-ani', 10, true, false);
+        
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.warningKill, this);
+    },
+    
+    warningKill: function()
+    {
+        this.warning.kill();
+    },
+    
   spawnBulletEnemy: function(){
     var shootBullet = this.getRndInteger(1,1000);
     if(shootBullet < bulletChance){
-      this.generateBulletEnemy();
+        var posX = this.getRndInteger(1, game.width);
+        this.generateWarning(posX);
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.generateBulletEnemy, this, posX);
+        
     }
   },
   generateExplosion: function(x, y) {
