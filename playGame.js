@@ -133,7 +133,10 @@ MyGame.playGameState.prototype = {
     blockSound = game.add.audio('blockSound');
     fireSmallSound = game.add.audio('fireSmallSound');
     deathSound = game.add.audio('deathSound');
+    boomSound = game.add.audio('boom');
+  
     starMusic = game.add.audio('star');
+    
     //muted or not
     if(soundEnabled){
       music.mute = false;
@@ -149,12 +152,15 @@ MyGame.playGameState.prototype = {
       blockSound.mute = true;
       fireSmallSound.mute = true;
       deathSound.mute = true;
+      boomSound.mute = true;     
     }
     else{
       coinSound.mute = false;
       blockSound.mute = false;
       fireSmallSound.mute = false;
       deathSound.mute = false;
+      boomSound.mute = false;     
+
     }
     //Fireball
     //      this.fireballbig = this.add.sprite(this.yoshi.position.x, this.yoshi.position.y +100, 'fireball-big');
@@ -534,13 +540,18 @@ MyGame.playGameState.prototype = {
         
     }
   },
-  generateExplosion: function(x, y) {
+  generateExplosion: function(x, y, sound) {
     this.explosion = this.add.sprite(x, y, 'explosion');
     this.explosion.animations.add('explosion-boom', [0,1,2,3,4,5,6,7,8]);
     this.explosion.animations.play('explosion-boom', 9, false, true);
     this.explosion.anchor.setTo(0.5, 0.5);
     this.explosion.scale.setTo(1.5,1.5);
-    deathSound.play();
+    if(sound){
+        deathSound.play();}
+      else{
+          boomSound.play();
+      }
+    
   },
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
@@ -565,12 +576,13 @@ MyGame.playGameState.prototype = {
   },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
     fireball.kill();
+    
     enemy.health -= playerDamage;
     if(enemy.health <= 0){
       currentScore += 1000;
       game.physics.enable(enemy, Phaser.Physics.ARCADE);
       enemy.body.collideWorldBounds = false;
-      this.generateExplosion(enemy.centerX, enemy.centerY);
+      this.generateExplosion(enemy.centerX, enemy.centerY, true);
       this.generatePickUp(enemy.centerX, enemy.centerY);
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
@@ -589,6 +601,7 @@ MyGame.playGameState.prototype = {
 
       enemy.angle += 180;
       }
+      else{this.generateExplosion(enemy.centerX, enemy.centerY, false);  }
   },
 
   destroyBoss: function(fireball, boss){
