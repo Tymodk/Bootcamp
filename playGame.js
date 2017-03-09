@@ -60,6 +60,9 @@ var maxMinAmount = 4;
 var velYMultiplier;
 //tween
 var tween;
+
+var warning;
+
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -95,8 +98,9 @@ MyGame.playGameState.prototype = {
     permanentSpawnDelay = 2000;
     //Backgrounds
     // this.hidden = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
-    this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+    this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
+
     // this.skyboss = this.add.tileSprite(0, 0, 600, 800, 'sky-boss');
     // this.skyboss.alpha = 0;
     // this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  9000, 1000, true);
@@ -173,9 +177,19 @@ MyGame.playGameState.prototype = {
     var scoreBack = game.add.image(0, 0, 'scoreBackground');
     scoreText = game.add.text( 4, 4, 'score: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
-
+    //bottom swipe
+    if(swipeEnabled){
+      var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+      swipeBottom.anchor.set(1);
+      swipeBottom.scale.setTo(1, 0.75);
+    } 
     this.logRoundStats();
     //    this.generateStar();
+      
+    //this.boss = this.add.sprite(0, 0, 'bowser');
+    //this.boss.scale.setTo(2);
+    //this.boss.animations.add('bowser-ani', [0, 1, 2, 3]);
+    //this.boss.animations.play('bowser-ani', 12, true, false);
   }, //END OF CREATE FUNCTION
   addScore: function () {
     currentScore += scoreTick;
@@ -228,10 +242,10 @@ MyGame.playGameState.prototype = {
         this.yoshi.body.velocity.setTo(0, 0);
       }
     else{
-    	if(this.yoshi.y < 700){
+    	if(this.yoshi.y < 720){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
-    	else if(game.input.mousePointer.y < 700){
+    	else if(game.input.mousePointer.y < 720){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
       /*
@@ -332,7 +346,7 @@ MyGame.playGameState.prototype = {
         fireball.body.width = 30;
         fireball.body.height = 30;
         fireball.angle -= 90;
-        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
+        fireball.events.onOutOfBounds.add( function(){ fireball.destory(); } );
         fireball.checkWorldBounds = true;
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
@@ -484,8 +498,7 @@ MyGame.playGameState.prototype = {
     enemy.body.bounce.set(1);
     enemy.scale.setTo(0.15);
   },
-  generateBulletEnemy: function(){
-    var posX = this.getRndInteger(1, game.width);
+  generateBulletEnemy: function(posX){
     var posY = 0;
     var velY = 1000;
     var enemy = unkillableEnemies.create(posX, posY, 'bullet'); //position, sprite
@@ -496,10 +509,27 @@ MyGame.playGameState.prototype = {
     // enemy.body.velocity.x =  velX;
     enemy.scale.setTo(0.5);
   },
+    generateWarning: function(posX){
+        this.warning = this.add.sprite(posX, 35, 'warning');
+        this.warning.scale.setTo(0.4);
+        this.warning.animations.add('warning-ani', [0,1]);
+        this.warning.animations.play('warning-ani', 10, true, false);
+        
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.warningKill, this);
+    },
+    
+    warningKill: function()
+    {
+        this.warning.kill();
+    },
+    
   spawnBulletEnemy: function(){
     var shootBullet = this.getRndInteger(1,1000);
     if(shootBullet < bulletChance){
-      this.generateBulletEnemy();
+        var posX = this.getRndInteger(1, game.width);
+        this.generateWarning(posX);
+        game.time.events.add(Phaser.Timer.SECOND * 0.8, this.generateBulletEnemy, this, posX);
+        
     }
   },
   generateExplosion: function(x, y) {
@@ -519,6 +549,8 @@ MyGame.playGameState.prototype = {
       block.animations.play('block-spin', 5, true, false);
       game.physics.enable(block, Phaser.Physics.ARCADE);
       block.body.velocity.y = 100;
+      block.events.onOutOfBounds.add( function(){ block.destroy(); } );
+
     }
     else{
       var coin = coins.create(x,y,'coin');
@@ -526,6 +558,7 @@ MyGame.playGameState.prototype = {
       coin.animations.play('coin-spin', 5, true, false);
       game.physics.enable(coin, Phaser.Physics.ARCADE);
       coin.body.velocity.y = 100;
+      coin.events.onOutOfBounds.add( function(){ coin.destroy(); } );
     }
   },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
@@ -537,7 +570,6 @@ MyGame.playGameState.prototype = {
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
-      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
@@ -551,6 +583,8 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.down = false;
       enemy.body.checkCollision.left = false;
       enemy.body.checkCollision.right = false;
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+
       enemy.angle += 180;
       }
   },
@@ -574,7 +608,7 @@ MyGame.playGameState.prototype = {
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
-      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
+      
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
@@ -588,6 +622,7 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.left = false;
       enemy.body.checkCollision.right = false;
       enemy.angle += 180;
+      enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );    
     }
   },
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
@@ -601,12 +636,12 @@ MyGame.playGameState.prototype = {
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
   },
   getCoin: function(yoshi, coin) {
-    coin.kill();
+    coin.destroy();
     currentCoins += 1;
     coinSound.play();
   },
   getBlock: function(yoshi, block) {
-    block.kill();
+    block.destroy();
     var random =  game.rnd.integerInRange(0,4);
       if(random < 3 && fireDelay > fireDelayMin){
         fireDelay -= 50;
@@ -815,3 +850,128 @@ MyGame.playGameState.prototype = {
     this.state.start('death', true, false, currentScore, currentCoins);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//───────────────────────────────
+//───────────────████─███────────
+//──────────────██▒▒▒█▒▒▒█───────
+//─────────────██▒────────█──────
+//─────────██████──██─██──█──────
+//────────██████───██─██──█──────
+//────────██▒▒▒█──────────███────
+//────────██▒▒▒▒▒▒───▒──██████───
+//───────██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒███─
+//──────██▒▒▒▒─────▒▒▒▒▒▒▒▒▒▒▒▒█─
+//──────██▒▒▒───────▒▒▒▒▒▒▒█▒█▒██
+//───────██▒▒───────▒▒▒▒▒▒▒▒▒▒▒▒█
+//────────██▒▒─────█▒▒▒▒▒▒▒▒▒▒▒▒█
+//────────███▒▒───██▒▒▒▒▒▒▒▒▒▒▒▒█
+//─────────███▒▒───█▒▒▒▒▒▒▒▒▒▒▒█─
+//────────██▀█▒▒────█▒▒▒▒▒▒▒▒██──
+//──────██▀██▒▒▒────█████████────
+//────██▀███▒▒▒▒────█▒▒██────────
+//█████████▒▒▒▒▒█───██──██───────
+//█▒▒▒▒▒▒█▒▒▒▒▒█────████▒▒█──────
+//█▒▒▒▒▒▒█▒▒▒▒▒▒█───███▒▒▒█──────
+//█▒▒▒▒▒▒█▒▒▒▒▒█────█▒▒▒▒▒█──────
+//██▒▒▒▒▒█▒▒▒▒▒▒█───█▒▒▒███──────
+//─██▒▒▒▒███████───██████────────
+//──██▒▒▒▒▒██─────██─────────────
+//───██▒▒▒██─────██──────────────
+//────█████─────███──────────────
+//────█████▄───█████▄────────────
+//──▄█▓▓▓▓▓█▄─█▓▓▓▓▓█▄───────────
+//──█▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓█──────────
+//──█▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓█──────────
+//──▀████████▀▀███████▀──────────

@@ -11,8 +11,9 @@ MyGame.preGameState.prototype = {
     create: function(){
         //physics
         game.physics.startSystem(Phaser.Physics.ARCADE);
+        countdown = game.add.audio('countdown');
         //background
-        this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+        this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
         this.background.tilePosition.y = backgroundPos;
         //player
         this.generatePlayer(game.world.centerX, game.world.centerY + 200);
@@ -22,11 +23,22 @@ MyGame.preGameState.prototype = {
         coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
         //counter variable
         i = 0;
+        //bottom swipe 
+        if(swipeEnabled){
+            var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+            swipeBottom.anchor.set(1);
+            swipeBottom.scale.setTo(1, 0.75);
+        }
+        //music
+        music.stop();
+        music = game.add.audio('water');
+        music.play();
+        music.loop = true;
+        countdown.play();
     },
     update: function(){
         i += 1;
         this.background.tilePosition.y += 2;
-        
         //movement
         if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
       {
@@ -73,20 +85,25 @@ MyGame.preGameState.prototype = {
             this.yoshi.body.velocity.x = 0;
         }
         // countdown
+        
         if (i == 1){
             this.countDown(0);
+            music.volume = .5;
         }
-        else if (i == 60){
+        else if (i == 80){
             this.countDown(1);
         }
-        else if (i == 120){
+        else if (i == 150){
             this.countDown(2);
         }
         else if (i == 180){
             yoshiPosX = this.yoshi.world.x;
             yoshiPosY = this.yoshi.world.y;
             backgroundPos = this.background.tilePosition.y;
+            music.volume = 1;
+
             game.state.start('playGame', true, false, yoshiPosX, yoshiPosY);
+            
         }
     },
     generatePlayer: function(x, y) {
@@ -98,6 +115,7 @@ MyGame.preGameState.prototype = {
     this.yoshi.animations.play('ani', 6, true, false);
     },
     countDown: function(z) {
+        
         switch (z){
             case 0:
                 this.countDownSprite = game.add.sprite(240, 400, 'ready');

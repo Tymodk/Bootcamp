@@ -5,7 +5,7 @@ MyGame.deathState = function (game) {};
 MyGame.deathState.prototype = {
     create: function()    {
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+        this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
         this.background.tilePosition.y = backgroundPos;
         this.generatePlayer(yoshiPosX, yoshiPosY);
         gameover = game.add.audio('gameover');

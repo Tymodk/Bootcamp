@@ -8,6 +8,7 @@ MyGame.preloadState.prototype = {
         this.load.image('sky', 'assets/background-tile.jpg');
         this.load.image('scoreBackground','assets/scoreBackground.jpg');
         this.load.image('sky-boss', 'assets/background-tile-boss.png');
+        this.load.image('bottomSwipe', 'assets/bottomSwipe.png');
         //loading countdown
         this.load.image('ready', 'assets/preGame_ready.png');
         this.load.image('set', 'assets/preGame_set.png');
@@ -25,6 +26,8 @@ MyGame.preloadState.prototype = {
         this.load.spritesheet('goomba', 'assets/Goomba2.png', 67 ,44,3);
         this.load.spritesheet('star', 'assets/star.png', 16, 16, 3);
         this.load.spritesheet('boo', 'assets/boo.png', 300, 300, 2);
+        this.load.spritesheet('warning', 'assets/warning.png', 98, 178, 2);
+        this.load.spritesheet('bowser', 'assets/bowser_spritesheet.png', 64, 96);
         this.load.image('bullet', 'assets/bullet_bill.png');
         // loading options assets
         this.load.image('title', 'assets/titlescreen_title.jpg');
@@ -36,8 +39,11 @@ MyGame.preloadState.prototype = {
         this.load.image('retry', 'assets/button_retry.png');
         this.load.image('buttonYes', 'assets/button_yes.png');
         this.load.image('buttonNo', 'assets/button_no.png');
+        this.load.image('buttonOn', 'assets/button_on.png');
+        this.load.image('buttonOff', 'assets/button_off.png');
         //loading sound assets
         this.load.audio('water', 'assets/underwater.mp3');
+        this.load.audio('menu', 'assets/menu.mp3');
         this.load.audio('coinSound', 'assets/smw_coin.wav');
         this.load.audio('blockSound', 'assets/smw_message_block.wav');
         this.load.audio('fireSmallSound', 'assets/smw_bowser_fire.wav');
@@ -45,12 +51,13 @@ MyGame.preloadState.prototype = {
         this.load.audio('gameover', 'assets/smw_game_over.wav');
         this.load.audio('star', 'assets/smw_star.mp3');
         this.load.audio('yoshi-wah', 'assets/mlpit_yoshi_death.wav');
+        this.load.audio('countdown', 'assets/mk64_countdown.wav');
     },
     create: function() {
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        music = game.add.audio('water');
+        music = game.add.audio('menu');
         this.state.start('titlescreen');
     }
 }

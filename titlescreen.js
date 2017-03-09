@@ -5,7 +5,7 @@ var startGameText;
 MyGame.titlescreenState = function (game) {};
 MyGame.titlescreenState.prototype = {
   create: function() {
-    this.background = game.add.tileSprite(0, 0, 600, 800, 'sky');
+    this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
   	var title = game.add.image(game.world.centerX, 20, 'title');
     title.scale.setTo(0.7);
@@ -26,8 +26,11 @@ MyGame.titlescreenState.prototype = {
     exitButton.scale.setTo(1);
     exitButton.anchor.set(0.5);
     //music
-     music.play();
-     music.loop = true;
+     if(!isPlaying){
+         music.play();
+         music.loop = true;
+         isPlaying = true;
+     }
   },
   update: function(){
     this.background.tilePosition.y += 2;
