@@ -311,7 +311,12 @@ MyGame.playGameState.prototype = {
   },
   generateFireball: function() {
     if(typeFire == 'big'){
+      if (fireballs.countDead()) {
+        var fireball = fireballs.getFirstDead();
+        console.log('revived a dead');
+      }else {
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
+      }
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
         playerDamage = 2;
         fireball.animations.add('spin', [0,1]);
@@ -325,6 +330,7 @@ MyGame.playGameState.prototype = {
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
         fireSmallSound.play();
+        fireball.lifespan = 1000;
     }
     else if(typeFire == 'big-double'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
