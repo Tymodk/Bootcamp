@@ -515,10 +515,6 @@ MyGame.playGameState.prototype = {
       object.body.velocity.x = -velX;
     }
     object.body.velocity.y = -400;
-    object.body.checkCollision.up = false;
-    object.body.checkCollision.down = false;
-    object.body.checkCollision.left = false;
-    object.body.checkCollision.right = false;
     object.events.onOutOfBounds.add( function(){ object.kill(); } );
     object.scale.setTo(2);
 
