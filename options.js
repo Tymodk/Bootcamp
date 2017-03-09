@@ -1,8 +1,8 @@
 //state variables
 var soundText;
 var sfxText;
-var difficultyText;
-var creditsText;
+var creditsTextTop;
+var creditsTextBottom;
 var yesButton;
 var noButton;
 var yesSFXButton;
@@ -79,9 +79,12 @@ MyGame.optionsState.prototype = {
     var exitButton = game.add.button(game.width / 2, game.height - 125, 'exitOptions', this.exitGame);
     exitButton.scale.setTo(1.4);
     exitButton.anchor.set(0.5);
-    creditsText = game.add.text( 10, game.height - 10, '',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
-    creditsText.anchor.set(0, 1)
-    creditsText.scale.setTo(0.7);
+    creditsTextTop = game.add.text( game.world.centerX, game.height - 28, '',{font: 'Pixel' ,fontSize: '28px', fill: '#fff'});
+    creditsTextTop.anchor.set(0.5, 1);
+    creditsTextTop.scale.setTo(0.7);
+    creditsTextBottom = game.add.text( game.world.centerX, game.height - 4, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
+    creditsTextBottom.anchor.set(0.5, 1);
+    creditsTextBottom.scale.setTo(0.7);
   },
   toggleSound: function(){
     if(!soundEnabled){
@@ -123,7 +126,8 @@ MyGame.optionsState.prototype = {
     this.background.tilePosition.y += 2;
       backgroundPos = this.background.tilePosition.y;
       
-    creditsText.text = 'Jens Van Assche - Jordy Pereira \nLennert Peeters - Tymo de Kock';
+    creditsTextTop.text = 'Jens Van Assche - Jordy Pereira';
+    creditsTextBottom.text= 'Lennert Peeters - Tymo de Kock';
     soundText.text = 'enable sound?';
     sfxText.text = 'enable sfx sound?';
     swipeText.text = 'enable swiper?';

@@ -54,8 +54,8 @@ var wave1;
 var wave2;
 var wave3;
 var wave4;
-var wave1Max = 1;
-var wave2Max = 1;
+var wave1Max = 5;
+var wave2Max = 5;
 var wave3Max = 5;
 var wave4Max = 5;
 var round;
@@ -515,7 +515,7 @@ MyGame.playGameState.prototype = {
     }
     object.body.velocity.y = -400;
     object.events.onOutOfBounds.add( function(){ object.kill(); } );
-    object.scale.setTo(2);
+    object.scale.setTo(3);
 
   },
   generateKoopa: function(posX, posY, velX, velY){
@@ -817,7 +817,7 @@ MyGame.playGameState.prototype = {
         spawnDelay -= 125;
       }
       if( minAmount <= maxMinAmount) { //Increase Amounts till limit
-        minAmount += 0.5; maxAmount += 0.25;
+        minAmount += 0.2; maxAmount += 0.1;
       }
 
       //Spawn Boss
@@ -886,7 +886,7 @@ MyGame.playGameState.prototype = {
   spawnBooWave: function(){
     spawnPoint = this.getRndInteger(1, 3);
     spawnBoo = this.getRndInteger(1, 1000);
-    var velX = 500;
+    var velX = 450;
     var velY = 150;
     if (spawnBoo < spawnBooChance) {
       if(spawnPoint == 1){
@@ -898,7 +898,7 @@ MyGame.playGameState.prototype = {
     }
   },
   gameOverScreen: function(){
-    bossMusic.stop();  
+    bossMusic.stop();
     backgroundPos = this.background.tilePosition.y;
     yoshiPosX = this.yoshi.world.x;
     yoshiPosY = this.yoshi.world.y;
