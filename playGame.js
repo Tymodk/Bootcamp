@@ -507,7 +507,7 @@ MyGame.playGameState.prototype = {
   },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
-      var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
+      var health = baseHealth + ((baseHealth / 2) * globalHealthMultiplier);
       this.generateEnemy(posX, posY, velX, velY, 'koopa', health)
   },
   generateBoo: function(posX, posY, velX, velY){
