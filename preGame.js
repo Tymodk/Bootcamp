@@ -42,13 +42,12 @@ MyGame.preGameState.prototype = {
         i += 1;
         this.background.tilePosition.y += 2;
         //movement
-        if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y))
-      {
-        this.yoshi.body.velocity.setTo(0, 0);
-      }
-    else{
-    	if(this.yoshi.y < 700){
-    		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
+        if (Phaser.Rectangle.contains(this.yoshi.body, game.input.x, game.input.y)){
+            this.yoshi.body.velocity.setTo(0, 0);
+        }
+        else{
+    	    if(this.yoshi.y < 700){
+    		    game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
     	}
     	else if(game.input.mousePointer.y < 700){
     		game.physics.arcade.moveToPointer(this.yoshi, yoshiSpeed);
@@ -58,8 +57,8 @@ MyGame.preGameState.prototype = {
     		var horizontalTween = game.add.tween(this.yoshi).to({ 
                     x: game.input.mousePointer.x
                }, yoshiSpeed, Phaser.Easing.Linear.None, true);
-    	}
-    }
+    	    }
+        }
         // vertical borders
         if(this.yoshi.y <= 52){
           this.yoshi.y = 52;
@@ -87,7 +86,6 @@ MyGame.preGameState.prototype = {
             this.yoshi.body.velocity.x = 0;
         }
         // countdown
-        
         if (i == 1){
             this.countDown(0);
             music.volume = .5;
@@ -107,12 +105,12 @@ MyGame.preGameState.prototype = {
         }
     },
     generatePlayer: function(x, y) {
-    this.yoshi = this.add.sprite(x, y, 'yoshi');
-    this.yoshi.animations.add('ani', [0,1,2,3]);
-    this.yoshi.anchor.setTo(0.5, 0.5);
-    this.yoshi.scale.setTo(1.75,1.75);
-    game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
-    this.yoshi.animations.play('ani', 6, true, false);
+        this.yoshi = this.add.sprite(x, y, 'yoshi');
+        this.yoshi.animations.add('ani', [0,1,2,3]);
+        this.yoshi.anchor.setTo(0.5, 0.5);
+        this.yoshi.scale.setTo(1.75,1.75);
+        game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
+        this.yoshi.animations.play('ani', 6, true, false);
     },
     countDown: function(z) {
         switch (z){

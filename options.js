@@ -60,10 +60,10 @@ MyGame.optionsState.prototype = {
     swipeText = game.add.text(game.world.centerX, game.height - 260, '',{font: 'Pixel', fontSize: '28px', fill: '#fff'});
     swipeText.scale.setTo(1);
     swipeText.anchor.set(0.5);
-    onButton = game.add.button(game.world.centerX, game.height - 210, 'buttonOn', this.toggleSwipe);
+    onButton = game.add.button(game.world.centerX, game.height - 210, 'buttonYes', this.toggleSwipe);
     onButton.scale.setTo(1);
     onButton.anchor.set(0.5);
-    offButton = game.add.button(game.world.centerX, game.height - 210, 'buttonOff', this.toggleSwipe);
+    offButton = game.add.button(game.world.centerX, game.height - 210, 'buttonNo', this.toggleSwipe);
     offButton.scale.setTo(1);
     offButton.anchor.set(0.5);
     if(swipeEnabled)
