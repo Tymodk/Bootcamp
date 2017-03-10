@@ -719,21 +719,21 @@ MyGame.playGameState.prototype = {
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'normal'){
         typeFire = 'double';
-        fireDelay = 700;
+        fireDelay *= 2;
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'double'){
         typeFire = 'big';
-        fireDelay = 350;
+        fireDelay *= 2;
         playerDamage = 2;
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'big'){
         typeFire = 'big-double';
-        fireDelay = 500;
+        fireDelay *= 2;
         playerDamage = 2;
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'big-double'){
         typeFire = 'big-triple';
-        fireDelay = 650;
+        fireDelay *= 2;
         playerDamage = 2;
       }
       if(random==3 && fireballSpeed < maxFireballSpeed){
