@@ -211,13 +211,7 @@ MyGame.playGameState.prototype = {
     this.fireSequence();
     //this.goomba.animations.play('goomba-fly', 7, true, false);
     //Interactions
-    if(starLength <= game.time.now){
-        hasStar = false;
-        if(soundEnabled){
-            music.mute = false;}
-            starMusic.stop();
-            this.yoshi.animations.play('ani', 6, true, false);
-    }
+    
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
       game.physics.arcade.overlap(this.yoshi, unkillableEnemies, this.starDestroyUnkillableEnemy, null, this);
@@ -424,7 +418,6 @@ MyGame.playGameState.prototype = {
   },
   getStar: function(yoshi, star) {
     hasStar = true;
-    starLength = game.time.now + 15000;
     star.kill();
     music.mute = true;
     if(soundEnabled){
@@ -432,7 +425,19 @@ MyGame.playGameState.prototype = {
     starMusic.loop = true;}
     yoshiSpeed *= 1.5;
     this.yoshi.animations.play('star', 10, true, false);
+      
+      game.time.events.add(Phaser.Timer.SECOND * 8, this.looseStar, this);
   },
+    
+    looseStar: function() {
+        hasStar = false;
+        if(soundEnabled){
+            music.mute = false;}
+            starMusic.stop();
+        
+        yoshiSpeed /= 1.5;
+        this.yoshi.animations.play('ani', 6, true, false);
+    },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
       health = 1;  // IF standard VALUE possible -> Change function
