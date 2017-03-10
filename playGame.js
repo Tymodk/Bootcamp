@@ -67,7 +67,6 @@ var velYMultiplier;
 var tween;
 var tweenSky;
 var warning;
-
 //initiating state
 MyGame.playGameState = function (game) {};
 MyGame.playGameState.prototype = {
@@ -89,7 +88,6 @@ MyGame.playGameState.prototype = {
     bossSpawned = false;
     bossSpawnTimerStarted = false;
     throwTime = 0;
-
     //WaveManager Resets
     wave1 = 0;
     wave2 = 0;
@@ -103,14 +101,11 @@ MyGame.playGameState.prototype = {
     spacingYMultiplier = 1;
     permanentSpawnDelay = 2000;
     //Backgrounds
-
     this.background = game.add.tileSprite(0, 0, 600, 820, 'sky');
     this.background.tilePosition.y = backgroundPos;
     this.skyboss = this.add.tileSprite(0, 0, 600, 820, 'sky-boss');
     this.skyboss.tilePosition.y = backgroundPos;
     this.skyboss.alpha = 0;
-
-
     //Player
     this.generatePlayer(yoshiPosX, yoshiPosY);
     //Enemies
@@ -143,9 +138,7 @@ MyGame.playGameState.prototype = {
     deathSound = game.add.audio('deathSound');
     boomSound = game.add.audio('boom');
     bossMusic = game.add.audio('bossMusic');
-
     starMusic = game.add.audio('star');
-
     //muted or not
     if(soundEnabled){
       music.mute = false;
@@ -191,9 +184,9 @@ MyGame.playGameState.prototype = {
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     //bottom swipe
     if(swipeEnabled){
-      var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
-      swipeBottom.anchor.set(1);
-      swipeBottom.scale.setTo(1, 0.75);
+        var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+        swipeBottom.anchor.set(1);
+        swipeBottom.scale.setTo(1, 0.75);
     }
     this.logRoundStats();
     this.generateStar();
@@ -216,12 +209,11 @@ MyGame.playGameState.prototype = {
     //this.goomba.animations.play('goomba-fly', 7, true, false);
     //Interactions
     if(starLength <= game.time.now){
-      hasStar = false;
-      if(soundEnabled){
-      music.mute = false;}
-      starMusic.stop();
-      this.yoshi.animations.play('ani', 6, true, false);
-
+        hasStar = false;
+        if(soundEnabled){
+            music.mute = false;}
+            starMusic.stop();
+            this.yoshi.animations.play('ani', 6, true, false);
     }
     if(hasStar){
       game.physics.arcade.overlap(this.yoshi, enemies, this.starDestroyEnemy, null, this);
@@ -258,14 +250,12 @@ MyGame.playGameState.prototype = {
     if(this.yoshi.y < 52){
       this.yoshi.body.velocity.y = 0;
     }
-
     if(this.yoshi.y >= game.height - 120){
       this.yoshi.y = game.height - 120;
     }
     if(this.yoshi.y > game.height - 120){
       this.yoshi.body.velocity.y = 0;
     }
-
     // horizontal borders
     if(this.yoshi.x <= 20){
     	this.yoshi.x = 20;
@@ -273,15 +263,14 @@ MyGame.playGameState.prototype = {
     if (this.yoshi.x < 20) {
     	this.yoshi.body.velocity.x = 0;
     }
-
     if(this.yoshi.x >= game.width - 20){
     	this.yoshi.x = game.width - 20;
     }
     if(this.yoshi.x > game.width - 20){
     	this.yoshi.body.velocity.x = 0;
     }
-     //Waves
-     this.waveManager();
+    //Waves
+    this.waveManager();
   }, //END OF UPDATE FUNCTION
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
@@ -292,12 +281,10 @@ MyGame.playGameState.prototype = {
     game.physics.enable(this.yoshi, Phaser.Physics.ARCADE);
     this.yoshi.body.width = 25;
     this.yoshi.body.height = 45;
-
     this.yoshi.animations.play('ani', 6, true, false);
-    },
+  },
   fireSequence: function(){
-    if(game.time.now > (lastFireballFired + fireDelay))
-      {
+    if(game.time.now > (lastFireballFired + fireDelay)){
           this.generateFireball();
       }
   },
@@ -357,7 +344,6 @@ MyGame.playGameState.prototype = {
         fireball2.body.height = 25;
         fireball2.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball2.checkWorldBounds = true;
-
     }
     else if(typeFire == 'big-triple'){
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
@@ -399,7 +385,6 @@ MyGame.playGameState.prototype = {
         fireball3.body.height = 25;
         fireball3.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball3.checkWorldBounds = true;
-
       }
       else{
         var fireball = fireballs.create(this.yoshi.position.x-10, this.yoshi.position.y-30, 'fireball-mini');
@@ -437,7 +422,6 @@ MyGame.playGameState.prototype = {
     starMusic.play();
     starMusic.loop = true;}
     this.yoshi.animations.play('star', 10, true, false);
-
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
     if (health == null) {
@@ -475,7 +459,6 @@ MyGame.playGameState.prototype = {
     bossSpawned = true;
     tweenSky.stop();
     this.skyboss.alpha = 1;
-
   },
   bossMovement: function(){
     if (bossSpawned) {
@@ -494,7 +477,6 @@ MyGame.playGameState.prototype = {
       }
       throwTime = game.time.now + throwDelay;
     }
-
   },
   generateThrow: function(){
     var posX = this.boss.world.x;
@@ -516,7 +498,6 @@ MyGame.playGameState.prototype = {
     object.body.velocity.y = -400;
     object.events.onOutOfBounds.add( function(){ object.kill(); } );
     object.scale.setTo(3);
-
   },
   generateKoopa: function(posX, posY, velX, velY){
       var baseHealth = 2;
@@ -554,11 +535,9 @@ MyGame.playGameState.prototype = {
         this.warning.scale.setTo(0.4);
         this.warning.animations.add('warning-ani', [0,1]);
         this.warning.animations.play('warning-ani', 10, true, false);
-
         game.time.events.add(Phaser.Timer.SECOND * 0.8, this.warningKill, this);
   },
-  warningKill: function()
-  {
+  warningKill: function(){
     this.warning.kill();
   },
   spawnBulletEnemy: function(){
@@ -575,14 +554,12 @@ MyGame.playGameState.prototype = {
     explosion.animations.play('explosion-boom', 9, false, true);
     explosion.anchor.setTo(0.5, 0.5);
     explosion.scale.setTo(1.5,1.5);
-//    game.time.events.add(Phaser.Timer.SECOND * 2, this.destroyExplosion(explosion), this);
-
+    //game.time.events.add(Phaser.Timer.SECOND * 2, this.destroyExplosion(explosion), this);
     if(sound){
         deathSound.play();}
       else{
           boomSound.play();
       }
-
   },  
   /*destroyExplosion: function(explosion){
     explosion.kill();   
@@ -597,7 +574,6 @@ MyGame.playGameState.prototype = {
       game.physics.enable(block, Phaser.Physics.ARCADE);
       block.body.velocity.y = 100;
       block.events.onOutOfBounds.add( function(){ block.destroy(); } );
-
     }
     else{
       var coin = coins.create(x,y,'coin');
@@ -610,7 +586,6 @@ MyGame.playGameState.prototype = {
   },
   destroyEnemy: function(fireball, enemy) { //fireballs, koopa
     fireball.kill();
-
     enemy.health -= playerDamage;
     if(enemy.health <= 0){
       currentScore += 1000;
@@ -632,12 +607,10 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.left = false;
       enemy.body.checkCollision.right = false;
       enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
-
       enemy.angle += 180;
       }
       else{this.generateExplosion(enemy.centerX, enemy.centerY, false);  }
   },
-
   destroyBoss: function(fireball, boss){
     this.destroyEnemy(fireball, boss);
     if (boss.health <= 0) {
@@ -650,7 +623,6 @@ MyGame.playGameState.prototype = {
       tweenSky.loop = false;
       music.resume();
       bossMusic.stop();
-
     }
   },
   resetBoss: function(){
@@ -665,7 +637,6 @@ MyGame.playGameState.prototype = {
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY);
       this.generatePickUp(enemy.centerX, enemy.centerY);
-
       enemy.allowGravity = true;
       enemy.body.gravity.y = 400;
       if(enemy.centerX < 240){
@@ -685,15 +656,12 @@ MyGame.playGameState.prototype = {
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
-    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
-      
+    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );      
   },
-  starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet
-    
+  starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet    
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
-    currentScore += 1000;
-      
+    currentScore += 1000;      
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY, true);
       this.generatePickUp(enemy.centerX, enemy.centerY);
@@ -709,9 +677,7 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.up = false;
       enemy.body.checkCollision.down = false;
       enemy.body.checkCollision.left = false;
-      enemy.body.checkCollision.right = false;
-      
-
+      enemy.body.checkCollision.right = false;   
       enemy.angle += 180;  
   },
   getCoin: function(yoshi, coin) {
@@ -741,15 +707,12 @@ MyGame.playGameState.prototype = {
         typeFire = 'big-double';
         fireDelay = 600;
         playerDamage = 2;
-
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'big-double'){
         typeFire = 'big-triple';
         fireDelay = 750;
         playerDamage = 2;
       }
-
-
       if(random==3 && fireballSpeed < maxFireballSpeed){
         fireballSpeed += 25;
         pickUpNr = 1;
@@ -764,8 +727,8 @@ MyGame.playGameState.prototype = {
       }
       blockSound.play();
     },
-   //WAVEMANAGER
-  waveManager: function(){
+    //WAVEMANAGER
+    waveManager: function(){
     //Amount of Enemies spawned, spacingX between Enemies spawned, startXposition, startYposition, velX, velY, enemyName
     var amount = this.getRndInteger(minAmount, maxAmount); //1 to 5
     var startX = this.getRndInteger(0, 250);
@@ -812,7 +775,6 @@ MyGame.playGameState.prototype = {
     //   lastWaveSpawned = game.time.now;
     //   wave3++;
     // }
-
     //BossFight
     if (bossIsAlive) {
       if (!bossSpawned && !bossSpawnTimerStarted) {
@@ -822,7 +784,6 @@ MyGame.playGameState.prototype = {
         tweenSky = this.add.tween(this.skyboss).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true,  0, 1000, true);
         music.pause();
         bossMusic.play();
-
       }
       this.bowserThrow(bossSpawned);
       this.bossMovement();
@@ -841,7 +802,6 @@ MyGame.playGameState.prototype = {
       if( minAmount <= maxMinAmount) { //Increase Amounts till limit
         minAmount += 0.2; maxAmount += 0.1;
       }
-
       //Spawn Boss
       if (bossSpawnRound == 2) {
         this.spawnBoss();
@@ -875,10 +835,10 @@ MyGame.playGameState.prototype = {
       console.log('fire ball speed: ' + fireballSpeed);
       console.log('yoshi Speed: ' + yoshiSpeed);
       console.log('\n');
-    }else {
+    }
+    else {
 
     }
-
   },
   spawnWave: function(amount, spacingX, spacingY, startX, startY, velX, velY, enemyName, health, enemyScore){
     for (var i = 0; i < amount ; i ++) {
