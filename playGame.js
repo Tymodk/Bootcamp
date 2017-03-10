@@ -332,7 +332,7 @@ MyGame.playGameState.prototype = {
         fireball.body.width = 30;
         fireball.body.height = 30;
         fireball.angle -= 90;
-        fireball.events.onOutOfBounds.add( function(){ fireball.destory(); } );
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball.checkWorldBounds = true;
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
@@ -726,17 +726,17 @@ MyGame.playGameState.prototype = {
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'double'){
         typeFire = 'big';
-        fireDelay = 400;
+        fireDelay = 350;
         playerDamage = 2;
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'big'){
         typeFire = 'big-double';
-        fireDelay = 600;
+        fireDelay = 500;
         playerDamage = 2;
       }
       else if(fireDelay <= fireDelayMin && typeFire == 'big-double'){
         typeFire = 'big-triple';
-        fireDelay = 750;
+        fireDelay = 650;
         playerDamage = 2;
       }
       if(random==3 && fireballSpeed < maxFireballSpeed){
@@ -831,7 +831,7 @@ MyGame.playGameState.prototype = {
       //Spawn Boss
       if (bossSpawnRound == 2) {
         this.spawnBoss();
-        throwDelay = 500 - (round * 1.2);
+        throwDelay = 500 - (round * 1.5);
       }else{
         bossSpawnRound++;
         this.nextRound();
