@@ -427,6 +427,7 @@ MyGame.playGameState.prototype = {
     if(soundEnabled){
     starMusic.play();
     starMusic.loop = true;}
+    yoshiSpeed *= 1.5;
     this.yoshi.animations.play('star', 10, true, false);
   },
   generateEnemy: function(posX, posY, velX, velY, enemyName, health){
