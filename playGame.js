@@ -130,7 +130,7 @@ MyGame.playGameState.prototype = {
     coins.enableBody = true;
     //Explosions
     explosions = game.add.group();
-    explosions.enableBody = false;  
+    explosions.enableBody = false;
     //SFX
     coinSound = game.add.audio('coinSound');
     blockSound = game.add.audio('blockSound');
@@ -512,7 +512,7 @@ MyGame.playGameState.prototype = {
   },
   generateBoo: function(posX, posY, velX, velY){
     var baseHealth = 3;
-    var health = baseHealth + ((baseHealth / 1.5) * globalHealthMultiplier);
+    var health = baseHealth + ((baseHealth / 2) * globalHealthMultiplier);
     var enemy = enemies.create(posX, posY, 'boo');
     enemy.health = health;
     enemy.animations.add('boo-ani', [0,1]);
@@ -566,9 +566,9 @@ MyGame.playGameState.prototype = {
       else{
           boomSound.play();
       }
-  },  
+  },
   /*destroyExplosion: function(explosion){
-    explosion.kill();   
+    explosion.kill();
   },*/
   //PICKUP FUNCTION RANDOMIZE
   generatePickUp: function(x,y){
@@ -662,12 +662,12 @@ MyGame.playGameState.prototype = {
   destroyUnkillableEnemy: function(fireball, enemy) { //fireballs, Bullet
     fireball.kill();
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
-    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );      
+    enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
   },
-  starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet    
+  starDestroyUnkillableEnemy: function(yoshi, enemy) { //fireballs, Bullet
     game.physics.enable(enemy, Phaser.Physics.ARCADE);
     enemy.events.onOutOfBounds.add( function(){ enemy.kill(); } );
-    currentScore += 1000;      
+    currentScore += 1000;
       enemy.body.collideWorldBounds = false;
       this.generateExplosion(enemy.centerX, enemy.centerY, true);
       this.generatePickUp(enemy.centerX, enemy.centerY);
@@ -683,8 +683,8 @@ MyGame.playGameState.prototype = {
       enemy.body.checkCollision.up = false;
       enemy.body.checkCollision.down = false;
       enemy.body.checkCollision.left = false;
-      enemy.body.checkCollision.right = false;   
-      enemy.angle += 180;  
+      enemy.body.checkCollision.right = false;
+      enemy.angle += 180;
   },
   getCoin: function(yoshi, coin) {
     coin.destroy();
