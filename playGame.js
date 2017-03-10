@@ -184,7 +184,7 @@ MyGame.playGameState.prototype = {
     coinText = game.add.text( game.world.centerX + 50, 4, 'coins: 0',{font: 'Pixel' ,fontSize: '24px', fill: '#fff'});
     //bottom swipe
     if(swipeEnabled){
-        var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipe');
+        var swipeBottom = game.add.image(game.width, game.height, 'bottomSwipeEmpty');
         swipeBottom.anchor.set(1);
         swipeBottom.scale.setTo(1, 0.75);
     }
@@ -887,86 +887,6 @@ MyGame.playGameState.prototype = {
     this.state.start('death', true, false, currentScore, currentCoins);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
