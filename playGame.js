@@ -268,6 +268,7 @@ MyGame.playGameState.prototype = {
     }
     //Waves
     this.waveManager();
+      
   }, //END OF UPDATE FUNCTION
   generatePlayer: function(x, y) {
     this.yoshi = this.add.sprite(x, y, 'yoshi');
@@ -295,6 +296,8 @@ MyGame.playGameState.prototype = {
     star.body.collideWorldBounds = true;
     star.body.velocity.setTo(200,100);
     star.body.bounce.set(1);
+      
+    game.time.events.add(Phaser.Timer.SECOND * 7.85, function(){star.kill()}, this);
   },
   generateFireball: function() {
     if(typeFire == 'big'){
