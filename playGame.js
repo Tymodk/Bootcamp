@@ -88,6 +88,7 @@ MyGame.playGameState.prototype = {
     bossSpawned = false;
     bossSpawnTimerStarted = false;
     throwTime = 0;
+    throwDelay = 500
     //WaveManager Resets
     wave1 = 0;
     wave2 = 0;
@@ -301,12 +302,12 @@ MyGame.playGameState.prototype = {
   },
   generateFireball: function() {
     if(typeFire == 'big'){
-      if (fireballs.countDead()) {
-        var fireball = fireballs.getFirstDead();
-        console.log('revived a dead');
-      }else {
+      // if (fireballs.countDead()) {
+      //   var fireball = fireballs.getFirstDead();
+      //   console.log('revived a dead');
+      // }else {
         var fireball = fireballs.create(this.yoshi.position.x-15, this.yoshi.position.y-30, 'fireball-big');
-      }
+      // }
         game.physics.enable(fireball, Phaser.Physics.ARCADE);
         playerDamage = 2;
         fireball.animations.add('spin', [0,1]);
@@ -629,6 +630,12 @@ MyGame.playGameState.prototype = {
       tweenSky.loop = false;
       music.resume();
       bossMusic.stop();
+
+      //Loot
+      for (var i = 0; i < 5; i++) {
+        // posX = this.getRndInteger(boss.world.x)
+        this.generatePickUp();
+      }
     }
   },
   resetBoss: function(){
@@ -811,6 +818,7 @@ MyGame.playGameState.prototype = {
       //Spawn Boss
       if (bossSpawnRound == 2) {
         this.spawnBoss();
+        throwDelay = 500 - (round * 1.2);
       }else{
         bossSpawnRound++;
         this.nextRound();
@@ -837,6 +845,7 @@ MyGame.playGameState.prototype = {
       console.log('health multiplier: ' + globalHealthMultiplier);
       console.log('min amount: ' + minAmount);
       console.log('max amount: ' + maxAmount);
+      console.log('boss throw delay: ' + throwDelay);
       console.log('fire Delay: ' + fireDelay);
       console.log('fire ball speed: ' + fireballSpeed);
       console.log('yoshi Speed: ' + yoshiSpeed);
