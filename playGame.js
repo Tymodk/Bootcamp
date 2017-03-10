@@ -633,8 +633,8 @@ MyGame.playGameState.prototype = {
 
       //Loot
       for (var i = 0; i < 5; i++) {
-        posX = this.getRndInteger(boss.world.x - 10, boss.world.x + 10)
-        posX = this.getRndInteger(boss.world.y -10 , boss.world.y + 10)
+        posX = this.getRndInteger(boss.world.x - 10, boss.world.x + 10);
+        posX = this.getRndInteger(boss.world.y -10 , boss.world.y + 10);
         this.generatePickUp(posX, posY);
       }
     }
