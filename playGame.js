@@ -822,7 +822,7 @@ MyGame.playGameState.prototype = {
       //Spawn Boss
       if (bossSpawnRound == 2) {
         this.spawnBoss();
-        throwDelay = 500 - (round * 1.2);
+        throwDelay = 500 - (round * 1.5);
       }else{
         bossSpawnRound++;
         this.nextRound();
