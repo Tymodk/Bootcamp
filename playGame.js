@@ -329,7 +329,7 @@ MyGame.playGameState.prototype = {
         fireball.body.width = 30;
         fireball.body.height = 30;
         fireball.angle -= 90;
-        fireball.events.onOutOfBounds.add( function(){ fireball.destory(); } );
+        fireball.events.onOutOfBounds.add( function(){ fireball.kill(); } );
         fireball.checkWorldBounds = true;
         fireball.body.velocity.y = - fireballSpeed;
         lastFireballFired = game.time.now;
