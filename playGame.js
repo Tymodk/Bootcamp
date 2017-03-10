@@ -287,7 +287,8 @@ MyGame.playGameState.prototype = {
       }
   },
   generateStar: function() {
-    var star = stars.create(0,0,'star');
+      var posX = this.getRndInteger(1, game.width);
+    var star = stars.create(posX,0,'star');
     game.physics.enable(star, Phaser.Physics.ARCADE);
     star.animations.add('flicker', [0,1,2,1,0]);
     star.animations.play('flicker', 4, true, false);
