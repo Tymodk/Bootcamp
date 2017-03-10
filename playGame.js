@@ -454,7 +454,7 @@ MyGame.playGameState.prototype = {
     this.boss.health = health;
     this.boss.animations.add('bowser-idle', [0,1,2,3]);
     this.boss.animations.add('bowser-throw', [0,1,6,7]); // 8frames/s
-    this.boss.animations.play('bowser-idle', 12, true, false);
+    this.boss.animations.play('bowser-throw', 12, true, false);
     game.physics.enable(this.boss, Phaser.Physics.ARCADE);
     this.boss.anchor.setTo(0.5, 0.5);
     this.boss.body.velocity.y = 20;
