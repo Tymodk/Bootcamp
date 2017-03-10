@@ -25,6 +25,7 @@ var yoshiSpeed = 250;
 var maxYoshiSpeed = 600;
 var hasStar = false;
 var starLength = 0;
+var yoshiStarBonus = 1.5;
 //Enemies
 var enemies;
 var globalHealthMultiplier = 0;
@@ -81,6 +82,7 @@ MyGame.playGameState.prototype = {
     fireDelay = 400;
     fireballSpeed = 250;
     yoshiSpeed = 250;
+    yoshiStarBonus = 1.5;
     //Enemies reset
     globalHealthMultiplier = 0;
     bossSpawnRound = 1;
@@ -634,7 +636,7 @@ MyGame.playGameState.prototype = {
 
       //Loot
       for (var i = 0; i < 5; i++) {
-        var lootPos = 30;
+        var lootPos = 40;
         var posX = this.getRndInteger(boss.world.x - lootPos, boss.world.x + lootPos);
         var posY = this.getRndInteger(boss.world.y -lootPos , boss.world.y + lootPos);
         this.generatePickUp(posX, posY);
